@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const db = require('easy-oracledb');
 
+app.set('trust proxy', 1);
+app.use(require('body-parser').json());
+
 db.config({
     user: 'team4_201904F',
     pass: 'java',
@@ -17,7 +20,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false
+        secure: false,
+        maxAge: 1000 * 60 * 60,
     }
 }));
 
@@ -30,22 +34,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/check', (req, res) => {
-    res.send(req.session.id);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(req.session.user);
+    console.log(req.session.id);
 })
 
 app.post('/login', async (req, res, next) => {
-    console.log(req.body);
     let sql = db.readSQL('./sql/getUser.sql');
-    let result = await db.getData(sql, ['neo@daum.com']);
+    let result = await db.getData(sql, [req.body.id, req.body.pw]);
+    req.session.user = result;
+    console.log(req.session.id);
     res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8081/*');
     res.send(result);
 })
 
 app.options('/*', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'text/plain');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 
-    'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    res.header('Access-Control-Allow-Credentials', true);
     res.send();
 })

@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "easy-oracledb": "^1.0.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2"

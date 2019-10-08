@@ -1,1 +1,1 @@
-select * from USERS where userid = :id
+select * from USERS where userid = :id and user_pass = :pw
