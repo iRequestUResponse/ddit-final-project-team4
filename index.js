@@ -1,5 +1,12 @@
 const express = require('express');
 const app = express();
+const db = require('easy-oracledb');
+
+db.config({
+    user: 'team4_201904F',
+    pass: 'java',
+    conn: '112.220.114.130:1521/xe'
+});
 
 const session = require('express-session');
 
@@ -26,10 +33,12 @@ app.get('/check', (req, res) => {
     res.send(req.session.id);
 })
 
-app.post('/login', (req, res, next) => {
-    console.log(req.params);
+app.post('/login', async (req, res, next) => {
+    console.log(req.body);
+    let sql = db.readSQL('./sql/getUser.sql');
+    let result = await db.getData(sql, ['neo@daum.com']);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.send('success!');
+    res.send(result);
 })
 
 app.options('/*', (req, res, next) => {
