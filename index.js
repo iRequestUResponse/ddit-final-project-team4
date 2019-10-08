@@ -25,3 +25,18 @@ app.get('/', (req, res) => {
 app.get('/check', (req, res) => {
     res.send(req.session.id);
 })
+
+app.post('/login', (req, res, next) => {
+    console.log(req.params);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.send('success!');
+})
+
+app.options('/*', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'text/plain');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 
+    'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.send();
+})
