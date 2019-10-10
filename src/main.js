@@ -13,3 +13,15 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+
+Vue.mixin({
+  methods: {
+    async loginCheck() {
+      let result = await axios({
+        url: `${this.$store.state.serverLocation}/check`
+      });
+
+      return result.data.length === 1;
+    }
+  },
+})

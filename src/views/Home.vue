@@ -23,12 +23,24 @@
               <div class="content"></div>
             </v-col>
             <v-col>
-              <div class="title">뉴스</div>
-              <div class="content"></div>
+              <div class="title">
+                <span class="title">뉴스</span>
+                <v-btn>더보기</v-btn>
+              </div>
+              <div class="content">
+                <div v-for="news in newsList" :key="news.originallink">
+                  <a :href="news.originallink">{{ news.title.replace(/<\/?b>/g, '') }}</a>
+                </div>
+              </div>
             </v-col>
             <v-col>
-              <div class="title">공지사항</div>
-              <div class="content"></div>
+              <div class="title">
+                <span class="title">공지사항</span>
+                <v-btn>더보기</v-btn>
+              </div>
+              <div class="content">
+                <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ">{{ notice.NOTICE_TITLE }}</div>
+              </div>
             </v-col>
           </v-row>
         </v-container>
@@ -39,10 +51,28 @@
 
 <script>
 import HomeMenu from '@/components/HomeMenu.vue';
+import axios from 'axios';
 
 export default {
+  beforeMount() {
+    (async () => {
+      this.noticeList = (await axios({
+        url: `${this.$store.state.serverLocation}/noticeList`
+      })).data;
+
+      this.newsList = (await axios({
+        url: `${this.$store.state.serverLocation}/newsList`
+      })).data;
+    })();
+  },
   components: {
     HomeMenu,
   },
+  data() {
+    return {
+      noticeList: [],
+      newsList: [],
+    }
+  }
 };
 </script>
