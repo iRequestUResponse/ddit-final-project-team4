@@ -17,9 +17,12 @@
 import HomeMenu from '@/components/HomeMenu.vue';
 
 export default {
+  props: [
+    'name',
+  ],
   data() {
     return {
-      board: 'NewsList',
+      board: this.$route.params.name || 'NewsList',
     }
   },
   components: {

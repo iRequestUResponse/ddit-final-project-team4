@@ -26,7 +26,24 @@ export default new Router({
     {
       path: '/board',
       name: 'board',
-      component: () => import('@/views/Board.vue')
+      component: () => import('@/views/Board.vue'),
+      children: [
+        {
+          path: ':name',
+          component: () => import('@/views/Board.vue'),
+        }
+      ]
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import('@/views/SearchMain.vue'),
+      // children: [
+      //   {
+      //     path: ':name',
+      //     component: () => import('@/views/SearchMain.vue'),
+      //   }
+      // ]
     },
   ]
 })

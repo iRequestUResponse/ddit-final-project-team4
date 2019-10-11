@@ -25,18 +25,18 @@
             <v-col>
               <div class="title">
                 <span class="title">뉴스</span>
-                <v-btn>더보기</v-btn>
+                <router-link to="/board/NewsList">더보기</router-link>
               </div>
               <div class="content">
                 <div v-for="news in newsList" :key="news.originallink">
-                  <a :href="news.originallink">{{ news.title.replace(/<\/?b>/g, '') }}</a>
+                  <a :href="news.originallink">{{ news.title }}</a>
                 </div>
               </div>
             </v-col>
             <v-col>
               <div class="title">
                 <span class="title">공지사항</span>
-                <v-btn>더보기</v-btn>
+                <router-link to="/board/NoticeList">더보기</router-link>
               </div>
               <div class="content">
                 <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ">{{ notice.NOTICE_TITLE }}</div>
