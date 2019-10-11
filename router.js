@@ -45,4 +45,18 @@ module.exports = function({ app, db }) {
 
     res.send(result.data.items);
   })
+
+  app.post('/modifyUser', async (req, res, next) => {
+    if (req.session.user[0].USERID === req.body.id) {
+      let sql = db.readSQL('./sql/modifyUser.sql');
+      let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
+      
+      let sql2 = db.readSQL('./sql/getUser.sql');
+      req.session.user = await db.getData(sql2, [req.body.id, req.body.pass]);
+
+      res.send(result + '');
+    } else {
+      res.send(-1 + '');
+    }
+  })
 };

@@ -1,0 +1,1 @@
+update users set user_name = :name, user_pass=:pass, user_phone=:phone, user_addr=:addr where userid=:id
