@@ -28,5 +28,10 @@ export default new Router({
       name: 'board',
       component: () => import('@/views/Board.vue')
     },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: () => import('@/views/MyPage.vue')
+    }
   ]
 })
