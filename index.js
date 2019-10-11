@@ -29,6 +29,9 @@ app.use(cors({
     credentials: true
 }));
 
+// use static
+app.use(express.static('static'));
+
 // db config
 db.config({
     user: 'team4_201904F',
