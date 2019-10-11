@@ -15,6 +15,7 @@
           </div>
           <div class="juk-btn_login">
             <router-link v-if="!isLogin" to="/login" class="button">로그인 / 회원가입</router-link>
+            <router-link v-if="isLogin" to="/mypage" class="button">마이페이지</router-link>
             <v-btn v-if="isLogin" @click="logout">로그아웃</v-btn>
           </div>
         <div class="mobile-menu"><i class="fa fa-bars"></i></div>
@@ -47,6 +48,7 @@ export default {
       });
 
       this.isLogin = false;
+      this.$router.push('/');
     }
   }
 }
