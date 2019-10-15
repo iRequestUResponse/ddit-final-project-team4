@@ -66,7 +66,7 @@ module.exports = function({ app, db }) {
     }
   });
 
-  app.post('/modifyUser', async (req, res, next) => {
+  app.post('/api/modifyUser', async (req, res, next) => {
     if (req.session.user[0].USERID === req.body.id) {
       let sql = db.readSQL('./sql/modifyUser.sql');
       let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
@@ -79,4 +79,36 @@ module.exports = function({ app, db }) {
       res.send(-1 + '');
     }
   });
+
+  app.post('/api/join', async (req, res, next) => { 
+    let sql = db.readSQL('./sql/insertUser.sql');
+    let result = await db.exec(sql, [req.body.id, req.body.pass, req.body.name, req.body.phone, req.body.addr]);
+
+    res.send(result + '');
+  })
+
+  app.get('/api/checkId', async (req, res, next) => { 
+    console.log(req.query.id);
+    // 정규식 처리 || 
+    if (!req.query.id) {
+      res.send('2');
+      return;
+    }
+
+    let sql = db.readSQL('./sql/checkUserId.sql');
+    let result = await db.getData(sql, [req.query.id]);
+    // console.log(result[0].CNT);
+
+    res.send(result[0].CNT + '');
+  });
+
+  app.get('/api/findId', async (req, res, next) => { 
+    
+    let sql = db.readSQL('./sql/findUserId.sql');
+    let result = await db.getData(sql, [req.query.name, req.query.phone]);
+
+    res.send(result[0]);
+  })
+
 };
+
