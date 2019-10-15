@@ -5,7 +5,7 @@ module.exports = function({ app, db }) {
 
   // 
   app.post('/api/login', async (req, res, next) => {
-      let sql = db.readSQL('../sql/user/getUser.sql');
+      let sql = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
       let result = await db.getData(sql, [req.body.id, req.body.pw]);
       req.session.user = result;
       res.send(result);
@@ -13,10 +13,10 @@ module.exports = function({ app, db }) {
 
   app.post('/api/modifyUser', async (req, res, next) => {
     if (req.session.user[0].USERID === req.body.id) {
-      let sql = db.readSQL('../sql/user/modifyUser.sql');
+      let sql = db.readSQL(process.cwd() + '/sql/user/modifyUser.sql');
       let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
       
-      let sql2 = db.readSQL('../sql/user/getUser.sql');
+      let sql2 = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
       req.session.user = await db.getData(sql2, [req.body.id, req.body.pass]);
 
       res.send(result + '');
@@ -26,7 +26,7 @@ module.exports = function({ app, db }) {
   });
 
   app.post('/api/join', async (req, res, next) => { 
-    let sql = db.readSQL('../sql/user/insertUser.sql');
+    let sql = db.readSQL(process.cwd() + '/sql/user/insertUser.sql');
     let result = await db.exec(sql, [req.body.id, req.body.pass, req.body.name, req.body.phone, req.body.addr]);
 
     res.send(result + '');
@@ -41,7 +41,7 @@ module.exports = function({ app, db }) {
       return;
     }
 
-    let sql = db.readSQL('../sql/user/checkUserId.sql');
+    let sql = db.readSQL(process.cwd() + '/sql/user/checkUserId.sql');
     let result = await db.getData(sql, [req.query.id]);
     // console.log(result[0].CNT);
 
@@ -52,7 +52,7 @@ module.exports = function({ app, db }) {
   // 아이디 찾기
   app.get('/api/findId', async (req, res, next) => { 
     
-    let sql = db.readSQL('../sql/user/findUserId.sql');
+    let sql = db.readSQL(process.cwd() + '/sql/user/findUserId.sql');
     let result = await db.getData(sql, [req.query.name, req.query.phone]);
 
     res.send(result[0]);
@@ -62,7 +62,7 @@ module.exports = function({ app, db }) {
   app.get('/api/findPass', async (req, res, next) => {
 
     // db에서 id와 name이 일치하는 값이 있는지 확인
-    let sql = db.readSQL('../sql/user/isExistsUser.sql');
+    let sql = db.readSQL(process.cwd() + '/sql/user/isExistsUser.sql');
     let isExists = (await db.getData(sql, [req.query.id, req.query.name]))[0].CNT;
 
     // 있으면
@@ -83,7 +83,7 @@ module.exports = function({ app, db }) {
       }
       
       // 바꾸기
-      let sql2 = db.readSQL('../sql/user/changePass.sql');
+      let sql2 = db.readSQL(process.cwd() + '/sql/user/changePass.sql');
       db.exec(sql2, [randomPw, req.query.id]);
       
       // 보내기
