@@ -14,35 +14,20 @@ export default new Router({
       component: Home
     },
     {
-      path: '/login',
+      path: '/login/:func?',
       name: 'login',
       component: () => import('@/views/Login.vue')
     },
     {
-      path: '/agentLogin',
-      name: 'agentLogin',
-      component: () => import('@/views/AgentLogin.vue')
-    },
-    {
-      path: '/apart',
-      name: 'apartment',
-      component: () => import('@/views/Apartment.vue')
-    },
-    {
-      path: '/board',
+      path: '/board/:name?',
       name: 'board',
       component: () => import('@/views/Board.vue'),
-      children: [
-        {
-          path: ':name',
-          component: () => import('@/views/Board.vue'),
-        }
-      ]
     },
     {
-      path: '/search',
-      name: 'search',
-      component: () => import('@/views/SearchMain.vue'),
+      path: '/map/:func?/:id?',
+      name: 'map',
+      component: () => import('@/views/MapMain.vue'),
+      props: true,
     },
     {
       path: '/mypage/:name?',
@@ -63,6 +48,6 @@ export default new Router({
       path: '/findPass',
       name: 'findPass',
       component: () => import('@/views/FindPass.vue')
-    }
+    },
   ]
 })

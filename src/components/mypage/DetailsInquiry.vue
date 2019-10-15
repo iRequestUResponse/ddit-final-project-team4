@@ -32,9 +32,9 @@ export default {
         }
     },
     components: {
-        UserOfferHouse: () => import('@/components/UserOfferHouse'),
-        UserReviewInquiry: () => import('@/components/UserReviewInquiry'),
-        UserReportInquiry: () => import('@/components/UserReportInquiry')
+        UserOfferHouse: () => import('@/components/mypage/details/UserOfferHouse'),
+        UserReviewInquiry: () => import('@/components/mypage/details/UserReviewInquiry'),
+        UserReportInquiry: () => import('@/components/mypage/details/UserReportInquiry')
     }
 }
 </script>

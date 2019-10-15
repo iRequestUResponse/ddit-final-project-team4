@@ -38,7 +38,7 @@
 </style>
 
 <script>
-import HomeMenu from '@/components/HomeMenu';
+import HomeMenu from '@/components/common/HomeMenu';
 
 export default {
   data() {
@@ -48,9 +48,9 @@ export default {
   },
   components: {
     HomeMenu,
-    SalesInterest: () => import('@/components/SalesInterest'),
-    ModifyUser: () => import('@/components/ModifyUser'),
-    DetailsInquiry: () => import('@/components/DetailsInquiry')
+    SalesInterest: () => import('@/components/mypage/SalesInterest'),
+    ModifyUser: () => import('@/components/mypage/ModifyUser'),
+    DetailsInquiry: () => import('@/components/mypage/DetailsInquiry')
   }
 }
 </script>

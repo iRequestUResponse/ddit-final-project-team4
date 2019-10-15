@@ -7,10 +7,10 @@
       >
         <v-layout align-center>
           <router-link class="logo" to="/">죽방</router-link>
-          <router-link to="/apart" class="offset-md-1 juk-menu">아파트</router-link>
-          <router-link to="/village" class="offset-md-1 juk-menu">빌라+투룸</router-link>
-          <router-link to="/oneRoom" class="offset-md-1 juk-menu">원룸</router-link>
-          <router-link to="/office" class="offset-md-1 juk-menu">오피스텔</router-link>
+          <router-link to="/map/apart" class="offset-md-1 juk-menu">아파트</router-link>
+          <router-link to="/map/village" class="offset-md-1 juk-menu">빌라+투룸</router-link>
+          <router-link to="/map/oneRoom" class="offset-md-1 juk-menu">원룸</router-link>
+          <router-link to="/map/office" class="offset-md-1 juk-menu">오피스텔</router-link>
           <v-spacer />
           <!-- <router-link v-if="!isLogin" to="/login" class="button">로그인 / 회원가입</router-link> -->
           <v-btn v-if="!isLogin" to="/login">로그인 / 회원가입</v-btn>
