@@ -51,5 +51,7 @@ app.get('/:id*', (req, res, next) => {
 });
 
 ['user', 'board', 'common', 'map'].forEach(e => {
-    require(`./routers/${e}.js`)({ app, db });
+    let router = require(`./routers/${e}.js`);
+    console.log(router);
+    router({ app, db });
 })

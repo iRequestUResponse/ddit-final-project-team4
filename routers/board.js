@@ -1,15 +1,14 @@
 const axios = require('axios');
-const mailer = require('../js/mailer');
 
 module.exports = function({ app, db }) {
   app.get('/api/noticeList', async (req, res, next) => {
-      let sql = db.readSQL('../sql/board/getNoticeList.sql');
+      let sql = db.readSQL(process.cwd() + '/sql/board/getNoticeList.sql');
       let result = await db.getData(sql, [req.query.page || 1, req.query.size || 5]);
       res.send(result);
   });
 
   app.get('/api/newsList', async (req, res, next) => {
-    let sql = db.readSQL('../sql/board/getNewsKeywordList.sql');
+    let sql = db.readSQL(process.cwd() + '/sql/board/getNewsKeywordList.sql');
     let keywordList = (await db.getData(sql, [])).map(e => e.KEYWORD_NEWS);
     let { display = 10, start = 1 } = req.query;
 

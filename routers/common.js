@@ -1,6 +1,3 @@
-const axios = require('axios');
-const mailer = require('../js/mailer');
-
 module.exports = function({ app, db }) {
   // login check
   app.get('/api/check', (req, res) => {
