@@ -1,80 +1,151 @@
 <template>
-    <section>
-        <v-app>
-            <p>개인정보수정 페이지</p>
-            <v-form>
-                <v-container>
-                    <v-row justify="center">
-                        <v-col cols="12" sm="10" md="4">
-                            <v-text-field
-                                ref="name"
-                                v-model="name"
-                                :rules="[() => !!name || '이름을 입력해주세요!!!']"
-                                label="이름"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
+    <v-container>
+        <p>개인정보수정 페이지</p>
+        <v-form>
+            <v-row justify="center">
+                <v-col cols="12" sm="10" md="4">
+                    <v-text-field
+                        ref="name"
+                        v-model="name"
+                        :rules="[() => !!name || '이름을 입력해주세요!!!']"
+                        label="이름"
+                        outlined
+                        required
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
 
-                            <v-text-field
-                                type="password"
-                                ref="pass"
-                                v-model="pass"
-                                :rules="[() => !!pass || '비밀번호를 입력해주세요!!!']"
-                                label="비밀번호"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
+                    <v-text-field
+                        type="password"
+                        ref="pass"
+                        v-model="pass"
+                        :rules="[() => !!pass || '비밀번호를 입력해주세요!!!']"
+                        label="비밀번호"
+                        outlined
+                        required
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
 
-                            <v-text-field
-                                type="password"
-                                ref="conpass"
-                                v-model="conpass"
-                                :rules="[() => 
-                                    !!conpass || '비밀번호를 확인해주세요!!!',
-                                    !!(pass === conpass) || '비밀번호가 일치하지 않습니다!!!'
-                                ]"
-                                label="비밀번호 확인"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
+                    <v-text-field
+                        type="password"
+                        ref="conpass"
+                        v-model="conpass"
+                        :rules="[() => 
+                            !!conpass || '비밀번호를 확인해주세요!!!',
+                            !!(pass === conpass) || '비밀번호가 일치하지 않습니다!!!'
+                        ]"
+                        label="비밀번호 확인"
+                        outlined
+                        required
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
 
-                            <v-text-field
-                                type="tel"
-                                ref="phone"
-                                v-model="phone"
-                                label="연락처"
-                                outlined
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
+                    <v-text-field
+                        type="tel"
+                        ref="phone"
+                        v-model="phone"
+                        label="연락처"
+                        outlined
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
 
-                            <v-text-field
-                                ref="addr"
-                                v-model="addr"
-                                label="주소"
-                                outlined
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
+                    <v-text-field
+                        ref="addr"
+                        v-model="addr"
+                        label="주소"
+                        outlined
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
 
-                            <v-btn block color="primary" class="juk-mu_btn" @click="modifyUserData">
-                                수정
-                            </v-btn>
-                        </v-col>
+                    <v-btn block color="primary" class="juk-mu_btn" @click="modifyUserData">
+                        수정
+                    </v-btn>
+                </v-col>
+                <v-col cols="12" lg="1">
+                        <!-- 주소검색 다음 api -->
+                            <v-btn
+                            color="primary"
+                            dark
+                            class="hs_btn"
+                            @click.stop="dialog = true"
+                        >
+                            주소검색
+                        </v-btn>
+                        
+                        <v-dialog
+                            v-model="dialog"
+                            max-width="500"
+                        >
+                            <v-card>
+                                <v-card-actions>
+                                    <div class="flex-grow-1"></div>
+                                </v-card-actions>
+
+                                <vue-daum-postcode @complete="getAddress" />
+                            </v-card>
+                        </v-dialog>
+
+                    </v-col>
                     </v-row>
-                </v-container>
-            </v-form>
-        </v-app>
-    </section>
+
+                <v-row justify="center">
+                    <v-col cols="12" lg="3">
+                        <v-text-field
+                            ref="addrCode"
+                            v-model="result.postcode"
+                            label="우편번호"
+                            outlined
+                            class="juk-mu_text-field"
+                        >
+                        </v-text-field>
+                    </v-col>
+                    <v-col cols="12" lg="4">
+                    <v-text-field v-if="result.jibunAddress"
+                        ref="addr1"
+                        v-model="result.jibunAddress"
+                        label="주소"
+                        outlined
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
+
+                    <v-text-field v-else
+                        ref="addr1"
+                        v-model="result.autoJibunAddress"
+                        label="주소"
+                        outlined
+                        class="juk-mu_text-field"
+                    >
+                    </v-text-field>
+
+                    <v-text-field
+                        ref="addr2"
+                        v-model="addr2"
+                        label="상세주소"
+                        outlined
+                        class="juk-mu_text-field"
+                    >
+
+                    </v-text-field>
+
+                </v-col>
+            </v-row>
+        </v-form>
+    </v-container>
 </template>
 
 <script>
+import Vue from 'vue'
+import VueDaumPostcode from "vue-daum-postcode"
+import VModal from 'vue-js-modal'
+
+Vue.use(VModal)
+Vue.use(VueDaumPostcode)
+
 export default {
     beforeMount() {
         (async () => {
@@ -97,6 +168,9 @@ export default {
             conpass: '',
             phone: '',
             addr: '',
+
+            dialog: false,
+            result: {},
         }
     },
     methods: {
@@ -110,7 +184,7 @@ export default {
                         name: this.name,
                         pass: this.pass,
                         phone: this.phone,
-                        addr: this.addr,
+                        addr: this.addr + ' ' + this.sangseaddr,
                     },
                 })
                 .then(res => {
@@ -121,6 +195,11 @@ export default {
             }else{
                 alert("비밀번호가 일치하지 않습니다.");
             }
+        },
+        getAddress(event) {
+            this.result = event;
+            console.log(this.result);
+            this.dialog = false;
         }
     }
 }

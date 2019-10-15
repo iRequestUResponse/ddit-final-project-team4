@@ -1,18 +1,32 @@
 <template>
-  <div>
+  <v-app>
     <HomeMenu />
-    <div>
-      <v-container>
-        <v-row>
-          <v-col @click="mypage = 'SalesInterest'">관심목록</v-col>
-          <v-col @click="mypage = 'ModifyUser'">개인정보수정</v-col>
-          <v-col @click="mypage = 'DetailsInquiry'">내역조회</v-col>
-        </v-row>
-      </v-container>
-      <component :is="mypage" />
-    </div>
-  </div>
+    <v-container fluid class="white">
+      <v-layout column>
+        <v-flex>
+          <v-row>
+            <v-col align="center" @click="mypage = 'SalesInterest'">
+              <div>관심목록</div>
+            </v-col>
+            <v-col align="center" @click="mypage = 'ModifyUser'">
+              <div>개인정보수정</div>
+            </v-col>
+            <v-col align="center" @click="mypage = 'DetailsInquiry'">
+              <div>내역조회</div>
+            </v-col>
+          </v-row>
+        </v-flex>
+        <v-flex>
+          <component :is="mypage" />
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-app>
 </template>
+
+<style>
+
+</style>
 
 <script>
 import HomeMenu from '@/components/HomeMenu';
@@ -31,7 +45,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
