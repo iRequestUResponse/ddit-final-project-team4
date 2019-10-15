@@ -24,7 +24,7 @@ app.use(require('body-parser').json());
 
 // cors
 app.use(cors({
-    origin: ['http://localhost:8081', 'http://localhost:80', 'http://localhost'],
+    origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:80', 'http://localhost'],
     methods: ['*'],
     credentials: true
 }));
@@ -44,6 +44,12 @@ app.listen(port, () => {
     console.log(`listening ${port}`);
 });
 
-require('./router.js')({
-    app, db
+
+app.get('/:id*', (req, res, next) => {
+    if (req.params.id === 'api') next();
+    else res.sendFile(process.cwd() + '/static/index.html');
 });
+
+['user', 'board', 'common', 'map'].forEach(e => {
+    require(`./routers/${e}.js`)({ app, db });
+})

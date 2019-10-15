@@ -1,0 +1,1 @@
+select * from users where user_name=:name and USER_PHONE=:phone
