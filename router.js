@@ -50,7 +50,7 @@ module.exports = function({ app, db }) {
     }));
   });
 
-  app.get('/api/aptList/coord', async (req, res, next) => {
+  app.get('/api/c2a', async (req, res, next) => {
     try {
       let address = await axios({
         url: `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${req.query.x}&y=${req.query.y}`,
@@ -60,13 +60,21 @@ module.exports = function({ app, db }) {
           'Content-Type': 'x-www-form-urlencoded',
         }
       });
-      res.send(address.data);
+
+      let {
+        region_1depth_name: sido,
+      } = address.data.documents[0].address;
+
+      let sql = db.readSQL('./sql/map/getAptList.sql');
+      let result = await db.getData(sql, [sido, req.query.y, req.query.x]);
+
+      res.send(result);
     } catch (err) {
       res.send(err.toString());
     }
   });
 
-  app.post('/modifyUser', async (req, res, next) => {
+  app.post('/api/modifyUser', async (req, res, next) => {
     if (req.session.user[0].USERID === req.body.id) {
       let sql = db.readSQL('./sql/modifyUser.sql');
       let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
@@ -77,6 +85,19 @@ module.exports = function({ app, db }) {
       res.send(result + '');
     } else {
       res.send(-1 + '');
+    }
+  });
+
+  app.get('/api/searchApt', async (req, res, next) => {
+    let nameCntSql = db.readSQL('./sql/search/getCountAptNameQuery.sql');
+    let nameCnt = await db.getData(nameCntSql, [req.query.query]);
+    nameCnt = nameCnt[0].CNT;
+    
+    let result;
+
+    if (nameCnt > 0) {
+      let sql = 
+      res.json()
     }
   });
 };
