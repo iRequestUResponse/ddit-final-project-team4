@@ -19,6 +19,11 @@ export default new Router({
       component: () => import('@/views/Login.vue')
     },
     {
+      path: '/agentLogin',
+      name: 'agentLogin',
+      component: () => import('@/views/AgentLogin.vue')
+    },
+    {
       path: '/apart',
       name: 'apartment',
       component: () => import('@/views/Apartment.vue')
@@ -40,9 +45,9 @@ export default new Router({
       component: () => import('@/views/SearchMain.vue'),
     },
     {
-      path: '/mypage',
+      path: '/mypage/:name?',
       name: 'mypage',
-      component: () => import('@/views/MyPage.vue')
+      component: () => import('@/views/MyPage.vue'),
     },
     {
       path: '/join',

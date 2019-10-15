@@ -4,6 +4,13 @@
     <v-container fluid class="white">
       <v-layout column>
         <v-flex>
+          <v-row 
+            align="center"
+            justify="center"
+            style="height: 300px;"
+          >
+            <p class="juk_mypage-title">마이페이지</p>
+          </v-row>
           <v-row>
             <v-col align="center" @click="mypage = 'SalesInterest'">
               <div>관심목록</div>
@@ -25,7 +32,9 @@
 </template>
 
 <style>
-
+  .juk_mypage-title {
+    font-size: 32pt;
+  }
 </style>
 
 <script>
