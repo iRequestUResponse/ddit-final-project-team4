@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import HomeMenu from '@/components/HomeMenu.vue';
+import HomeMenu from '@/components/common/HomeMenu.vue';
 
 export default {
   props: [
@@ -27,8 +27,8 @@ export default {
   },
   components: {
     HomeMenu,
-    NewsList: () => import('@/components/NewsList.vue'),
-    NoticeList: () => import('@/components/NoticeList.vue'),
+    NewsList: () => import('@/components/board/NewsList.vue'),
+    NoticeList: () => import('@/components/board/NoticeList.vue'),
   }
 }
 </script>

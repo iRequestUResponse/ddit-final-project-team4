@@ -19,11 +19,6 @@ export default new Router({
       component: () => import('@/views/Login.vue')
     },
     {
-      path: '/apart',
-      name: 'apartment',
-      component: () => import('@/views/Apartment.vue')
-    },
-    {
       path: '/board',
       name: 'board',
       component: () => import('@/views/Board.vue'),
@@ -35,15 +30,10 @@ export default new Router({
       ]
     },
     {
-      path: '/search',
-      name: 'search',
-      component: () => import('@/views/SearchMain.vue'),
-      // children: [
-      //   {
-      //     path: ':name',
-      //     component: () => import('@/views/SearchMain.vue'),
-      //   }
-      // ]
+      path: '/map/:func?/:id?',
+      name: 'map',
+      component: () => import('@/views/MapMain.vue'),
+      props: true,
     },
     {
       path: '/mypage',

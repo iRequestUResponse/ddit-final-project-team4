@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import HomeMenu from '@/components/HomeMenu.vue';
+import HomeMenu from '@/components/common/HomeMenu.vue';
 import axios from 'axios';
 
 export default {

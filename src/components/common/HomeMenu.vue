@@ -7,10 +7,10 @@
           </div>
           <div class="menu">
             <ul>
-              <li><router-link to="/apart">아파트</router-link></li>
-              <li><router-link to="/village">빌라+투룸</router-link></li>
-              <li><router-link to="/oneRoom">원룸</router-link></li>
-              <li><router-link to="/office">오피스텔</router-link></li>
+              <li><router-link to="/search/apart">아파트</router-link></li>
+              <li><router-link to="/search/village">빌라+투룸</router-link></li>
+              <li><router-link to="/search/oneRoom">원룸</router-link></li>
+              <li><router-link to="/search/office">오피스텔</router-link></li>
             </ul>
           </div>
           <div class="juk-btn_login">

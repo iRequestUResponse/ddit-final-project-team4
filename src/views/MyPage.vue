@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import HomeMenu from '@/components/HomeMenu';
+import HomeMenu from '@/components/common/HomeMenu';
 
 export default {
   data() {
