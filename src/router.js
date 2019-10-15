@@ -38,17 +38,26 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: () => import('@/views/SearchMain.vue'),
-      // children: [
-      //   {
-      //     path: ':name',
-      //     component: () => import('@/views/SearchMain.vue'),
-      //   }
-      // ]
     },
     {
       path: '/mypage',
       name: 'mypage',
       component: () => import('@/views/MyPage.vue')
+    },
+    {
+      path: '/join',
+      name: 'join',
+      component: () => import('@/views/Join.vue')
+    },
+    {
+      path: '/findId',
+      name: 'findId',
+      component: () => import('@/views/FindId.vue')
+    },
+    {
+      path: '/findPass',
+      name: 'findPass',
+      component: () => import('@/views/FindPass.vue')
     }
   ]
 })
