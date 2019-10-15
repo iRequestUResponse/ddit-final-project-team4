@@ -12,11 +12,12 @@
           <router-link to="/map/oneRoom" class="offset-md-1 juk-menu">원룸</router-link>
           <router-link to="/map/office" class="offset-md-1 juk-menu">오피스텔</router-link>
           <v-spacer />
-          <!-- <router-link v-if="!isLogin" to="/login" class="button">로그인 / 회원가입</router-link> -->
-          <v-btn v-if="!isLogin" to="/login">로그인 / 회원가입</v-btn>
-          <v-btn v-if="!isLogin" to="/agentLogin">공인중개사 회원전용</v-btn>
-          <v-btn v-if="isLogin" to="/mypage" class="button">마이페이지</v-btn>
-          <v-btn v-if="isLogin" @click="logout">로그아웃</v-btn>
+          <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
+          <v-btn v-if="!loginUser" to="/login/user">로그인 / 회원가입</v-btn>
+          <v-btn v-if="!loginUser" to="/login/agent">공인중개사 회원전용</v-btn>
+          <v-btn v-if="(loginUser || {}).type === 'user'" to="/mypage">마이페이지</v-btn>
+          <v-btn v-if="(loginUser || {}).type === 'agent'" to="/agentpage">중개사페이지</v-btn>
+          <v-btn v-if="loginUser" @click="logout">로그아웃</v-btn>
         </v-layout>
       </v-container>
     </v-toolbar>
@@ -33,12 +34,12 @@ export default {
         url: `${this.$store.state.serverLocation}/check`
       });
 
-      this.isLogin = !!result.data;
+      this.loginUser = result.data.user;
     })();
   },
   data() {
     return {
-      isLogin: false,
+      loginUser: undefined,
     };
   },
   methods: {
@@ -47,7 +48,7 @@ export default {
         url: `${this.$store.state.serverLocation}/logout`
       });
 
-      this.isLogin = false;
+      this.loginUser = undefined;
       this.$router.push('/');
     }
   }

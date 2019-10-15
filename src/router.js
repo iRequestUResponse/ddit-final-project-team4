@@ -35,6 +35,11 @@ export default new Router({
       component: () => import('@/views/MyPage.vue'),
     },
     {
+      path: '/agentpage/:name?',
+      name: 'agentpage',
+      component: () => import('@/views/AgentPage.vue'),
+    },
+    {
       path: '/join',
       name: 'join',
       component: () => import('@/views/Join.vue')

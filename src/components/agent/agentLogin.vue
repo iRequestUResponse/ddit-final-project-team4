@@ -1,5 +1,4 @@
 <template>
-  <v-app id="inspire">
     <v-content>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
@@ -38,11 +37,66 @@
         </v-row>
       </v-container>
     </v-content>
-  </v-app>
 </template>
 
+<style>
+    a.logo {
+        color: #ffffff;
+        font-size: 22pt;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    a.logo1 {
+        text-decoration: none;
+    }
+    .juk-agent_title {
+        color: #fff;
+        font-size: 18pt;
+    }
+    #img1{
+        width: 45px;
+        height: 45px;
+        margin-right: 20px;
+        margin-left: 10px;
+    }
+    #img2{
+        width: 40px;
+        height: 40px;
+        margin-right: 23px;
+        margin-left: 10px;
+    }
+    #ptag{
+        font-weight: bold;
+        margin-top: 22px;
+    }
+    #loginbtn{
+        width: 82%;
+        height: 50px;
+        margin-left: 60px;
+        margin-bottom: 20px;
+        margin-top: 130px;
+        background: rgb(228, 223, 223);
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    #idform{
+        padding: 50px;
+    }
+    #cbrow{
+        margin-top: 0px;
+        margin-left: 1px;
+    }
+    .logo1{
+        margin-left: 25px;
+    }
+    #xx{
+        cursor: pointer;
+    }
+    /* 텍스트 필드 줄이는 방법!!! */
+</style>
+
 <script>
-  export default {
+export default {
     props: {
       source: String,
     },
@@ -61,7 +115,7 @@
     methods: {
       login() {
         axios({
-            url: `${this.$store.state.serverLocation}/login`,
+            url: `${this.$store.state.serverLocation}/agentLogin`,
             method: 'POST',
             data: {
               id: this.id,
@@ -69,7 +123,7 @@
             },
           })
           .then(res => {
-            if (res.data.length === 1) {
+            if (res.data.AGENTID) {
               alert("로그인 되었습니다!!!")
               this.$router.push('/');
             }else {
@@ -81,61 +135,5 @@
         this.id = "";
       }
     }
-  }
+}
 </script>
-
-<style>
-  a.logo {
-    color: #ffffff;
-    font-size: 22pt;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  a.logo1 {
-    text-decoration: none;
-  }
-  .juk-agent_title {
-      color: #fff;
-      font-size: 18pt;
-  }
-  #img1{
-    width: 45px;
-    height: 45px;
-    margin-right: 20px;
-    margin-left: 10px;
-  }
-  #img2{
-    width: 40px;
-    height: 40px;
-    margin-right: 23px;
-    margin-left: 10px;
-  }
-  #ptag{
-    font-weight: bold;
-    margin-top: 22px;
-  }
-  #loginbtn{
-    width: 82%;
-    height: 50px;
-    margin-left: 60px;
-    margin-bottom: 20px;
-    margin-top: 130px;
-    background: rgb(228, 223, 223);
-    font-weight: bold;
-    font-size: 1.2em;
-  }
-  #idform{
-    padding: 50px;
-  }
-  #cbrow{
-    margin-top: 0px;
-    margin-left: 1px;
-  }
-  .logo1{
-    margin-left: 25px;
-  }
-  #xx{
-    cursor: pointer;
-  }
-  /* 텍스트 필드 줄이는 방법!!! */
-</style>

@@ -21,8 +21,7 @@ Vue.mixin({
         url: `${this.$store.state.serverLocation}/check`
       });
 
-      console.log(result.data.length);
-      return result.data.length === 1;
+      return typeof result.data.user !== 'undefined';
     }
   },
 })
