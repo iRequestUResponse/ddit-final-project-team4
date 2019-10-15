@@ -17,7 +17,7 @@ module.exports = function({ app, db }) {
         region_1depth_name: sido,
       } = address.data.documents[0].address;
 
-      let sql = db.readSQL('../sql/map/getAptList.sql');
+      let sql = db.readSQL(process.cwd() + '/sql/map/getAptList.sql');
       let result = await db.getData(sql, [sido, req.query.y, req.query.x]);
 
       res.send(result);
@@ -27,7 +27,7 @@ module.exports = function({ app, db }) {
   });
 
   app.get('/api/searchApt', async (req, res, next) => {
-    let nameCntSql = db.readSQL('../sql/map/getCountAptNameQuery.sql');
+    let nameCntSql = db.readSQL(process.cwd() + '/sql/map/getCountAptNameQuery.sql');
     let nameCnt = await db.getData(nameCntSql, [req.query.query]);
     nameCnt = nameCnt[0].CNT;
     
