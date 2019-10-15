@@ -7,14 +7,14 @@
           </div>
           <div class="menu">
             <ul>
-              <li><router-link to="/search/apart">아파트</router-link></li>
-              <li><router-link to="/search/village">빌라+투룸</router-link></li>
-              <li><router-link to="/search/oneRoom">원룸</router-link></li>
-              <li><router-link to="/search/office">오피스텔</router-link></li>
+              <li><router-link to="/map/apart">아파트</router-link></li>
+              <li><router-link to="/map/village">빌라+투룸</router-link></li>
+              <li><router-link to="/map/oneRoom">원룸</router-link></li>
+              <li><router-link to="/map/office">오피스텔</router-link></li>
             </ul>
           </div>
           <div class="juk-btn_login">
-            <router-link v-if="!isLogin" to="/login" class="button">로그인 / 회원가입</router-link>
+            <router-link v-if="!isLogin" to="/login/user" class="button">로그인 / 회원가입</router-link>
             <router-link v-if="isLogin" to="/mypage" class="button">마이페이지</router-link>
             <v-btn v-if="isLogin" @click="logout">로그아웃</v-btn>
           </div>

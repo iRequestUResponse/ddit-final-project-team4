@@ -14,20 +14,14 @@ export default new Router({
       component: Home
     },
     {
-      path: '/login',
+      path: '/login/:func?',
       name: 'login',
       component: () => import('@/views/Login.vue')
     },
     {
-      path: '/board',
+      path: '/board/:name?',
       name: 'board',
       component: () => import('@/views/Board.vue'),
-      children: [
-        {
-          path: ':name',
-          component: () => import('@/views/Board.vue'),
-        }
-      ]
     },
     {
       path: '/map/:func?/:id?',
@@ -39,6 +33,21 @@ export default new Router({
       path: '/mypage',
       name: 'mypage',
       component: () => import('@/views/MyPage.vue')
-    }
+    },
+    {
+      path: '/join',
+      name: 'join',
+      component: () => import('@/views/Join.vue')
+    },
+    {
+      path: '/findId',
+      name: 'findId',
+      component: () => import('@/views/FindId.vue')
+    },
+    {
+      path: '/findPass',
+      name: 'findPass',
+      component: () => import('@/views/FindPass.vue')
+    },
   ]
 })
