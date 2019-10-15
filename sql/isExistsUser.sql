@@ -1,0 +1,1 @@
+select count(1) as CNT from users where userid=:id and user_name=:name
