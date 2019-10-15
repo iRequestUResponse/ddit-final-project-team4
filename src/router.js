@@ -58,6 +58,6 @@ export default new Router({
       path: '/findPass',
       name: 'findPass',
       component: () => import('@/views/FindPass.vue')
-    }
+    },
   ]
 })
