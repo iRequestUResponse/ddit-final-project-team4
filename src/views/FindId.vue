@@ -27,7 +27,6 @@
               <v-btn id="btn" @click="findId">아이디 찾기</v-btn>
               <v-card-actions>
                 
-
               </v-card-actions>
             </v-card>
           </v-col>

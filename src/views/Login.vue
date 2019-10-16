@@ -67,6 +67,10 @@
             },
           })
           .then(res => {
+            if(res.data[0].USER_WITHDRAWAL === 'Y'){
+              alert(this.id + "은 탈퇴한 회원입니다.");
+              return;
+            }
             if (res.data.length === 1) {
               alert("로그인 되었습니다!!!")
               this.$router.push('/');

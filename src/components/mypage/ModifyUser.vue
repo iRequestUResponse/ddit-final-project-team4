@@ -129,8 +129,13 @@
                         outlined
                         class="juk-mu_text-field"
                     >
-
                     </v-text-field>
+                    <v-btn  
+                        color="primary"
+                        v-model="withdrawal"
+                        class="juk-mu_text-field"
+                        @click="leave">탈퇴하기
+                    </v-btn>
 
                 </v-col>
             </v-row>
@@ -159,6 +164,7 @@ export default {
         this.conpass = result.data[0].USER_PASS;
         this.phone = result.data[0].USER_PHONE;
         this.addr = result.data[0].USER_ADDR;
+
         })();
     },
     data() {
@@ -168,7 +174,7 @@ export default {
             conpass: '',
             phone: '',
             addr: '',
-
+            withdrawal: 'N',
             dialog: false,
             result: {},
         }
@@ -185,6 +191,7 @@ export default {
                         pass: this.pass,
                         phone: this.phone,
                         addr: this.addr + ' ' + this.sangseaddr,
+                        withdrawal: this.withdrawal,
                     },
                 })
                 .then(res => {
@@ -200,6 +207,27 @@ export default {
             this.result = event;
             console.log(this.result);
             this.dialog = false;
+        },
+        leave(){
+            axios({
+                url: `${this.$store.state.serverLocation}/leaveUser`,
+                method: 'POST',
+                data: {
+                    id: this.id,
+                },
+            })
+            .then(res => {
+                if (res.data === 1) {
+                    alert("회원탈퇴가 완료되었습니다.");
+
+                    axios({
+                        url: `${this.$store.state.serverLocation}/logout`
+                    });
+
+                    this.isLogin = false;
+                    this.$router.push('/');
+                 }
+            })
         }
     }
 }

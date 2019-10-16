@@ -11,7 +11,7 @@
                             다양한 서비스를 이용하세요.<br><br>
                         </div>
                     </v-row>
-
+                    
                     <v-row justify="center">
                         <v-col cols="12" lg="3">
                             <v-text-field
@@ -36,7 +36,7 @@
                                     class="hs_btn" @click="checkId">중복검사</v-btn>
                         </v-col>
                     </v-row>
-                    
+            
                     <v-row justify="center">
                         <v-col cols="12" lg="4">
                             <v-text-field
@@ -100,7 +100,7 @@
                             </v-text-field>
                     </v-col>
                     </v-row>
-
+                        
                         <v-row justify="center">
                             <v-col cols="12" lg="3">
                              <v-text-field
@@ -162,23 +162,32 @@
                                 class="juk-mu_text-field"
                             >
                             </v-text-field>
-
                         </v-col>
                     </v-row>
+                    
+                    <v-row id="captchaRow" justify="center">
+                    <div class="form">
+                    <div class="row">
+                    <div><strong></strong></div>
+                    <my-captcha :callSuccess="captchaBtn"></my-captcha>
+                    </div>
+                    </div>
+                    </v-row>
+
                     <v-row justify="center">
                         <v-col cols="12" lg="2">
                             <v-btn  
                                 color="primary"
-                                dark
-                                class="hs_btn1"
-                                @click="join">가입하기
+                                class="hs_btn"
+                                @click="join" 
+                                :disabled="btndis">가입하기
                             </v-btn>
                         </v-col>
                         <v-col cols="12" lg="2">
                             <v-btn 
                                 color="primary"
                                 dark
-                                class="hs_btn1">취소하기
+                                class="hs_btn">취소하기
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -192,6 +201,7 @@
 import Vue from "vue"
 import VueDaumPostcode from "vue-daum-postcode"
 import VModal from 'vue-js-modal'
+import myCaptcha from 'vue-captcha'
 
 Vue.use(VModal)
 Vue.use(VueDaumPostcode)
@@ -210,39 +220,10 @@ export default {
             result: {},
             isError: false,
             isValidId: false,
+            btndis: true,
         }
     },
     methods: {
-        join() {
-            if (this.id == "" || this.name == "" || this.pass == "" || this.conpass == "" || this.phone == "" || this.result.jibunAddress == "" ||this.addr2 == "") {
-                alert('모두 입력해주세요!!!');
-            }else{
-                 axios({
-                    url: `${this.$store.state.serverLocation}/join`,
-                    method: 'POST',
-                    data: {
-                        id: this.id,
-                        name: this.name,
-                        pass: this.pass,
-                        phone: this.phone,
-                        addr: this.result.jibunAddress + ' ' + this.addr2
-                    },
-                })
-                .then(res => {
-                    // 중복확인 버튼 눌러야 넘어가는 코드 작성 (오류 - 한번만 실행된다.))
-                    if (this.isValidId === false){
-                        alert("중복검사를 클릭해주세요!!!");
-                        res.data = 0;
-                        return;
-                    }
-
-                    if (res.data === 1) {
-                        alert("회원가입이 정상적으로 완료되었습니다.")
-                        this.$router.replace('/');
-                    }
-                })
-            }
-        },
         checkId(){
             axios({
                 url: `${this.$store.state.serverLocation}/checkId?id=${this.id}`,
@@ -262,7 +243,34 @@ export default {
                     this.id = "";
                 }
             })
-
+        },
+        join() {
+            if(this.isValidId === false) {
+                alert("중복검사를 해주세요!!!");
+                res.data = 0;
+                return;
+            }
+            if (this.id == "" || this.name == "" || this.pass == "" || this.conpass == "" || this.phone == "" || this.result.jibunAddress == "" ||this.addr2 == "") {
+                alert('모두 입력해주세요!!!');
+            }else{
+                 axios({
+                    url: `${this.$store.state.serverLocation}/join`,
+                    method: 'POST',
+                    data: {
+                        id: this.id,
+                        name: this.name,
+                        pass: this.pass,
+                        phone: this.phone,
+                        addr: this.result.jibunAddress + ' ' + this.addr2
+                    },
+                })
+                .then(res => {
+                    if (res.data === 1) {
+                        alert("회원가입이 정상적으로 완료되었습니다.")
+                        this.$router.replace('/');
+                    }
+                })
+            }
         },
         getAddress(event) {
             this.result = event;
@@ -275,7 +283,13 @@ export default {
         },
         error(event) {
             this.isError = event;
-        }
+        },
+        captchaBtn () {
+            this.btndis = false
+        },
+    },
+    components: {
+        'my-captcha': myCaptcha
     }
 }
 </script>
@@ -284,20 +298,21 @@ export default {
     .juk-mu_text-field {
         border-radius: 0;
     }
-
     .juk-mu_btn > span {
         font-size: 1.4em;
-    }
-
-    .hs_btn {
-        margin-top: -6px;
-    }
-    .hs_btn1{
-        
     }
     img{
         cursor: pointer;
     }
+    .hs_btn[disabled] {
+        cursor: not-allowed;
+        opacity: 0.9;
+    }
+    #captchaRow {
+        margin-right: 380px; 
+        margin-bottom: 20px;
+    }
+   
 </style>
 
 
