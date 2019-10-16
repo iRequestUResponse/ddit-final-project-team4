@@ -14,20 +14,26 @@ module.exports = function({ app, db }) {
       res.send(result);
   });
 
+  // 회원 정보 수정
   app.post('/api/modifyUser', async (req, res, next) => {
-    if (req.session.user[0].USERID === req.body.id) {
+    if (req.session.user.USERID === req.body.id) {
       let sql = db.readSQL(process.cwd() + '/sql/user/modifyUser.sql');
       let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
       
       let sql2 = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
-      req.session.user = await db.getData(sql2, [req.body.id, req.body.pass]);
+      let result2 = (await db.getData(sql2, [req.body.id, req.body.pass]))[0];
+      req.session.user = {
+        ...result2,
+        type: 'user'
+    };
 
       res.send(result + '');
     } else {
-      res.send(-1 + '');
+     res.send(-1 + '');
     }
   });
 
+  // 회원가입
   app.post('/api/join', async (req, res, next) => { 
     let sql = db.readSQL(process.cwd() + '/sql/user/insertUser.sql');
     let result = await db.exec(sql, [req.body.id, req.body.pass, req.body.name, req.body.phone, req.body.addr]);
@@ -100,13 +106,13 @@ module.exports = function({ app, db }) {
 
   // 회원탈퇴
   app.post('/api/leaveUser', async (req, res, next) => {
-    if (req.session.user[0].USERID === req.body.id){
+    if (req.session.user.USERID === req.body.id){
       
       let sql = db.readSQL(process.cwd() + '/sql/user/leaveUser.sql');
       let result = (await db.exec(sql, [req.body.id]));
-  
+      
       console.log('delete user : ', req.body);
-  
+      
       res.send(result + '');
     }else {
       res.send(-1 + '');

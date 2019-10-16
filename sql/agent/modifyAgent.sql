@@ -1,0 +1,1 @@
+update agent set agent_name = :name, agent_pass=:pass, agent_phone=:phone, agent_addr=:addr where agentid=:id
