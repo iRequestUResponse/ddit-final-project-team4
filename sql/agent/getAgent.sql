@@ -1,0 +1,1 @@
+select * from AGENT where AGENTID = :id and AGENT_PASS = :pw

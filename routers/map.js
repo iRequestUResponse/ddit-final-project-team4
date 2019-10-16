@@ -1,5 +1,4 @@
 const axios = require('axios');
-const mailer = require('../js/mailer');
 
 module.exports = function({ app, db }) {
   app.get('/api/c2a', async (req, res, next) => {
