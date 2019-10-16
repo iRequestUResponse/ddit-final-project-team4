@@ -6,8 +6,11 @@ module.exports = function({ app, db }) {
   // 회원 로그인
   app.post('/api/login', async (req, res, next) => {
       let sql = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
-      let result = await db.getData(sql, [req.body.id, req.body.pw]);
-      req.session.user = result;
+      let result = (await db.getData(sql, [req.body.id, req.body.pw]))[0];
+      req.session.user = {
+          ...result,
+          type: 'user'
+      };
       res.send(result);
   });
 
