@@ -40,19 +40,24 @@ export default new Router({
       component: () => import('@/views/AgentPage.vue'),
     },
     {
-      path: '/join',
+      path: '/join/:func?',
       name: 'join',
       component: () => import('@/views/Join.vue')
     },
     {
-      path: '/findId',
+      path: '/findId/:func?',
       name: 'findId',
       component: () => import('@/views/FindId.vue')
     },
     {
-      path: '/findPass',
+      path: '/findPass/:func?',
       name: 'findPass',
       component: () => import('@/views/FindPass.vue')
     },
+    {
+      path: 'testfile',
+      name: 'testfile',
+      component: () => import('@/views/testfile.vue')
+    }
   ]
 })
