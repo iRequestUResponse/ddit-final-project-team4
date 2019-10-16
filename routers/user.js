@@ -3,7 +3,7 @@ const mailer = require('../js/mailer');
 
 module.exports = function({ app, db }) {
 
-  // 
+  // 회원 로그인
   app.post('/api/login', async (req, res, next) => {
       let sql = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
       let result = await db.getData(sql, [req.body.id, req.body.pw]);
@@ -94,5 +94,19 @@ module.exports = function({ app, db }) {
       res.send('');
     }
   });
-};
 
+  // 회원탈퇴
+  app.post('/api/leaveUser', async (req, res, next) => {
+    if (req.session.user[0].USERID === req.body.id){
+      
+      let sql = db.readSQL(process.cwd() + '/sql/user/leaveUser.sql');
+      let result = (await db.exec(sql, [req.body.id]));
+  
+      console.log('delete user : ', req.body);
+  
+      res.send(result + '');
+    }else {
+      res.send(-1 + '');
+    }
+  })
+};
