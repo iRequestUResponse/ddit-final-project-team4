@@ -158,13 +158,12 @@ export default {
             url: `${this.$store.state.serverLocation}/check`
         });
 
-        this.id = result.data[0].USERID;
-        this.name = result.data[0].USER_NAME;
-        this.pass = result.data[0].USER_PASS;
-        this.conpass = result.data[0].USER_PASS;
-        this.phone = result.data[0].USER_PHONE;
-        this.addr = result.data[0].USER_ADDR;
-
+        this.id = result.data.user.USERID;
+        this.name = result.data.user.USER_NAME;
+        this.pass = result.data.user.USER_PASS;
+        this.conpass = result.data.user.USER_PASS;
+        this.phone = result.data.user.USER_PHONE;
+        this.addr = result.data.user.USER_ADDR;
         })();
     },
     data() {
@@ -175,6 +174,7 @@ export default {
             phone: '',
             addr: '',
             withdrawal: 'N',
+            addr2: '',
             dialog: false,
             result: {},
         }
