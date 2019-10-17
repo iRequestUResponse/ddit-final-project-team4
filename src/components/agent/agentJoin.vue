@@ -189,22 +189,22 @@
                                 class="hs_btn">취소하기
                             </v-btn>
                         </v-col>
-                            <router-link class="logo1" to="/testfile">파일테스트</router-link>
                     </v-row>
                 </v-container>
             </v-form>
             <div id="app">
-                dd
+                {{ filename }}
                 <file-pond
-                    name="testfile"
+                    name="test"
                     ref="pond"
                     label-idle="파일 업로드 해주세요!!!"
-                    allow-multiple="true"
+                    allow-multiple="false"
                     accepted-file-types="image/jpeg, image/png"
-                    server="/api"
-                    v-bind:files="myFiles"
-                    v-on:init="handleFilePondInit"/>
-            
+                    :server="server"
+                    :files="myFiles"
+                    @init="handleFilePondInit"
+                    @processfile="onload"
+                />
             </div>
         </v-app>
     </section>
@@ -243,6 +243,11 @@ export default {
     props: [
         'func',
     ],
+    beforeMount() {
+        window.addEventListener('FilePond:removefile', event => {
+            this.filename = '';
+        });
+    },
     data() {
         return {
             id: '',
@@ -257,7 +262,11 @@ export default {
             isError: false,
             isValidId: false,
             btndis: true,
-            myFiles: ['cat.jpeg'],  //미리 가져오는값
+            myFiles: [],  //미리 가져오는값
+            server: {
+                url: `${this.$store.state.serverLocation}/file/agent`
+            },
+            filename: '',
         }
     },
     methods: {
@@ -298,7 +307,8 @@ export default {
                         name: this.name,
                         pass: this.pass,
                         phone: this.phone,
-                        addr: this.result.jibunAddress + ' ' + this.addr2
+                        addr: this.result.jibunAddress + ' ' + this.addr2,
+                        filename: this.filename
                     },
                 })
                 .then(res => {
@@ -325,23 +335,31 @@ export default {
             this.btndis = false
         },
         cancel () {
+            window.addEventListener('FilePond:removefile', event => {
+            this.filename = '';
+        });
             this.$router.push('/login/' + this.$route.params.func);
         },
         handleFilePondInit: function() {
-            console.log('FilePond has initialized');
+            // console.log('FilePond has initialized');
  
             // FilePond instance methods are available on `this.$refs.pond`
-            console.log(this.$refs.pond);
-        }
+            // console.log(this.$refs.pond);
+        },
+        onload(error, result) {
+            let info = JSON.parse(result.serverId);
+            console.log(info);
+            this.filename = info.filename
+        },
     },
     components: {
         'my-captcha': myCaptcha,
-         FilePond
+        FilePond
     }
 }
 </script>
 
-<style>
+<style scoped>
     .juk-mu_text-field {
         border-radius: 0;
     }

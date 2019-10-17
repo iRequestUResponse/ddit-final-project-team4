@@ -69,6 +69,8 @@
                     </v-col>
                     </v-row>
                         
+                    <img :src="`${this.$store.state.serverLocation}/file/agent/${filename}`" alt="">
+
                     <v-row justify="center">
                         <v-col cols="12" lg="4" id="addrff">
                             <v-text-field
@@ -107,7 +109,23 @@
                             </v-dialog>
                         </v-col>
                     </v-row>
-
+                    <v-row justify="center">
+                        <v-col>
+                            <div id="app">
+                                <file-pond
+                                    name="test"
+                                    ref="pond"
+                                    label-idle="파일 변경!!!"
+                                    allow-multiple="false"
+                                    accepted-file-types="image/jpeg, image/png"
+                                    :server="server"
+                                    :files="myFiles"
+                                    @init="handleFilePondInit"
+                                    @processfile="onload"
+                                />
+                            </div>
+                        </v-col>
+                    </v-row>
                     <v-row justify="center">
                         <v-col cols="12" lg="2" id="btnff">
                             <v-btn  
@@ -136,6 +154,10 @@
                                 @click="leaveAgent">탈퇴하기
                             </v-btn>
                         </v-col>
+                        <loading :active.sync="isLoading" 
+                        :can-cancel="true" 
+                        :on-cancel="onCancel"
+                        :is-full-page="fullPage"></loading>
                     </v-row>
 
                 </v-container>
@@ -148,6 +170,30 @@
 import Vue from 'vue'
 import VueDaumPostcode from "vue-daum-postcode"
 import VModal from 'vue-js-modal'
+
+// Import Vue FilePond
+import vueFilePond from 'vue-filepond';
+ 
+// Import FilePond styles
+import 'filepond/dist/filepond.min.css';
+ 
+// Import FilePond plugins
+// Please note that you need to install these plugins separately
+ 
+// Import image preview plugin styles
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+ 
+// Import image preview and file type validation plugins
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
+
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+
+// Create component
+const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
 
 Vue.use(VModal)
 Vue.use(VueDaumPostcode)
@@ -168,6 +214,7 @@ export default {
             this.conpass = result.data.user.AGENT_PASS;
             this.phone = result.data.user.AGENT_PHONE;
             this.addr = result.data.user.AGENT_ADDR;
+            this.filename = result.data.user.DOCUMENT_NAME;
 
         })();
     },
@@ -180,13 +227,24 @@ export default {
             addr: '',
             withdrawal: 'N',
             addr2: '',
+            filename: '',
             dialog: false,
             result: {},
+            myFiles: [],
+            server: {
+                url: `${this.$store.state.serverLocation}/file/agent`,
+            },
+            disview: true,
+            isLoading: false,
         }
     },
     methods: {
+        test() {
+            console.log('test')
+        },
         modifyAgentData() {
             if(this.pass === this.conpass){
+                this.isLoading = true;
                 axios({
                     url: `${this.$store.state.serverLocation}/modifyAgent`,
                     method: 'POST',
@@ -196,13 +254,18 @@ export default {
                         pass: this.pass,
                         phone: this.phone,
                         addr: this.addr,
+                        filename: this.filename,
                         withdrawal: this.withdrawal,
                     },
                 })
                 .then(res => {
                     if (res.data === 1) {
+                        // simulate AJAX
+                        setTimeout(() => {
+                            this.isLoading = false
+                        },1000)
                         alert("수정완료 되었습니다.")
-                        this.$router.push('/agentpage');   //에러???왜???
+                        this.$router.push('/agentpage');
                     }else {
                         alert("수정 실패")
                     }
@@ -248,7 +311,21 @@ export default {
         },
         cancel () {
             this.$router.push('/login/' + this.$route.params.func);
-        }
+        },
+        handleFilePondInit: function() {
+            // console.log('FilePond has initialized');
+ 
+            // FilePond instance methods are available on `this.$refs.pond`
+        },
+        onload(error, result) {
+            let info = JSON.parse(result.serverId);
+            console.log(info);
+            this.filename = info.filename
+        },
+    },
+    components: {
+        FilePond,
+        Loading
     }
 }
 </script>
@@ -262,7 +339,7 @@ export default {
         font-size: 1.4em;
     }
     #addrff{
-        margin-left: 395px;
+        margin-left: 595px;
     }
     #btnff{
         margin-left: 100px;

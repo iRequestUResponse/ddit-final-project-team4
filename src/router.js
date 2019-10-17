@@ -54,10 +54,5 @@ export default new Router({
       name: 'findPass',
       component: () => import('@/views/FindPass.vue')
     },
-    {
-      path: 'testfile',
-      name: 'testfile',
-      component: () => import('@/views/testfile.vue')
-    }
   ]
 })
