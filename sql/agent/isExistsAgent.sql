@@ -1,0 +1,1 @@
+select count(1) as CNT from agent where agentid=:id and agent_name=:name

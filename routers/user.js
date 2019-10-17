@@ -2,39 +2,44 @@ const axios = require('axios');
 const mailer = require('../js/mailer');
 
 module.exports = function({ app, db }) {
-
   // 회원 로그인
   app.post('/api/login', async (req, res, next) => {
-      let sql = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
-      let result = (await db.getData(sql, [req.body.id, req.body.pw]))[0];
-      req.session.user = {
-          ...result,
-          type: 'user'
-      };
-      res.send(result);
+    let sql = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
+    let result = (await db.getData(sql, [req.body.id, req.body.pw]))[0];
+    req.session.user = {
+      ...result,
+      type: 'user'
+    };
+    res.send(result);
   });
-
+  
+  // 회원 정보 수정
   app.post('/api/modifyUser', async (req, res, next) => {
-    if (req.session.user[0].USERID === req.body.id) {
+    if (req.session.user.USERID === req.body.id) {
       let sql = db.readSQL(process.cwd() + '/sql/user/modifyUser.sql');
       let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
       
       let sql2 = db.readSQL(process.cwd() + '/sql/user/getUser.sql');
-      req.session.user = await db.getData(sql2, [req.body.id, req.body.pass]);
-
+      let result2 = (await db.getData(sql2, [req.body.id, req.body.pass]))[0];
+      req.session.user = {
+        ...result2,
+        type: 'user'
+      };
+      
       res.send(result + '');
     } else {
       res.send(-1 + '');
     }
   });
-
+  
+  // 회원가입
   app.post('/api/join', async (req, res, next) => { 
     let sql = db.readSQL(process.cwd() + '/sql/user/insertUser.sql');
     let result = await db.exec(sql, [req.body.id, req.body.pass, req.body.name, req.body.phone, req.body.addr]);
-
+    
     res.send(result + '');
   })
-
+  
   // 아이디 중복처리
   app.get('/api/checkId', async (req, res, next) => { 
     console.log(req.query.id);
@@ -43,31 +48,29 @@ module.exports = function({ app, db }) {
       res.send('2');
       return;
     }
-
+    
     let sql = db.readSQL(process.cwd() + '/sql/user/checkUserId.sql');
     let result = await db.getData(sql, [req.query.id]);
-    // console.log(result[0].CNT);
-
+    
     res.send(result[0].CNT + '');
   });
-
-
+  
+  
   // 아이디 찾기
   app.get('/api/findId', async (req, res, next) => { 
-    
     let sql = db.readSQL(process.cwd() + '/sql/user/findUserId.sql');
     let result = await db.getData(sql, [req.query.name, req.query.phone]);
-
+    
     res.send(result[0]);
   });
-
+  
   // 비밀번호 찾기
   app.get('/api/findPass', async (req, res, next) => {
-
+    
     // db에서 id와 name이 일치하는 값이 있는지 확인
     let sql = db.readSQL(process.cwd() + '/sql/user/isExistsUser.sql');
     let isExists = (await db.getData(sql, [req.query.id, req.query.name]))[0].CNT;
-
+    
     // 있으면
     if(isExists === 1){
       // 비밀번호 랜덤으로 얻기
@@ -81,7 +84,7 @@ module.exports = function({ app, db }) {
         for (let j = 0; j < iLength; j++) {
           randomStr += arr[Math.floor(Math.random() * arr.length)];
         }
-
+        
         return randomStr;
       }
       
@@ -97,19 +100,17 @@ module.exports = function({ app, db }) {
       res.send('');
     }
   });
-
+  
   // 회원탈퇴
   app.post('/api/leaveUser', async (req, res, next) => {
-    if (req.session.user[0].USERID === req.body.id){
+    if (req.session.user.USERID === req.body.id){
       
       let sql = db.readSQL(process.cwd() + '/sql/user/leaveUser.sql');
       let result = (await db.exec(sql, [req.body.id]));
-  
-      console.log('delete user : ', req.body);
-  
+      
       res.send(result + '');
     }else {
       res.send(-1 + '');
     }
-  })
+  });
 };

@@ -1,0 +1,1 @@
+select * from APTSALESPHOTO where APTSALES_NUM=:num
