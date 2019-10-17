@@ -28,9 +28,9 @@
               <v-btn id="loginbtn" @click="login">로그인</v-btn>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                 <router-link class="logo1" to="/">회원가입</router-link>
-                 <router-link class="logo1" to="/">아이디 찾기</router-link>
-                 <router-link class="logo1" to="/">비밀번호 찾기</router-link>
+                 <router-link class="logo1" to="/join/agent">회원가입</router-link>
+                 <router-link class="logo1" to="/findId/agent">아이디 찾기</router-link>
+                 <router-link class="logo1" to="/findPass/agent">비밀번호 찾기</router-link>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -41,44 +41,56 @@
 
 <script>
 export default {
-    props: {
-      source: String,
-    },
-    beforeMount() {
-      (async () => {
-        if (await this.loginCheck()) this.$router.push('/');
-      })();
-    },
-    data() {
-      return {
-        id: '',
-        pw: '',
-        drawer: null,
-      }
-    },
-    methods: {
-      login() {
-        axios({
-            url: `${this.serverLocation}/agentLogin`,
-            method: 'POST',
-            data: {
-              id: this.id,
-              pw: this.pw,
-            },
-          })
-          .then(res => {
-            if (res.data.AGENTID) {
-              alert("로그인 되었습니다!!!")
-              this.$router.push('/');
-            }else {
-              alert("일치하는 회원정보가 없습니다!!!");
-            }
-          })
-      },
-      idX() {
-        this.id = "";
-      }
+  props: {
+    source: String,
+  },
+  props: [
+    'func',
+  ],
+  beforeMount() {
+    (async () => {
+      if (await this.loginCheck()) this.$router.push('/');
+    })();
+  },
+  data() {
+    return {
+      id: '',
+      pw: '',
+      drawer: null,
     }
+  },
+  methods: {
+    login() {
+      axios({
+        url: `${this.serverLocation}/agentLogin`,
+        method: 'POST',
+        data: {
+          id: this.id,
+          pw: this.pw,
+        },
+      })
+      .then(res => {
+        if (res.data.AGENT_WITHDRAWAL === 'Y') {
+          alert(this.id + "은 탈퇴한 회원입니다.");
+          return;
+        }
+        if (res.data.AGENT_APPR === 'N') {
+          alert(this.id + "은 승인 처리중입니다.");
+          return;
+        }
+        if (res.data.AGENTID) {
+          alert("로그인 되었습니다!!!")
+          this.$router.push('/');
+        } else {
+          alert("일치하는 회원정보가 없습니다!!! \n 아이디 비밀번호를 다시 입력해주세요.");
+          this.pw = "";
+        }
+      })
+    },
+    idX() {
+      this.id = "";
+    }
+  }
 }
 </script>
 

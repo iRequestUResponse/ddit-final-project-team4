@@ -47,7 +47,7 @@ export default {
       await axios({
         url: `${this.serverLocation}/logout`
       });
-
+      
       this.loginUser = undefined;
       this.$router.push('/');
     }
