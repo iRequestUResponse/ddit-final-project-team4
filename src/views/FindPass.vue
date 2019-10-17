@@ -46,7 +46,7 @@ export default {
     methods: {
         findPass() {
             axios({
-                url: `${this.$store.state.serverLocation}/findPass?id=${this.id}&name=${this.name}`,
+                url: `${this.serverLocation}/findPass?id=${this.id}&name=${this.name}`,
                 method: 'GET',
             })
             .then(res => {

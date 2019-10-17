@@ -22,7 +22,7 @@ export default {
   methods: {
     login() {
       axios({
-        url: `${this.$store.state.serverLocation}/login`,
+        url: `${this.serverLocation}/login`,
         method: 'POST',
         data: {
           id: this.id,

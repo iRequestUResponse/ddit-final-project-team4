@@ -48,7 +48,7 @@ export default {
     methods: {
         findId() {
             axios({
-                url: `${this.$store.state.serverLocation}/findId?name=${this.name}&phone=${this.phone}`,
+                url: `${this.serverLocation}/findId?name=${this.name}&phone=${this.phone}`,
                 method: 'GET',
             })
             .then(res => {

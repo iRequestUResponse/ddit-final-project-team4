@@ -226,7 +226,7 @@ export default {
     methods: {
         checkId(){
             axios({
-                url: `${this.$store.state.serverLocation}/checkId?id=${this.id}`,
+                url: `${this.serverLocation}/checkId?id=${this.id}`,
                 method: 'GET',
             })
             .then(res => {
@@ -254,7 +254,7 @@ export default {
                 alert('모두 입력해주세요!!!');
             }else{
                  axios({
-                    url: `${this.$store.state.serverLocation}/join`,
+                    url: `${this.serverLocation}/join`,
                     method: 'POST',
                     data: {
                         id: this.id,

@@ -57,11 +57,11 @@ export default {
   beforeMount() {
     (async () => {
       this.noticeList = (await axios({
-        url: `${this.$store.state.serverLocation}/noticeList`
+        url: `${this.serverLocation}/noticeList`
       })).data;
 
       this.newsList = (await axios({
-        url: `${this.$store.state.serverLocation}/newsList`
+        url: `${this.serverLocation}/newsList`
       })).data;
     })();
   },

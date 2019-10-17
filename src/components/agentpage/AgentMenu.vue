@@ -26,7 +26,7 @@ export default {
   beforeMount() {
     (async () => {
       let result = await axios({
-        url: `${this.$store.state.serverLocation}/check`
+        url: `${this.serverLocation}/check`
       });
 
       this.loginUser = result.data.user;
@@ -40,7 +40,7 @@ export default {
   methods: {
     async logout() {
       await axios({
-        url: `${this.$store.state.serverLocation}/logout`
+        url: `${this.serverLocation}/logout`
       });
 
       this.loginUser = undefined;

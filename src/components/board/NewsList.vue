@@ -10,11 +10,6 @@
 <script>
 export default {
   beforeMount() {
-    // (async () => {
-    //   this.newsList = [...this.newsList, ...(await axios({
-    //     url: `${this.$store.state.serverLocation}/newsList?start=${this.currerntPage}`
-    //   })).data];
-    // })();
     this.getList();
   },
   components: {
@@ -28,7 +23,7 @@ export default {
   methods: {
     async getList() {
       this.newsList = [...this.newsList, ...(await axios({
-        url: `${this.$store.state.serverLocation}/newsList?start=${this.currentPage}`
+        url: `${this.serverLocation}/newsList?start=${this.currentPage}`
       })).data];
       this.currentPage += 10;
     }

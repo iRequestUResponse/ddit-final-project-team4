@@ -45,7 +45,7 @@ export default {
       (async () => {
 
         let addressList = (await axios({
-          url: `${this.$store.state.serverLocation}/c2a?x=${this.map.getCenter().getLng()}&y=${this.map.getCenter().getLat()}`,
+          url: `${this.serverLocation}/c2a?x=${this.map.getCenter().getLng()}&y=${this.map.getCenter().getLat()}`,
           method: 'GET',
           headers: {
             Authorization: 'KakaoAK 3b0fdc6196cbd2de9db95c5bbf5e3969',

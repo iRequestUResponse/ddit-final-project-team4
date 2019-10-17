@@ -7,7 +7,6 @@
 <script>
 export default {
   beforeMount() {
-    console.log(this.$router)
   },
 }
 </script>

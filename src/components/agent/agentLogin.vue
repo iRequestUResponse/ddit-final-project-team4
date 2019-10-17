@@ -39,7 +39,50 @@
     </v-content>
 </template>
 
-<style>
+<script>
+export default {
+    props: {
+      source: String,
+    },
+    beforeMount() {
+      (async () => {
+        if (await this.loginCheck()) this.$router.push('/');
+      })();
+    },
+    data() {
+      return {
+        id: '',
+        pw: '',
+        drawer: null,
+      }
+    },
+    methods: {
+      login() {
+        axios({
+            url: `${this.serverLocation}/agentLogin`,
+            method: 'POST',
+            data: {
+              id: this.id,
+              pw: this.pw,
+            },
+          })
+          .then(res => {
+            if (res.data.AGENTID) {
+              alert("로그인 되었습니다!!!")
+              this.$router.push('/');
+            }else {
+              alert("일치하는 회원정보가 없습니다!!!");
+            }
+          })
+      },
+      idX() {
+        this.id = "";
+      }
+    }
+}
+</script>
+
+<style scoped>
     a.logo {
         color: #ffffff;
         font-size: 22pt;
@@ -94,46 +137,3 @@
     }
     /* 텍스트 필드 줄이는 방법!!! */
 </style>
-
-<script>
-export default {
-    props: {
-      source: String,
-    },
-    beforeMount() {
-      (async () => {
-        if (await this.loginCheck()) this.$router.push('/');
-      })();
-    },
-    data() {
-      return {
-        id: '',
-        pw: '',
-        drawer: null,
-      }
-    },
-    methods: {
-      login() {
-        axios({
-            url: `${this.$store.state.serverLocation}/agentLogin`,
-            method: 'POST',
-            data: {
-              id: this.id,
-              pw: this.pw,
-            },
-          })
-          .then(res => {
-            if (res.data.AGENTID) {
-              alert("로그인 되었습니다!!!")
-              this.$router.push('/');
-            }else {
-              alert("일치하는 회원정보가 없습니다!!!");
-            }
-          })
-      },
-      idX() {
-        this.id = "";
-      }
-    }
-}
-</script>
