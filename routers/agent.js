@@ -1,6 +1,21 @@
 const axios = require('axios');
 const mailer = require('../js/mailer');
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    console.log('destination, req.session.user : ', req.session.user);
+    cb(null, process.cwd() + '/uploads/agent');
+  },
+  filename(req, file, cb) {
+    console.log('filename, req.session.user : ', req.session.user);
+    cb(null, Date.now() + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
 module.exports = function({ app, db }) {
     
     // 공인중개사 회원 로그인
@@ -63,19 +78,19 @@ module.exports = function({ app, db }) {
     // 공인중개사 회원 수정
     app.post('/api/modifyAgent', async (req, res, next) => {
         if (req.session.user.AGENTID === req.body.id) {
-          let sql = db.readSQL(process.cwd() + '/sql/agent/modifyAgent.sql');
-          let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.id]);
-          
-          let sql2 = db.readSQL(process.cwd() + '/sql/agent/getAgent.sql');
-          let result2 = (await db.getData(sql2, [req.body.id, req.body.pass]))[0];
-          req.session.user = {
-            ...result2,
-            type: 'agent'
+            let sql = db.readSQL(process.cwd() + '/sql/agent/modifyAgent.sql');
+            console.log(req.body.filename)
+            let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.filename, req.body.id]);
+            
+            let sql2 = db.readSQL(process.cwd() + '/sql/agent/getAgent.sql');
+            let result2 = (await db.getData(sql2, [req.body.id, req.body.pass]))[0];
+            req.session.user = {
+                ...result2,
+                type: 'agent'
         };
-    
-          res.send(result + '');
+            res.send(result + '');
         } else {
-         res.send(-1 + '');
+            res.send(-1 + '');
         }
       });
 
@@ -92,13 +107,12 @@ module.exports = function({ app, db }) {
         }else {
         res.send(-1 + '');
         }
-    })
-
+    });
 
     // 회원가입
     app.post('/api/joinAgent', async (req, res, next) => { 
         let sql = db.readSQL(process.cwd() + '/sql/agent/insertAgent.sql');
-        let result = await db.exec(sql, [req.body.id, req.body.pass, req.body.name, req.body.phone, req.body.addr]);
+        let result = await db.exec(sql, [req.body.id, req.body.pass, req.body.name, req.body.phone, req.body.addr, req.body.filename]);
 
         res.send(result + '');
     })
@@ -117,4 +131,40 @@ module.exports = function({ app, db }) {
 
         res.send(result[0].CNT + '');
     });
+
+    // 파일 업로드
+    app.post('/api/file/agent', upload.any(), (req, res, next) => {
+       
+        let {
+            fieldname,
+            originalname,
+            filename,
+        } = req.files[0];
+
+        res.send({
+            fieldname,
+            originalname,
+            filename,
+        });
+    });
+
+    // X버튼 클릭시 업로드 올라간 파일 삭제
+    app.delete('/api/file/agent', require('body-parser').text(), (req, res, next) => {
+        let target = JSON.parse(req.body).filename;
+        let result = require('fs').unlinkSync(`${process.cwd()}/uploads/agent/${target}`);
+        
+        // 삭제 눌렀을 때 filename남아있는거 처리
+        
+        res.status(204).send(result + '');
+    });
+
+    // 파일 다운로드
+    app.get('/api/file/agent/:filename', (req, res, next) => {
+        if (/.html$/.test(req.params.filename)) {
+            res.send(`failed to load ${req.params.filename} try again`);
+            return;
+        }
+        res.sendFile(`${process.cwd()}/uploads/agent/${req.params.filename}`);
+    });
+
 };

@@ -25,7 +25,7 @@ app.use(require('body-parser').json());
 // cors
 app.use(cors({
     origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:80', 'http://localhost'],
-    methods: ['*'],
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'CONNECT', 'TRACE'],
     credentials: true
 }));
 
@@ -52,6 +52,5 @@ app.get('/:id*', (req, res, next) => {
 
 ['user', 'agent', 'board', 'common', 'map'].forEach(e => {
     let router = require(`./routers/${e}.js`);
-    console.log(router);
     router({ app, db });
 })
