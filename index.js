@@ -50,7 +50,7 @@ app.get('/:id*', (req, res, next) => {
     else res.sendFile(process.cwd() + '/static/index.html');
 });
 
-['user', 'agent', 'board', 'common', 'map'].forEach(e => {
+['user', 'agent', 'board', 'common', 'map', 'mypage'].forEach(e => {
     let router = require(`./routers/${e}.js`);
     router({ app, db });
 })
