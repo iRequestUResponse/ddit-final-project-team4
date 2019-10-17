@@ -30,7 +30,7 @@ export default new Router({
       props: true,
     },
     {
-      path: '/mypage/:name?',
+      path: '/mypage/:mypagemenu?',
       name: 'mypage',
       component: () => import('@/views/MyPage.vue'),
     },

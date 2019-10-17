@@ -5,6 +5,8 @@
                 v-for="sales in salesList"
                 :key="sales.APTSALES_NUM"
                 cols="3"
+                v-if="sales.BLACK_STATUS === 'N'"
+                @click="viewSales(sales.APTSALES_NUM)"
             >
                 <v-card outlined>
                     <v-img
@@ -17,7 +19,7 @@
                     </v-card-title>
                     <v-card-text>
                         <div>{{ sales.PYEONG }}평 {{ sales.RELEVANT_FLOOR }}층/{{ sales.WHOLE_FLOOR }}층</div>
-                        <div>OO아파트 {{ sales.DONG }}동</div>
+                        <div>{{ sales.APT_NAME }} {{ sales.DONG }}</div>
                         <div>{{ sales.SALES_CONT }}</div>
                     </v-card-text>
                 </v-card>
@@ -37,13 +39,22 @@ export default {
     beforeMount() {
         (async () => {
         this.salesList = (await axios({
-            url: `${this.$store.state.serverLocation}/mpSalesInterList?`
+            url: `${this.$store.state.serverLocation}/mpSalesInterList`
         })).data;
         })();
     },
     data() {
         return {
-            salesList: []
+            salesList: [],
+            trans: {},
+        }
+    },
+    methods: {
+        viewSales(aptSalesNum) {
+            this.trans.aptSalesNum = aptSalesNum;
+            this.trans.page = 'SalesDetail';
+            
+            this.$emit('receivedPage', this.trans);
         }
     }
 }
