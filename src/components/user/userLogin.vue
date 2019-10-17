@@ -8,6 +8,12 @@
                 <router-link class="logo" to="/">죽방</router-link>
               </v-toolbar>
               <v-card-text>
+                
+                <loading :active.sync="isLoading" 
+                :can-cancel="true" 
+                :on-cancel="onCancel"
+                :is-full-page="fullPage"></loading>
+
                 <v-form id="idform">
                   <v-row align="center" justify="center">
                     <img id="img1" src="@/assets/img/icon-loginId.png">
@@ -26,9 +32,9 @@
               <v-btn id="loginbtn" @click="login">로그인</v-btn>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                 <router-link class="logo1" to="/join">회원가입</router-link>
-                 <router-link class="logo1" to="/findId">아이디 찾기</router-link>
-                 <router-link class="logo1" to="/findPass">비밀번호 찾기</router-link>
+                 <router-link class="logo1" to="/join/user">회원가입</router-link>
+                 <router-link class="logo1" to="/findId/user">아이디 찾기</router-link>
+                 <router-link class="logo1" to="/findPass/user">비밀번호 찾기</router-link>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -90,6 +96,12 @@
 </style>
 
 <script>
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+
+
 export default {
     props: {
       source: String,
@@ -104,30 +116,47 @@ export default {
         id: '',
         pw: '',
         drawer: null,
+        isLoading: false,
       }
     },
     methods: {
       login() {
+        this.isLoading = true;
+            // simulate AJAX
+            setTimeout(() => {
+              this.isLoading = false
+            },1000)
         axios({
-            url: `${this.$store.state.serverLocation}/login`,
-            method: 'POST',
-            data: {
-              id: this.id,
-              pw: this.pw,
-            },
-          })
-          .then(res => {
-            if (res.data.USERID) {
-              alert("로그인 되었습니다!!!")
-              this.$router.push('/');
-            }else {
-              alert("일치하는 회원정보가 없습니다!!!");
-            }
-          })
+          url: `${this.$store.state.serverLocation}/login`,
+          method: 'POST',
+          data: {
+            id: this.id,
+            pw: this.pw,
+          },
+        })
+        .then(res => {
+          if (res.data.USER_WITHDRAWAL === 'Y') {
+            alert(this.id + "은 탈퇴한 회원입니다.");
+            return;
+          }
+          if (res.data.USERID) {
+            // alert("로그인 되었습니다!!!")
+            this.$router.push('/');
+          } else {
+            alert("일치하는 회원정보가 없습니다!!! \n 아이디 비밀번호를 다시 입력해주세요.");
+            this.pw = "";
+          }
+        })
       },
       idX() {
         this.id = "";
+      },
+      onCancel() {
+        console.log('User cancelled the loader.')
       }
+    },
+    components : {
+        Loading
     }
 }
 </script>
