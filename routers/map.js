@@ -25,17 +25,27 @@ module.exports = function({ app, db }) {
     }
   });
 
-  app.get('/api/searchApt', async (req, res, next) => {
-    let nameCntSql = db.readSQL(process.cwd() + '/sql/map/getCountAptNameQuery.sql');
-    let nameCnt = await db.getData(nameCntSql, [req.query.query]);
-    nameCnt = nameCnt[0].CNT;
-    
-    let result;
+  app.get('/api/searchAptList', async (req, res, next) => {
+    let nameSql = db.readSQL(process.cwd() + '/sql/map/getAptListNameQuery.sql');
+    let nameList = await db.getData(nameSql, [req.query.lat || 36.3298522, req.query.lng || 127.41475620000001, req.query.query, req.query.number || 12]);
 
-    if (nameCnt > 0) {
-      // let sql = 
-      res.json()
+    let areaSql = db.readSQL(process.cwd() + '/sql/map/getAptListAreaQuery.sql');
+    areaList = await db.getData(areaSql, [req.query.query]);
+    
+    res.json({ nameList, areaList });
+  });
+
+  app.get('/api/searchApt/:query', async (req, res, next) => {
+    let query = req.params.query;
+    if (query.includes(':')) {
+      let [area, name] = query.split(':').map(e => e.trim());
+      console.log(area, name);
+      // let sql = db.readSQL(process.cwd() + '/sql/map/getAptNameQuery.sql');
+    } else {
+      console.log(query);
+      // let sql = db.readSQL(process.cwd() + '/sql/map/getAptAreaQuery.sql');
     }
+    res.send('hello');
   });
 };
 

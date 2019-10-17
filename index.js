@@ -3,6 +3,7 @@ const app = express();
 const session = require('express-session');
 const db = require('easy-oracledb');
 const cors = require('cors');
+const fs = require('fs');
 
 const port = 3000;
 
@@ -44,14 +45,12 @@ app.listen(port, () => {
     console.log(`listening ${port}`);
 });
 
-
 app.get('/:id*', (req, res, next) => {
     if (req.params.id === 'api') next();
     else res.sendFile(process.cwd() + '/static/index.html');
 });
 
-['user', 'agent', 'board', 'common', 'map'].forEach(e => {
-    let router = require(`./routers/${e}.js`);
-    console.log(router);
+fs.readdirSync('./routers').forEach(e => {
+    let router = require(`./routers/${e}`);
     router({ app, db });
-})
+});
