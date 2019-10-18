@@ -23,4 +23,10 @@ module.exports = function({ app, db }) {
 
         res.send(result);
     })
+
+    app.post('/api/cancelInterest', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/mypage/deleteInterestSale.sql');
+        let result = await db.exec(sql, [req.body.seq]);
+        res.send(result + '');
+    })
 };

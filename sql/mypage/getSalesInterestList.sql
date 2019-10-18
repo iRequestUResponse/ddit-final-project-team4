@@ -1,4 +1,4 @@
-select a.aptsales_num, a.sales_title, a.sales_cont, a.pyeong, a.whole_floor, a.relevant_floor, a.dong, b.PHOTO_PATH, d.BLACK_STATUS, e.APT_NAME
+select a.aptsales_num, c.interest_seq, a.sales_title, a.sales_cont, a.pyeong, a.whole_floor, a.relevant_floor, a.dong, b.PHOTO_PATH, d.BLACK_STATUS, e.APT_NAME
   from APTSALES a, (select a.APTSALES_NUM, a.PHOTO_PATH
                               from APTSALESPHOTO a, APTSALES b
                              where a.APTSALES_NUM=b.APTSALES_NUM 
