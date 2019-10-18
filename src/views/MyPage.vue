@@ -1,45 +1,52 @@
 <template>
   <v-app>
     <HomeMenu />
-    <v-container fluid class="white">
+    <v-container 
+      fluid 
+      class="pa-0 white "
+      fill-height
+    >
       <v-layout column>
-        <v-flex>
+        <div class="pa-0">
           <v-row 
             align="center"
             justify="center"
             style="height: 300px;"
+            class="ma-0 "
           >
-            <p class="juk_mypage-title">마이페이지</p>
+            <p class="display-2">마이페이지</p>
           </v-row>
-          <v-row>
-            <v-col align="center" @click="ConvertMyPage('SalesInterest')">
-              <div>관심목록</div>
-            </v-col>
-            <v-col align="center" @click="ConvertMyPage('ModifyUser')">
-              <div>개인정보수정</div>
-            </v-col>
-            <v-col align="center" @click="ConvertMyPage('DetailsInquiry')">
-              <div>내역조회</div>
+          <v-row class="ma-0" justify="center">
+            <v-col class="pa-0 mb-10" cols="10">
+              <v-tabs
+                color="black"
+                background-color="transparent"
+                height="76"
+                slider-size="4"
+                grow
+              >
+                <v-tab class="headline bottom-border" @click="ConvertMyPage('SalesInterest')">관심목록</v-tab>
+                <v-tab class="headline bottom-border" @click="ConvertMyPage('ModifyUser')">개인정보수정</v-tab>
+                <v-tab class="headline bottom-border" @click="ConvertMyPage('DetailsInquiry')">내역조회</v-tab>
+              </v-tabs>
             </v-col>
           </v-row>
-        </v-flex>
-        <v-flex>
-          <component 
-            :is="mypage"
-            :aptNum="aptSalesNum"
-            @receivedPage="viewSalesInterest"
-          />
-        </v-flex>
+        </div>
+        <div class="px-0">
+          <v-row class="pa-0 ma-0" justify="center">
+            <v-col class="pa-0" cols="10">
+              <component 
+                :is="mypage"
+                :aptNum="aptSalesNum"
+                @receivedPage="viewSalesInterest"
+              />
+            </v-col>
+          </v-row>
+        </div>
       </v-layout>
     </v-container>
   </v-app>
 </template>
-
-<style>
-  .juk_mypage-title {
-    font-size: 32pt;
-  }
-</style>
 
 <script>
 import HomeMenu from '@/components/common/HomeMenu';
@@ -77,3 +84,9 @@ export default {
   },
 }
 </script>
+
+<style>
+  .bottom-border {
+    border-bottom: 1px solid #aeaeae;
+  }
+</style>
