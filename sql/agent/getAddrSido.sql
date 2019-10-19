@@ -1,0 +1,1 @@
+SELECT distinct SUBSTR(offerhouse_addr, 1, INSTR(offerhouse_addr, ' ', 1, 1) - 1) sido from offerhouse
