@@ -29,4 +29,29 @@ module.exports = function({ app, db }) {
         let result = await db.exec(sql, [req.body.seq]);
         res.send(result + '');
     })
+
+    app.get('/api/getMyOfferHouseList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/mypage/getMyOfferHouse.sql');
+        let result = await db.getData(sql, [req.session.user.USERID]);
+
+        res.send(result);
+    })
+
+    app.get('/api/getMyEstimateList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/mypage/getEstimateList.sql');
+        let result = await db.getData(sql, [req.query.seq]);
+        res.send(result);
+    })
+
+    app.get('/api/mpAptReviewList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/mypage/getMyAptReviewList.sql');
+        let result = await db.getData(sql, [req.session.user.USERID]);
+        res.send(result);
+    })
+
+    app.get('/api/mpReportList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/mypage/getMyReportList.sql');
+        let result = await db.getData(sql, [req.session.user.USERID]);
+        res.send(result);
+    })
 };
