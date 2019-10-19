@@ -244,6 +244,7 @@ export default {
         'func',
     ],
     beforeMount() {
+        this.server.url = `${this.serverLocation}/file/agent`;
         window.addEventListener('FilePond:removefile', event => {
             this.filename = '';
         });
@@ -299,7 +300,7 @@ export default {
             if (this.id == "" || this.name == "" || this.pass == "" || this.conpass == "" || this.phone == "" || this.result.jibunAddress == "" || this.addr2 == "") {
                 alert('모두 입력해주세요!!!');
             } else {
-                 axios({
+                axios({
                     url: `${this.serverLocation}/joinAgent`,
                     method: 'POST',
                     data: {
@@ -338,6 +339,7 @@ export default {
             window.addEventListener('FilePond:removefile', event => {
                 this.filename = '';
             });
+            
             this.$router.push('/login/' + this.$route.params.func);
         },
         handleFilePondInit: function() {
@@ -347,7 +349,9 @@ export default {
             // console.log(this.$refs.pond);
         },
         onload(error, result) {
-            let info = JSON.parse(result.serverId);
+            console.log(result)
+            let info = result.serverId;
+
             console.log(info);
             this.filename = info.filename
         },

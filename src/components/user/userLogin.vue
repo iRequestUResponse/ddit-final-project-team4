@@ -8,12 +8,6 @@
                 <router-link class="logo" to="/">죽방</router-link>
               </v-toolbar>
               <v-card-text>
-                
-                <loading :active.sync="isLoading" 
-                :can-cancel="true" 
-                :on-cancel="onCancel"
-                :is-full-page="fullPage"></loading>
-
                 <v-form id="idform">
                   <v-row align="center" justify="center">
                     <img id="img1" src="@/assets/img/icon-loginId.png">
@@ -96,11 +90,6 @@
 </style>
 
 <script>
-// Import component
-import Loading from 'vue-loading-overlay';
-// Import stylesheet
-import 'vue-loading-overlay/dist/vue-loading.css';
-
 
 export default {
     props: {
@@ -116,16 +105,10 @@ export default {
         id: '',
         pw: '',
         drawer: null,
-        isLoading: false,
       }
     },
     methods: {
       login() {
-        this.isLoading = true;
-          // simulate AJAX
-          setTimeout(() => {
-            this.isLoading = false
-          },1000)
         axios({
           url: `${this.serverLocation}/login`,
           method: 'POST',
@@ -139,8 +122,9 @@ export default {
             alert(this.id + "은 탈퇴한 회원입니다.");
             return;
           }
+          console.log(res.data)
           if (res.data.USERID) {
-            // alert("로그인 되었습니다!!!")
+            alert("로그인 되었습니다!!!")
             this.$router.push('/');
           } else {
             alert("일치하는 회원정보가 없습니다!!! \n 아이디 비밀번호를 다시 입력해주세요.");
@@ -151,12 +135,6 @@ export default {
       idX() {
         this.id = "";
       },
-      onCancel() {
-        console.log('User cancelled the loader.')
-      }
-    },
-    components : {
-        Loading
     }
 }
 </script>

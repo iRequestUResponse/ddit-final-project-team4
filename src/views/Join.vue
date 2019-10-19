@@ -20,8 +20,8 @@ export default {
     }
   },
   components: {
-    user: () => import('@/components/user/userJoin.vue'),
-    agent: () => import('@/components/agent/agentJoin.vue'),
+    user: () => import('@/components/user/UserJoin.vue'),
+    agent: () => import('@/components/agent/AgentJoin.vue'),
   }
 }
 </script>

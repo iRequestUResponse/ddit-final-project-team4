@@ -5,6 +5,7 @@
                 v-for="sales in salesItemList"
                 :key="sales.APTSALES_NUM"
                 cols="3"
+                @click="viewSales(sales.APTSALES_NUM)"
             >
                 <v-card outlined>
                     <v-img

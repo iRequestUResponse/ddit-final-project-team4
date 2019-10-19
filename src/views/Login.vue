@@ -47,8 +47,8 @@ export default {
     }
   },
   components: {
-    user: () => import('@/components/user/userLogin.vue'),
-    agent: () => import('@/components/agent/agentLogin.vue'),
+    user: () => import('@/components/user/UserLogin.vue'),
+    agent: () => import('@/components/agent/AgentLogin.vue'),
   }
 }
 </script>

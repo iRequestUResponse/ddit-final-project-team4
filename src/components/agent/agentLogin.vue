@@ -21,7 +21,7 @@
                     <v-text-field id="pass" label="PASSWORD" name="pass" type="password" v-model="pw"/>
                   </v-row>
                   <v-row id="cbrow">
-                      <v-checkbox id="cb"></v-checkbox><p id="ptag">로그인 상태 유지</p>
+                      <v-checkbox id="cb" v-model="checked"></v-checkbox><p id="ptag">로그인 상태 유지</p> {{ checked }}
                   </v-row> 
                 </v-form>
               </v-card-text>
@@ -57,6 +57,7 @@ export default {
       id: '',
       pw: '',
       drawer: null,
+      checked: false,
     }
   },
   methods: {
@@ -79,6 +80,9 @@ export default {
           return;
         }
         if (res.data.AGENTID) {
+          // if(this.checked === true){
+
+          // }
           alert("로그인 되었습니다!!!")
           this.$router.push('/');
         } else {
