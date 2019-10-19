@@ -68,9 +68,28 @@
                             </v-text-field>
                     </v-col>
                     </v-row>
+                    <v-row>   
+                        <v-col id = "submit">
+                            <p>제출서류:   {{ this.filename }}</p>
+                            <img id="subimg" :src="uploadImg" alt="noimage">
+                            
+                                <file-pond id="fileinput"
+                                    name="test"
+                                    ref="pond"
+                                    label-idle="파일 변경!!!"
+                                    allow-multiple="false"
+                                    accepted-file-types="image/jpeg, image/png"
+                                    :server="server"
+                                    :files="myFiles"
+                                    @init="handleFilePondInit"
+                                    @processfile="onload"
+                                    imagePreviewHeight="280px"
+                                />
+                            
+                        </v-col>
                         
-                    <img :src="`${this.serverLocation}/file/agent/${filename}`" alt="">
-
+                          
+                    </v-row>
                     <v-row justify="center">
                         <v-col cols="12" lg="4" id="addrff">
                             <v-text-field
@@ -109,23 +128,7 @@
                             </v-dialog>
                         </v-col>
                     </v-row>
-                    <v-row justify="center">
-                        <v-col>
-                            <div id="app">
-                                <file-pond
-                                    name="test"
-                                    ref="pond"
-                                    label-idle="파일 변경!!!"
-                                    allow-multiple="false"
-                                    accepted-file-types="image/jpeg, image/png"
-                                    :server="server"
-                                    :files="myFiles"
-                                    @init="handleFilePondInit"
-                                    @processfile="onload"
-                                />
-                            </div>
-                        </v-col>
-                    </v-row>
+                   
                     <v-row justify="center">
                         <v-col cols="12" lg="2" id="btnff">
                             <v-btn  
@@ -154,10 +157,10 @@
                                 @click="leaveAgent">탈퇴하기
                             </v-btn>
                         </v-col>
-                        <loading :active.sync="isLoading" 
-                        :can-cancel="true" 
-                        :on-cancel="onCancel"
-                        :is-full-page="fullPage"></loading>
+                        <loading 
+                            :active.sync="isLoading" 
+                            :can-cancel="true" 
+                        ></loading>
                     </v-row>
 
                 </v-container>
@@ -203,6 +206,10 @@ export default {
         'func',
     ],
     beforeMount() {
+        window.addEventListener('FilePond:removefile', async event => {
+            this.filename = (await axios.get(`${this.serverLocation}/agent/documentName?id=${this.id}`)).data;
+        });
+        this.server.url = `http://192.168.0.121:9000/api/file/agent`;
         (async () => {
             let result = await axios({
                 url: `${this.serverLocation}/check`
@@ -232,10 +239,19 @@ export default {
             result: {},
             myFiles: [],
             server: {
-                url: `${this.serverLocation}/file/agent`,
+                url: `http://192.168.0.121:9000/api/file/agent`,
             },
-            disview: true,
             isLoading: false,
+        }
+    },
+    computed: {
+        uploadImg() {
+            if (this.filename) {
+                return `http://192.168.0.121:9000/api/file/agent/${this.filename}`;
+            } 
+            else {
+                return `http://192.168.0.121:9000/api/file/noimage.png`;
+            }
         }
     },
     methods: {
@@ -263,8 +279,9 @@ export default {
                         // simulate AJAX
                         setTimeout(() => {
                             this.isLoading = false
+                            alert("수정완료 되었습니다.")   
                         },1000)
-                        alert("수정완료 되었습니다.")
+                        
                         this.$router.push('/agentpage');
                     } else {
                         alert("수정 실패")
@@ -310,6 +327,8 @@ export default {
             })
         },
         cancel () {
+            // 파일 삭제하는거
+
             this.$router.push('/login/' + this.$route.params.func);
         },
         handleFilePondInit: function() {
@@ -320,7 +339,7 @@ export default {
         onload(error, result) {
             let info = JSON.parse(result.serverId);
             console.log(info);
-            this.filename = info.filename
+            this.filename = info.files[0].filename
         },
     },
     components: {
@@ -340,6 +359,7 @@ export default {
     }
     #addrff{
         margin-left: 595px;
+        margin-bottom: 100px;
     }
     #btnff{
         margin-left: 100px;
@@ -347,5 +367,28 @@ export default {
     }
     #leavebtn{
         margin-left: 300px;
+    }
+    #submit{
+        margin-left: 600px;
+        margin-bottom: 50px;
+    }
+    
+    .filepond--panel-root {
+        background-color: transparent;
+        border: 2px solid #4a6bff;
+    }
+    @media (min-width: 50em) {
+        .filepond--item {
+            width: calc(30% - .5em);
+            margin-left: 50px;
+        }
+    }
+    #subimg{
+        width: 48%;
+        height: auto;
+    }
+    #fileinput{
+        width: 48%;
+        margin-top: 20px;
     }
 </style>

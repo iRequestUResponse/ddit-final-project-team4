@@ -20,8 +20,8 @@ export default {
     }
   },
   components: {
-    user: () => import('@/components/user/userFindPass.vue'),
-    agent: () => import('@/components/agent/agentFindPass.vue'),
+    user: () => import('@/components/user/UserFindPass.vue'),
+    agent: () => import('@/components/agent/AgentFindPass.vue'),
   }
 }
 </script>

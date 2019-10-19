@@ -2,10 +2,9 @@
     <v-container>
         <v-row>
             <v-col 
-                v-for="sales in salesList"
+                v-for="sales in salesItemList"
                 :key="sales.APTSALES_NUM"
                 cols="3"
-                v-if="sales.BLACK_STATUS === 'N'"
                 @click="viewSales(sales.APTSALES_NUM)"
             >
                 <v-card outlined>
@@ -48,6 +47,11 @@ export default {
             salesList: [],
             trans: {},
         }
+    },
+    computed: {
+        salesItemList() {
+            return this.salesList.filter(e => e.BLACK_STATUS === 'N');
+        },
     },
     methods: {
         viewSales(aptSalesNum) {

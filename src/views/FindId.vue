@@ -20,8 +20,8 @@ export default {
     }
   },
   components: {
-    user: () => import('@/components/user/userFindId.vue'),
-    agent: () => import('@/components/agent/agentFindId.vue'),
+    user: () => import('@/components/user/UserFindId.vue'),
+    agent: () => import('@/components/agent/AgentFindId.vue'),
   }
 }
 </script>
