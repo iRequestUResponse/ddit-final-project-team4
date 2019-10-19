@@ -10,10 +10,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in reports" :key="item.title">
-                    <td>{{ item.title }}</td>
-                    <td class="text-center">{{ item.report_date }}</td>
-                    <td class="text-center">{{ item.processing_status }}</td>
+                <tr v-for="report in reports" :key="report.REPORT_SEQ">
+                    <td>[{{ report.REPORT_REASON }}] {{ report.REPORT_CONT }}</td>
+                    <td class="text-center">{{ report.REPORT_DATE.substring(0,10) }}</td>
+                    <td v-if="report.PROCESSING_STATUS === 'N'" class="text-center">처리중</td>
+                    <td v-else class="text-center">처리완료</td>
                 </tr>
             </tbody>
         </template>
@@ -21,38 +22,29 @@
     </v-container>
 </template>
 
+<script>
+export default {
+    beforeMount() {
+        (async () => {
+            this.reports = (await axios({
+                url: `${this.serverLocation}/mpReportList`
+            })).data;
+        })();
+    },
+    data() {
+        return {
+            reports: [],
+        }
+    },
+    methods: {
+
+    }
+}
+</script>
+
 <style>
     .juk-uri_table {
   border-top: 2px solid #737373;
   border-bottom: 2px solid #d6d6d6;
 }
 </style>
-
-<script>
-export default {
-    data() {
-        return {
-            reports: [
-                {
-                value: false,
-                title: '[신고사유]글제목',
-                report_date: '19.10.14',
-                processing_status: '처리중',
-                },
-                {
-                value: false,
-                title: '[신고사유]글제목',
-                report_date: '19.10.14',
-                processing_status: '처리완료',
-                },
-                {
-                value: false,
-                title: '[신고사유]글제목',
-                report_date: '19.10.14',
-                processing_status: '처리완료',
-                },
-            ]
-        }
-    }
-}
-</script>

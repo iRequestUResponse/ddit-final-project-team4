@@ -203,10 +203,12 @@ export default {
         'func',
     ],
     beforeMount() {
+        this.server.url = `${this.serverLocation}/file/agent`;
         (async () => {
             let result = await axios({
                 url: `${this.serverLocation}/check`
             });
+
 
             this.id = result.data.user.AGENTID;
             this.name = result.data.user.AGENT_NAME;

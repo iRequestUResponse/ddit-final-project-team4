@@ -1,36 +1,79 @@
 <template>
     <v-container>
-        <div>나의 내놓은 집</div>
-        <v-layout row>
-            <v-flex class="bor">
-                <v-row class="pa-0 ma-0 bor">
-                    <v-col
-                        cols="6"
-                        class="bor"
-                    >
-                        <v-card outlined>
-                            <v-img
-                                src="https://ic.zigbang.com/ic/floorplan/13633/45848/304d8e6dfaaf4100a6ffcc7c4614943d.png?w=800&h=600&q=70&a=1"
-                                height="200px"
-                            />
+        <v-row>
+            <v-col cols="3">
+                <div>나의 내놓은 집</div>
+                <v-card 
+                    v-for="offerHouse in offerHouseList"
+                    :key="offerHouse.OFFERHOUSE_SEQ"
+                    class="my-4"
+                    outlined 
+                    tile
+                    @click="viewEstimate(offerHouse.OFFERHOUSE_SEQ)"
+                >
+                    <v-img
+                        :src="offerHouse.OFFERPHOTO_PATH"
+                        height="300px"
+                    />
 
-                            <div>
-                                <v-card-title>
-                                    <div> sales.SALES_TITLE </div>
-                                </v-card-title>
-                                <v-card-text>
-                                    <div> sales.PYEONG 평  sales.RELEVANT_FLOOR 층/ sales.WHOLE_FLOOR 층</div>
-                                    <div> sales.APT_NAME   sales.DONG </div>
-                                    <div> sales.SALES_CONT </div>
-                                </v-card-text>
-                            </div>
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-flex>
-            <v-flex class="bor">
+                    <v-card-title>
+                        <div> {{ offerHouse.OFFERHOUSE_ADDR }} </div>
+                    </v-card-title>
+                    <v-card-text>
+                        <div> {{ offerHouse.OFFERHOUSE_ADDR2 }}</div>
+                        <div> {{ offerHouse.OFFERHOUSE_AREA }}㎡ / {{ offerHouse.OFFERHOUSE_PYEONG }}평</div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="5">
                 <div>공인중개사</div>
-            </v-flex>
-        </v-layout>
+                <v-card
+                    v-for="estimate in estimateList"
+                    :key="estimate.ESTIMATE_SEQ"
+                    max-width="400px"
+                    class="my-4"
+                >
+                    <v-card-text>
+                        <div>{{ estimate.AGENTID }}</div>
+                    </v-card-text>
+                    <v-card-title>
+                        <div>￦ {{ estimate.ESTIMATE_PRICE }}</div>
+                    </v-card-title>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
+
+<script>
+export default {
+    beforeMount() {
+        (async () => {
+            this.offerHouseList = (await axios({
+                url: `${this.serverLocation}/getMyOfferHouseList`
+            })).data;
+        })();
+    },
+    data() {
+        return {
+            offerHouseList: {},
+            estimateList: {},
+        }
+    },
+    methods: {
+        viewEstimate(estimateSeq) {
+            axios({
+                    url: `${this.serverLocation}/getMyEstimateList?seq=${estimateSeq}`
+                })
+            .then(res => {
+                this.estimateList = res.data;
+            });
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>
