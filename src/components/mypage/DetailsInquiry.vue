@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-        <v-row>
+    <v-container fluid class="pa-0 ma-0">
+        <v-row class="pa-0 ma-0">
             <v-col cols="6" sm="4" md="2">
                 <v-select 
                     v-model="select" 
@@ -12,7 +12,7 @@
                     required></v-select>
             </v-col>
         </v-row>
-        <v-row>
+        <v-row class="pa-0 ma-0">
             <component :is="select" />
         </v-row>
      </v-container>

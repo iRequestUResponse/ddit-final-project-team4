@@ -1,26 +1,36 @@
 <template>
-    <v-container>
-        <v-row>
+    <v-container full-height class="pa-0">
+        <v-row class="ma-0">
             <v-col 
                 v-for="sales in salesItemList"
                 :key="sales.APTSALES_NUM"
                 cols="3"
+<<<<<<< HEAD
                 @click="viewSales(sales.APTSALES_NUM)"
+=======
+>>>>>>> a3e88a48d8d2ea9a4a9298896bec8f44a8683b43
             >
                 <v-card outlined>
                     <v-img
                         :src="sales.PHOTO_PATH"
+                        class="text-right pa-2"
                         height="200px"
-                    />
+                    >
+                        <v-btn icon color="blue" @click="cancelInterest(sales.INTEREST_SEQ)">
+                            <v-icon>mdi-heart</v-icon>
+                        </v-btn>
+                    </v-img>
 
-                    <v-card-title>
-                        <div>{{ sales.SALES_TITLE }}</div>
-                    </v-card-title>
-                    <v-card-text>
-                        <div>{{ sales.PYEONG }}평 {{ sales.RELEVANT_FLOOR }}층/{{ sales.WHOLE_FLOOR }}층</div>
-                        <div>{{ sales.APT_NAME }} {{ sales.DONG }}</div>
-                        <div>{{ sales.SALES_CONT }}</div>
-                    </v-card-text>
+                    <div @click="viewSales(sales.APTSALES_NUM)">
+                        <v-card-title>
+                            <div>{{ sales.SALES_TITLE }}</div>
+                        </v-card-title>
+                        <v-card-text>
+                            <div>{{ sales.PYEONG }}평 {{ sales.RELEVANT_FLOOR }}층/{{ sales.WHOLE_FLOOR }}층</div>
+                            <div>{{ sales.APT_NAME }} {{ sales.DONG }}</div>
+                            <div>{{ sales.SALES_CONT }}</div>
+                        </v-card-text>
+                    </div>
                 </v-card>
             </v-col>
         </v-row>
@@ -30,6 +40,10 @@
 <style>
     #app {
         background-color: white;
+    }
+
+    div.bor {
+        border: 1px solid black;
     }
 </style>
 
@@ -59,7 +73,27 @@ export default {
             this.trans.page = 'SalesDetail';
             
             this.$emit('receivedPage', this.trans);
-        }
+        },
+        cancelInterest(interestSeq) {
+            axios({
+                url: `${this.serverLocation}/cancelInterest`,
+                method: 'POST',
+                data: {
+                    seq: interestSeq,
+                },
+            })
+            .then(res => {
+                if (res.data === 1) {
+                    (async () => {
+                        this.salesList = (await axios({
+                            url: `${this.serverLocation}/mpSalesInterList`
+                        })).data;
+                    })();
+                }else{
+                    console.log('데이터를 삭제하지 못함');
+                }
+            })
+        },
     }
 }
 </script>
