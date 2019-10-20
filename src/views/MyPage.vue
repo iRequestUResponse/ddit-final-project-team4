@@ -38,7 +38,7 @@
               <component 
                 :is="mypage"
                 :aptNum="aptSalesNum"
-                @receivedPage="viewSalesInterest"
+                @receivedPage="switchScreen"
               />
             </v-col>
           </v-row>
@@ -69,6 +69,7 @@ export default {
     ModifyUser: () => import('@/components/mypage/ModifyUser'),
     DetailsInquiry: () => import('@/components/mypage/DetailsInquiry'),
     SalesDetail: () => import('@/components/mypage/SalesDetail'),
+    CompareSales: () => import('@/components/mypage/CompareSales'),
   },
   methods: {
     ConvertMyPage(page) {
@@ -77,7 +78,7 @@ export default {
       }
       this.mypage = page;
     },
-    viewSalesInterest(convertPage) {
+    switchScreen(convertPage) {
       this.aptSalesNum = convertPage.aptSalesNum;
       this.mypage = convertPage.page;
     }
