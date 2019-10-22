@@ -164,12 +164,12 @@
                     </v-row>
                     
                     <v-row id="captchaRow" justify="center">
-                    <div class="form">
-                    <div class="row">
-                    <div><strong></strong></div>
-                    <my-captcha :callSuccess="captchaBtn"></my-captcha>
-                    </div>
-                    </div>
+                      <div class="form">
+                        <div class="row">
+                          <div><strong></strong></div>
+                          <my-captcha :callSuccess="captchaBtn"></my-captcha>
+                        </div>
+                      </div>
                     </v-row>
 
                     <v-row justify="center">
@@ -216,6 +216,7 @@ import Vue from "vue"
 import VueDaumPostcode from "vue-daum-postcode"
 import VModal from 'vue-js-modal'
 import myCaptcha from 'vue-captcha'
+
 // Import Vue FilePond
 import vueFilePond from 'vue-filepond';
  
@@ -265,7 +266,7 @@ export default {
             btndis: true,
             myFiles: [],  //미리 가져오는값
             server: {
-                url: `${this.serverLocation}/file/agent`
+                url: `http://192.168.0.121:9000/api/file/agent`
             },
             filename: '',
         }

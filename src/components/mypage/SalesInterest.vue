@@ -22,7 +22,7 @@
             >
                 <v-card outlined>
                     <v-img
-                        :src="sales.PHOTO_PATH"
+                        :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`"
                         class="text-right pa-2"
                         height="200px"
                     >

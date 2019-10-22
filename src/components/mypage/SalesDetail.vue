@@ -1,7 +1,7 @@
 <template>
     <v-container class="px-auto bor">
         <v-row>
-            <v-col cols="2">{{ aptsale.APT_NAME }}</v-col>
+            <v-col cols="2">번호{{ aptsale.APT_NAME }}</v-col>
         </v-row>
         <v-row>
             <v-col cols="2">{{ aptsale.SALES_TYPE }}/{{ aptsale.PRICE }}/{{ aptsale.DEPOSIT }}</v-col>

@@ -37,7 +37,7 @@
             <v-col class="pa-0" cols="10">
               <component 
                 :is="mypage"
-                :aptNum="aptSalesNum"
+                :aptNum="aptSalesNum" 
                 @receivedPage="switchScreen"
               />
             </v-col>

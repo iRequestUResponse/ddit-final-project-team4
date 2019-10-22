@@ -116,7 +116,7 @@
                           
                             <v-col cols="12" lg="1">
                                 <!-- 주소검색 다음 api -->
-                                 <v-btn
+                                <v-btn
                                     color="primary"
                                     dark
                                     class="hs_btn"
@@ -162,9 +162,9 @@
                                 class="juk-mu_text-field"
                             >
                             </v-text-field>
-                        </v-col>
-                    </v-row>
-                    
+                            </v-col>
+                        </v-row>
+                        
                     <v-row id="captchaRow" justify="center">
                     <div class="form">
                     <div class="row">

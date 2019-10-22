@@ -1,54 +1,74 @@
 <template>
     <v-container>
         <h1>내놓은방 조회</h1>
-
-         <v-select
-          :items="sidoList"
-          item-text="SIDO"
-          v-model="selected"
-          label="Select"
-          single-line
-          auto
-          hide-details
-          @change="selectSido"
-        ></v-select>
-
-        <span>선택함: {{ selected }}</span>
-
-        <v-row>
-            <v-col
-                v-for="offer in offerList"
-                :key="offer.OFFERHOUSE_SEQ"
-                cols="3"
-            >
-                <v-card outlined>
-                    <v-img
-                        :src="offer.OFFERPHOTO_PATH"
-                        height="200px"
-                    />
-
-                    <v-card-title>
-                        <div> {{ offer.OFFERHOUSE_ADDR }} {{ offer.OFFERHOUSE_ADDR2 }} </div>
-                    </v-card-title>
-                    <v-card-text>
-                        <div> 평수 : {{ offer.OFFERHOUSE_PYEONG }}평 </div>
-                        <div> 면적 : {{ offer.OFFERHOUSE_AREA }}㎡ </div>
-                        <div> 내용 </div>
-                        <!-- <div> {{ offer.OFFERHOUSE_CONT }} </div> 내용입력도 있으면 좋을듯-->
-                    </v-card-text>
-                </v-card>
+        <v-row justify="center">
+            <v-col cols="12" lg="2" id="sbcol">
+                <v-select
+                label="선택1"
+                :items="sidoList"
+                item-text="SIDO"
+                v-model="selected"
+                single-line
+                auto
+                hide-details
+                @change="selectSido"
+                ></v-select>
+            </v-col>
+            <v-col cols="12" lg="2">
+                <v-select
+                :items="gugunList"
+                item-text="GUGUN"
+                v-model="selected1"
+                label="선택2"
+                single-line
+                auto
+                hide-details
+                :disabled="btndis"
+                @change="selectGugun"
+                ></v-select>
+            </v-col>
+            <v-col>
+                <img id="reset" src="@/assets/img/reset.png" text @click="reset">
             </v-col>
         </v-row>
+        <span>시도선택함: {{ selected }}</span>
+        <span>구군선택함: {{ selected1 }}</span>
+        
+            <v-row>
+                <v-col
+                    v-for="offer in offerList"
+                    :key="offer.OFFERHOUSE_SEQ"
+                    cols="3"
+                    @click="viewOffer(offer.OFFERHOUSE_SEQ)"
+                >
+                    <v-card outlined>
+                        <v-img
+                            :src="`//192.168.0.121:9000/api/file/${offer.OFFERPHOTO_PATH}`"
+                            height="200px"
+                        />
+
+                        <div @click="viewOffer(offer.OFFERHOUSE_SEQ)">
+                            <v-card-title>
+                                <div> {{ offer.OFFERHOUSE_ADDR }} {{ offer.OFFERHOUSE_ADDR2 }} </div>
+                            </v-card-title>
+                            <v-card-text>
+                                <div> 평수 : {{ offer.OFFERHOUSE_PYEONG }}평 </div>
+                                <div> 면적 : {{ offer.OFFERHOUSE_AREA }}㎡ </div>
+                                <div> 내용 </div>
+                                <!-- <div> {{ offer.OFFERHOUSE_CONT }} </div> 내용입력도 있으면 좋을듯-->
+                            </v-card-text>
+                        </div>
+                    </v-card>
+                </v-col>
+            </v-row>
+       
     </v-container>
 </template>
 
-<style>
-    #app {
-        background-color: white;
-    }
-</style>
 
 <script>
+
+
 export default {
     beforeMount() {
         (async () => {
@@ -60,7 +80,7 @@ export default {
                 url: `${this.serverLocation}/getAddrSido`
             })).data;
 
-            console.log(this.sidoList)
+            console.log(this.offerList);
         })();
     },
     data() {
@@ -68,7 +88,10 @@ export default {
             offerList: [],
             trans: {},
             selected: '',
+            selected1: '',
             sidoList: [],
+            gugunList: [],
+            btndis: true,
         }
     },
     methods: {
@@ -80,15 +103,69 @@ export default {
         // }
         selectSido() {
             axios({
-                url: `${this.serverLocation}/changeViewHouseList`,
+                url: `${this.serverLocation}/selectHouseSido`,
                 method: 'POST',
                 data: {
                     sido: this.selected + '%',
                 },
             }).then(res => {
                 this.offerList = res.data;
+                axios({
+                    url: `${this.serverLocation}/getAddrGugun`,
+                    method: 'POST',
+                    data: {
+                        sido: this.selected + '%',
+                    },
+                }).then(res => {
+                    this.gugunList = res.data;
+                    this.btndis = false;
+                })
             })
+            
+        },
+        selectGugun() {
+            axios({
+                url: `${this.serverLocation}/selectHouseGugun`,
+                method: 'POST',
+                data: {
+                    sido: this.selected + '%',
+                    gugun: '%' + this.selected1 + '%',
+                },
+            }).then(res => {
+                this.offerList = res.data;
+            })
+        },
+        reset() {
+            this.offerList = (
+                axios({
+                url: `${this.serverLocation}/getOfferList`
+                })
+                .then(res => {
+                    this.offerList = res.data;
+                    this.selected = "";
+                    this.selected1 = "";
+                    this.btndis = true;
+                })
+            ).data;
+        },
+        viewOffer(offerhouse_seq){
+           
+            this.trans.offerhouse_seq = offerhouse_seq;
+            this.trans.page = 'OfferDetail';
+            
+            this.$emit('receivedPage', this.trans);
         }
     }
 }
 </script>
+
+<style scoped>
+    #sbcol{
+        margin-right: 50px;
+    }
+    #reset{
+        width: 38px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+</style>

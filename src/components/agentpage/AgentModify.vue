@@ -216,7 +216,6 @@ export default {
                 url: `${this.serverLocation}/check`
             });
 
-
             this.id = result.data.user.AGENTID;
             this.name = result.data.user.AGENT_NAME;
             this.pass = result.data.user.AGENT_PASS;

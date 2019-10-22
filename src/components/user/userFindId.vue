@@ -38,6 +38,9 @@
 
 <script>
 export default {
+    props: [
+        'func',
+    ],
     data() {
         return {
             id: '',
@@ -55,7 +58,7 @@ export default {
                 console.log(res.data);
                 if (res.data) {
                     alert(this.name + " 회원님의 아이디는 " + res.data.USERID + " 입니다.");
-                    this.$router.replace('/login');
+                    this.$router.push('/login/' + this.$route.params.func);
                 } else {
                     alert("일치하는 회원정보가 없습니다!!!");
                 }
