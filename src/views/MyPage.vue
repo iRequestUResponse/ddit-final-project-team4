@@ -70,6 +70,8 @@ export default {
     DetailsInquiry: () => import('@/components/mypage/DetailsInquiry'),
     SalesDetail: () => import('@/components/mypage/SalesDetail'),
     CompareSales: () => import('@/components/mypage/CompareSales'),
+    SalesNorDetail: () => import('@/components/mypage/SalesNorDetail'),
+    CompareNorSales: () => import('@/components/mypage/CompareNorSales'),
   },
   methods: {
     ConvertMyPage(page) {

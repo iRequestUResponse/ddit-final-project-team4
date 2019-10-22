@@ -1,35 +1,36 @@
 <template>
     <v-container class="px-auto bor">
         <v-row>
-            <v-col cols="2">{{ aptsale.APT_NAME }}</v-col>
+            <v-col cols="2">{{ norsale.SALES_TITLE }}</v-col>
         </v-row>
         <v-row>
-            <v-col cols="2">{{ aptsale.SALES_TYPE }}/{{ aptsale.PRICE }}/{{ aptsale.DEPOSIT }}</v-col>
-            <v-col cols="2">{{ aptsale.PYEONG }}평</v-col>
+            <v-col cols="2">{{ norsale.SALES_TYPE }}/{{ norsale.PRICE }}/{{ norsale.DEPOSIT }}</v-col>
+            <v-col cols="2">{{ norsale.AREA }}평</v-col>
             <v-spacer></v-spacer>
-            <v-col cols="2">{{ aptsale.AGENTID }}</v-col>
+            <v-col cols="2">{{ norsale.AGENTID }}</v-col>
         </v-row>
         <v-row>
-            <v-col cols="2">{{ aptsale.DONG }}</v-col>
-            <v-col cols="2">{{ aptsale.DIRECTION }}</v-col>
+            <v-col cols="2">{{ norsale.STRUCTURE }}</v-col>
+            <v-col cols="2">{{ norsale.UTILITY_COST }}원</v-col>
         </v-row>
         <v-row>
-            <v-col>{{ aptsale.SALES_TITLE }}</v-col>
+            <v-col>{{ norsale.SALES_TITLE }}</v-col>
         </v-row>
         <v-row>
-            <v-col cols="4">해당층/전체층 : {{ aptsale.RELEVANT_FLOOR }}층/{{ aptsale.WHOLE_FLOOR }}층</v-col>
-            <v-col cols="4">준공년도 : {{ aptsale.COMPLETION_DATE }}</v-col>
-            <v-col cols="4">입주가능일 : {{ aptsale.AVAILABILITY_DATE }}</v-col>
+            <v-col cols="4">해당층/전체층 : {{ norsale.RELEVANT_FLOOR }}층/{{ norsale.WHOLE_FLOOR }}층</v-col>
+            <v-col cols="4">준공년도 : {{ norsale.COMPLETION_DATE }}</v-col>
+            <v-col cols="4">입주가능일 : {{ norsale.AVAILABILITY_DATE }}</v-col>
         </v-row>
         <v-row justify="center">
-            <v-col v-for="photo in aptsale.photolist" :key="photo.PHOTO_SEQ" cols="12">
+            <v-col v-for="photo in norsale.photolist" :key="photo.PHOTO_SEQ" cols="12">
                 <v-img 
                     :src="`//192.168.0.121:9000/api/file/${photo.PHOTO_PATH}`" 
                     width="512px"
                 ></v-img>
+                
             </v-col>
             <v-col cols="12">
-                <v-content>{{ aptsale.SALES_CONT }}</v-content>
+                <v-content>{{ norsale.SALES_CONT }}</v-content>
             </v-col>
         </v-row>
     </v-container>
@@ -41,20 +42,20 @@ export default {
     beforeMount() {
         (async () => {
             let result = (await axios({
-                url: `${this.serverLocation}/mpGetAptSalesDetail?aptNum=${this.aptNum}`
+                url: `${this.serverLocation}/mpGetNorSalesDetail?num=${this.aptNum}`
             })).data;
 
             let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));
             result.COMPLETION_DATE = `${completeionDate.getFullYear()}.${completeionDate.getMonth() + 1}.${completeionDate.getDate()}`;
             result.AVAILABILITY_DATE = `${availability_date.getFullYear()}.${availability_date.getMonth() + 1}.${availability_date.getDate()}`;
 
-            this.aptsale = result;
-            console.log(this.aptsale);
+            this.norsale = result;
+            console.log(this.norsale);
         })();
     },
     data() {
         return {
-            aptsale: {},
+            norsale: {},
         }
     },
 }

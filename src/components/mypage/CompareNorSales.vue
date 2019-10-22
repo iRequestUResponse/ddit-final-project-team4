@@ -21,7 +21,7 @@
                         width="100%"
                     />
                     <div class="headline text-center pa-4">{{ firstSales.SALES_TITLE }}</div>
-                    <div :class="[ firstSales.PRICE<secondSales.PRICE ? 'blue--text display-1 text-center pr-12' : 'red--text display-1 text-center pr-12']">
+                    <div :class="[ firstSales.PRICE<secondSales.PRICE ? 'red--text display-1 text-center pr-12' : 'display-1 text-center pr-12']">
                         ￦ {{ firstSales | comma }}
                     </div>
                     <!-- <div class="display-1 text-right pr-12">￦ {{ firstSales.PRICE | comma }}</div>
@@ -47,7 +47,7 @@
                         width="100%"
                     />
                     <div class="headline text-center pa-4">{{ secondSales.SALES_TITLE }}</div>
-                    <div :class="[ firstSales.PRICE>secondSales.PRICE ? 'blue--text display-1 text-center pr-12' : 'red--text display-1 text-center pr-12']">
+                    <div :class="[ firstSales.PRICE>secondSales.PRICE ? 'red--text display-1 text-center pr-12' : 'display-1 text-center pr-12']">
                         ￦ {{ secondSales | comma }}
                     </div>
                     <!-- <div class="display-1 text-right pr-12">￦ {{ secondSales.PRICE | comma }}</div> -->
@@ -58,46 +58,6 @@
         </v-row>
         <v-row v-if="firstSwitch && secondSwitch" class="px-8 mt-8 mb-10">
             <v-col class="mt-8" cols="12">
-                <v-row class="bottom-bor">
-                    <v-col cols="12">
-                        <div class="headline text-center">기본정보</div>
-                    </v-col>
-                </v-row>
-                <v-row class="bottom-subbor">
-                    <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.APT_NAME }}</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="title text-center">아파트명</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.APT_NAME }}</div>
-                    </v-col>
-                </v-row>
-                <v-row class="bottom-subbor">
-                    <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.COMPLETION_DATE.substring(0,4) }}</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="title text-center">완공년도</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.COMPLETION_DATE.substring(0,4) }}</div>
-                    </v-col>
-                </v-row>
-                <v-row class="bottom-subbor">
-                    <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.APT_ADDR }}</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="title text-center">주소</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.APT_ADDR }}</div>
-                    </v-col>
-                </v-row>
-            </v-col>
-            <v-col class="my-8" cols="12">
                 <v-row class="bottom-bor">
                     <v-col cols="12">
                         <div class="headline text-center">매물정보</div>
@@ -116,46 +76,32 @@
                 </v-row>
                 <v-row class="bottom-subbor">
                     <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.PYEONG }}평</div>
+                        <div class="text-right pt-1">{{ firstSales.STRUCTURE }}</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="title text-center">구조</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="text-left pt-1">{{ secondSales.STRUCTURE }}</div>
+                    </v-col>
+                </v-row>
+                <v-row class="bottom-subbor">
+                    <v-col cols="4">
+                        <div 
+                            :class="[ firstSales.AREA>secondSales.AREA ? 'red--text text-right pt-1 text_bold' : 'text-right pt-1']"
+                        >
+                            {{ firstSales.AREA }}㎡
+                        </div>
                     </v-col>
                     <v-col cols="4">
                         <div class="title text-center">면적</div>
                     </v-col>
                     <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.PYEONG }}평</div>
-                    </v-col>
-                </v-row>
-                <v-row class="bottom-subbor">
-                    <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.DIRECTION }}</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="title text-center">방향</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.DIRECTION }}</div>
-                    </v-col>
-                </v-row>
-                <v-row class="bottom-subbor">
-                    <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.UTILITY_COST | comm }}원</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="title text-center">관리비</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.UTILITY_COST | comm }}원</div>
-                    </v-col>
-                </v-row>
-                <v-row class="bottom-subbor">
-                    <v-col cols="4">
-                        <div class="text-right pt-1">{{ firstSales.DONG }}</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="title text-center">동</div>
-                    </v-col>
-                    <v-col cols="4">
-                        <div class="text-left pt-1">{{ secondSales.DONG }}</div>
+                        <div 
+                            :class="[ firstSales.AREA<secondSales.AREA ? 'red--text text-left pt-1 text_bold' : 'text-left pt-1']"
+                        >
+                            {{ secondSales.AREA }}㎡
+                        </div>
                     </v-col>
                 </v-row>
                 <v-row class="bottom-subbor">
@@ -171,6 +117,36 @@
                 </v-row>
                 <v-row class="bottom-subbor">
                     <v-col cols="4">
+                        <div 
+                            :class="[ firstSales.UTILITY_COST<secondSales.UTILITY_COST ? 'red--text text-right pt-1 text_bold' : 'text-right pt-1']"
+                        >
+                            {{ firstSales.UTILITY_COST | comm }}원
+                        </div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="title text-center">관리비</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div 
+                            :class="[ firstSales.UTILITY_COST>secondSales.UTILITY_COST ? 'red--text text-left pt-1 text_bold' : 'text-left pt-1']"
+                        >
+                            {{ secondSales.UTILITY_COST | comm }}원
+                        </div>
+                    </v-col>
+                </v-row>
+                <v-row class="bottom-subbor">
+                    <v-col cols="4">
+                        <div class="text-right pt-1">{{ firstSales.COMPLETION_DATE.substring(0,10) }}</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="title text-center">완공날짜</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="text-left pt-1">{{ secondSales.COMPLETION_DATE.substring(0,10) }}</div>
+                    </v-col>
+                </v-row>
+                <v-row class="bottom-subbor">
+                    <v-col cols="4">
                         <div class="text-right pt-1">{{ firstSales.AVAILABILITY_DATE.substring(0,10) }}</div>
                     </v-col>
                     <v-col cols="4">
@@ -178,6 +154,62 @@
                     </v-col>
                     <v-col cols="4">
                         <div class="text-left pt-1">{{ secondSales.AVAILABILITY_DATE.substring(0,10) }}</div>
+                    </v-col>
+                </v-row>
+                <v-row class="bottom-subbor">
+                    <v-col cols="4">
+                        <div class="text-right pt-1">{{ firstSales.ADDRESS }}</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="title text-center">주소</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="text-left pt-1">{{ secondSales.ADDRESS }}</div>
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col class="my-8" cols="12">
+                <v-row class="bottom-bor">
+                    <v-col cols="12">
+                        <div class="headline text-center">옵션정보</div>
+                    </v-col>
+                </v-row>
+                <v-row class="bottom-subbor" v-for="option in defaultOptions" :key="option">
+                    <v-col cols="4">
+                        <div :class="[ firstSales.optionlist.find(e => +e.OPTION_CODE === option) ? 'red--text text-right pt-1 text_bold' : 'text-right pt-1']">
+                            {{ firstSales.optionlist.find(e => +e.OPTION_CODE === option) ? '유' : '무' }}
+                        </div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="title text-center">{{ optionMapping[option] }}</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div :class="[ secondSales.optionlist.find(e => +e.OPTION_CODE === option) ? 'red--text text-left pt-1 text_bold' : 'text-left pt-1']">
+                            {{ secondSales.optionlist.find(e => +e.OPTION_CODE === option) ? '유' : '무' }}
+                        </div>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="4">
+                        <div
+                            :class="[ firstSales.optionlist.length>secondSales.optionlist.length ? 'red--text text-right pt-1 text_bold' : 'text-right pt-1']"
+                            v-for="foption in filteredOptionList(firstSales.optionlist)" 
+                            :key="foption.OPTION_SEQ"
+                        >
+                            {{ options[foption.OPTION_CODE] }}
+                        </div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div class="title text-center">옵션</div>
+                    </v-col>
+                    <v-col cols="4">
+                        <div 
+                            :class="[ firstSales.optionlist.length<secondSales.optionlist.length ? 'red--text text-left pt-1' : 'text-left pt-1']" 
+                            v-for="soption in filteredOptionList(secondSales.optionlist)" 
+                            :key="soption.OPTION_SEQ"
+                        >
+                            {{ options[soption.OPTION_CODE] }}
+                        </div>
                     </v-col>
                 </v-row>
             </v-col>
@@ -190,18 +222,21 @@ export default {
     beforeMount() {
         (async () => {
             this.salesList = (await axios({
-                url: `${this.serverLocation}/mpSalesInterList`
+                url: `${this.serverLocation}/mpCompareNorSalesInterList`
             })).data;
-            console.log(this.salesList);
+
+            this.options = this.optionMapping;
         })();
     },
     data() {
         return {
+            options: {},
             salesList: [],
             firstSales: {},
             secondSales: {},
             firstSwitch: false,
             secondSwitch: false,
+            defaultOptions: [1, 2, 3, 4]
         }
     },
     filters: {
@@ -228,7 +263,7 @@ export default {
             var num = new Number(value);
 
             return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\,\d+)?$)/g, "$1,");
-        }
+        },
     },
     methods: {
         select1stSales() {
@@ -236,6 +271,9 @@ export default {
         },
         select2ndSales() {
             this.secondSwitch = true;
+        },
+        filteredOptionList(arr) {
+            return arr.filter(e => !this.defaultOptions.includes(+e.OPTION_CODE));
         }
     }
 }
@@ -248,5 +286,9 @@ export default {
 
     .bottom-subbor {
         border-bottom: 1px solid #aeaeae;
+    }
+
+    .text_bold {
+        font-weight: bold;
     }
 </style>
