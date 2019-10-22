@@ -1,0 +1,1 @@
+select * from offerhouse where offerhouse_seq=:offerNum

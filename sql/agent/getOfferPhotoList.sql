@@ -1,0 +1,1 @@
+select * from OFFERPHOTO where offerhouse_seq=:num

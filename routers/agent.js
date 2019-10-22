@@ -177,7 +177,6 @@ module.exports = function({ app, db }) {
     app.get('/api/getOfferList', async (req, res, next) => {
         let sql = db.readSQL(process.cwd() + '/sql/agent/getOfferHouseList.sql');
         let result = await db.getData(sql);
-        console.log(result)
         res.send(result);
     })
 
@@ -185,15 +184,46 @@ module.exports = function({ app, db }) {
     app.get('/api/getAddrSido', async (req, res, next) => {
         let sql = db.readSQL(process.cwd() + '/sql/agent/getAddrSido.sql');
         let result = await db.getData(sql);
-        console.log(result)
         res.send(result);
     })
 
-    app.post('/api/changeViewHouseList', async (req, res, next) => {
-        console.log(req.body.sido)
-        let sql = db.readSQL(process.cwd() + '/sql/agent/changeViewHouse.sql');
+    // 구군 가져오기
+    app.post('/api/getAddrGugun', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getAddrGugun.sql');
         let result = await db.getData(sql, [req.body.sido]);
-        console.log(result)
         res.send(result);
+    })
+
+    app.post('/api/selectHouseSido', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/selectHouseSido.sql');
+        let result = await db.getData(sql, [req.body.sido]);
+        res.send(result);
+    })
+
+    app.post('/api/selectHouseGugun', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/selectHouseGugun.sql');
+        let result = await db.getData(sql, [req.body.sido, req.body.gugun]);
+        res.send(result);
+    })
+
+    // 내놓은방 상세보기
+    app.get('/api/getOfferDetails', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getOffer.sql');
+        let result = (await db.getData(sql, [req.query.offerNum]))[0];
+
+        let sql2 = db.readSQL(process.cwd() + '/sql/agent/getOfferPhotoList.sql');
+        result = {
+            ...result,
+            photolist: await db.getData(sql2, [result.OFFERHOUSE_SEQ])
+        };
+
+        res.send(result);
+    })
+
+    // 내놓은방 견적내기(insert)
+    app.post('/api/insertEstimate', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/insertEstimate.sql');
+        let result = (await db.exec(sql, [req.body.offerNum, req.session.user.AGENTID, req.body.price]));
+        res.send(result + '');
     })
 };

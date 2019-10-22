@@ -119,4 +119,38 @@ module.exports = function({ app, db }) {
       res.send(-1 + '');
     }
   });
+
+
+ 
+  // 우리집 내놓기 등록
+  app.post('/api/insertOfferHouse', async (req, res, next) => { 
+
+    // 내용 등록
+    let sql = db.readSQL(process.cwd() + '/sql/user/insertOfferHouse.sql');
+    let result = await db.exec(sql, [req.session.user.USERID, req.body.addr, req.body.addr2, req.body.area, req.body.pyeong]);
+    
+    let sql2 = db.readSQL(process.cwd() + '/sql/user/getMaxOfferhouse.sql');
+    let MaxCount = (await db.getData(sql2))[0].OFFERNUM;
+    
+    console.log(MaxCount)
+    // 이미지 추가
+    let result2 = 0;
+
+    for (let i = 0; i < req.body.fileList.length; i++){
+      let sql1 = db.readSQL(process.cwd() + '/sql/user/insertOfferImg.sql')
+      let result1 = (await db.exec(sql1, [MaxCount, req.body.fileList[i], 'user/' + req.body.fileList[i], i+1]));
+      if (result1 == 1) {
+        result2++;
+      }
+    }
+    
+    if(result2 == req.body.fileList.length && result == 1){
+      res.send('1');
+    }else{
+      res.send('0');
+      console.log("저장실패");
+    }
+
+  })
+  
 };
