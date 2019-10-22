@@ -1,0 +1,8 @@
+SELECT
+    a.*, b.*
+FROM APT a, (SELECT
+                REVIEW_SEQ, APT_SEQ, USERID, REVIEW_CONT
+            FROM SALESREVIEW
+            WHERE APT_SEQ IS NOT NULL
+            AND USERID=:id) b
+WHERE a.APT_SEQ=b.APT_SEQ
