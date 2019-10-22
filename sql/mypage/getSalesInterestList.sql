@@ -1,4 +1,4 @@
-select a.aptsales_num, c.interest_seq, a.sales_title, a.sales_cont, a.pyeong, a.whole_floor, a.relevant_floor, a.dong, b.PHOTO_PATH, d.BLACK_STATUS, e.APT_NAME
+select a.*, c.INTEREST_SEQ, b.PHOTO_PATH, e.APT_NAME, e.COMPLETION_DATE, e.APT_ADDR
   from APTSALES a, (select a.APTSALES_NUM, a.PHOTO_PATH
                               from APTSALESPHOTO a, APTSALES b
                              where a.APTSALES_NUM=b.APTSALES_NUM 
@@ -7,4 +7,5 @@ select a.aptsales_num, c.interest_seq, a.sales_title, a.sales_cont, a.pyeong, a.
    and a.APTSALES_NUM=b.APTSALES_NUM
    and a.AGENTID=d.AGENTID
    and a.APT_SEQ=e.APT_SEQ
+   and d.BLACK_STATUS='N'
    and c.USERID = :id
