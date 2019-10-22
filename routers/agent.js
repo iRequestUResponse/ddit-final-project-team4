@@ -21,10 +21,14 @@ module.exports = function({ app, db }) {
 
         let sql = db.readSQL(process.cwd() + '/sql/agent/getAgent.sql');
         let result = (await db.getData(sql, [req.body.id, req.body.pw]))[0];
-        req.session.user = {
-            ...result,
-            type: 'agent'
-        };
+        
+        if(result){
+            req.session.user = {
+              ...result,
+              type: 'agent'
+            };
+        }
+      
         res.send(result);
     });
 
@@ -85,11 +89,21 @@ module.exports = function({ app, db }) {
                 ...result2,
                 type: 'agent'
             };
+
             res.send(result + '');
         } else {
             res.send(-1 + '');
         }
     });
+
+    // 공인중개사 회원에 대한 document_name가져오기
+    app.get('/api/agent/documentName', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getDocumentName.sql');
+        let result = (await db.getData(sql, [req.query.id]))[0];
+
+        res.send(result.DOCUMENT_NAME);
+    })
+
 
     // 공인중개사 회원탈퇴
     app.post('/api/leaveAgent', async (req, res, next) => {
@@ -132,7 +146,7 @@ module.exports = function({ app, db }) {
             originalname,
             filename,
         } = req.files[0];
-
+        
         res.send({
             fieldname,
             originalname,
@@ -151,12 +165,35 @@ module.exports = function({ app, db }) {
     });
 
     // 파일 다운로드
-    app.get('/api/file/agent/:filename', (req, res, next) => {
-        if (/.html$/.test(req.params.filename)) {
+    app.get('/api/file/agent/:filename?', (req, res, next) => {
+        if (/.html$/.test(req.params.filename || !req.params.filename)) {
             res.send(`failed to load ${req.params.filename} try again`);
             return;
         }
         res.sendFile(`${process.cwd()}/uploads/agent/${req.params.filename}`);
     });
 
+    // 내놓은 방 리스트
+    app.get('/api/getOfferList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getOfferHouseList.sql');
+        let result = await db.getData(sql);
+        console.log(result)
+        res.send(result);
+    })
+
+    // 시도 가져오기
+    app.get('/api/getAddrSido', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getAddrSido.sql');
+        let result = await db.getData(sql);
+        console.log(result)
+        res.send(result);
+    })
+
+    app.post('/api/changeViewHouseList', async (req, res, next) => {
+        console.log(req.body.sido)
+        let sql = db.readSQL(process.cwd() + '/sql/agent/changeViewHouse.sql');
+        let result = await db.getData(sql, [req.body.sido]);
+        console.log(result)
+        res.send(result);
+    })
 };
