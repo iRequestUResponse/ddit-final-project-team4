@@ -1,7 +1,7 @@
 <template>
 <div @click.stop="hideModal">
   <header>
-    <v-toolbar height="110px" fixed="true" flat>
+    <v-toolbar height="110px" app flat>
       <v-container
         mx-auto
         py-0
@@ -45,6 +45,7 @@ export default {
       });
 
       this.loginUser = result.data.user;
+      console.log(this.$route);
     })();
   },
   data() {
