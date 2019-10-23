@@ -1,6 +1,11 @@
 <template>
     <v-container>
-        <v-simple-table class="juk-uri_table">
+        <v-row v-if="this.reports.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
+        </v-row>
+        <v-simple-table v-else class="juk-uri_table">
             <template v-slot:default>
             <thead>
                 <tr>
@@ -44,7 +49,11 @@ export default {
 
 <style>
     .juk-uri_table {
-  border-top: 2px solid #737373;
-  border-bottom: 2px solid #d6d6d6;
-}
+        border-top: 2px solid #737373;
+        border-bottom: 2px solid #d6d6d6;
+    }
+
+    .juk-empty_content {
+        height: 384px;
+    }
 </style>

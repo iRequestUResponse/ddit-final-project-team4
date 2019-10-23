@@ -14,7 +14,7 @@
             style="height: 300px;"
             class="ma-0 "
           >
-            <p class="display-2">마이페이지</p>
+            <p class="display-2 black--text">마이페이지</p>
           </v-row>
           <v-row class="ma-0" justify="center">
             <v-col class="pa-0 mb-10" cols="10">

@@ -2,12 +2,14 @@
     <section>
         <v-app>
             <v-form>
-                <v-container style="height: 1000px;">
+                <v-container class="fill-height" style="height: 1000px;">
                     <v-row align="center" justify="center">
                         <v-col cols="12" sm="8" md="4">
-                            <p class="headline">변경할 항목을 입력하여 개인정보를 변경해주세요</p>
-                        </v-col>
-                        <v-col cols="12" sm="8" md="4">
+                            <v-row class="headline modifyuser-content">
+                                <v-col cols="8" class="mx-auto">
+                                    <div class="text-center">변경할 항목을 입력하여 개인정보를 변경해주세요</div>
+                                </v-col>
+                            </v-row>
                             <v-row>
                                 <v-text-field
                                     ref="name"
@@ -107,7 +109,7 @@
                                     </v-dialog>
                                 </v-col>
                             </v-row>
-                            <v-row>
+                            <v-row class="mt-10 pt-4">
                                 <v-btn 
                                     block 
                                     dark
@@ -319,5 +321,9 @@ export default {
 
     .jukBtnCancelColor {
         background-color: #E62E46 !important;
+    }
+
+    .modifyuser-content {
+        margin-bottom: 80px;
     }
 </style>

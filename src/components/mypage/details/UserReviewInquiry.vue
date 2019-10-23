@@ -1,7 +1,18 @@
 <template>
-    <v-container full-height class="pa-0">
-        <v-row class="ma-0">
-            <div>아파트</div>
+    <v-container class="pa-0">
+        <v-row>
+            <div class="title">
+                <v-icon large color="grey darken-4">apartment</v-icon>
+                아파트
+            </div>
+            <v-spacer></v-spacer>
+        </v-row>
+        <v-row v-if="this.aptList.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
+        </v-row>
+        <v-row v-else class="ma-0">
             <v-col 
                 v-for="apt in aptList"
                 :key="apt.REVIEW_SEQ"
@@ -31,8 +42,17 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row class="ma-0">
-            <div>원룸/투룸</div>
+        <v-row class="mt-10">
+            <div class="title">
+                <v-icon large color="grey darken-4">home_work</v-icon>
+                원룸/투룸
+            </div>
+            <v-spacer></v-spacer>
+        </v-row>
+        <v-row v-if="this.norList.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -49,6 +69,7 @@ export default {
     data() {
         return {
             aptList: [],
+            norList: [],
         }
     },
     methods: {
@@ -58,5 +79,7 @@ export default {
 </script>
 
 <style>
-
+    .juk-empty_content {
+        height: 384px;
+    }
 </style>

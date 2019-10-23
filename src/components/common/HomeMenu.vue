@@ -11,7 +11,7 @@
           <router-link to="/map/apart" class="offset-md-1 juk-menu">아파트</router-link>
           <router-link to="/map/village" class="offset-md-1 juk-menu">빌라+투룸</router-link>
           <router-link to="/map/oneRoom" class="offset-md-1 juk-menu">원룸</router-link>
-          <v-btn v-if="(loginUser || {}).type === 'user'" class="offset-md-1 juk-menu" @click="showModal">우리집내놓기</v-btn>
+          <a v-if="(loginUser || {}).type === 'user'" class="offset-md-1 juk-menu" style="cursor: pointer" @click="showModal">우리집내놓기</a>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
           <v-btn v-if="!loginUser" to="/login/user">로그인 / 회원가입</v-btn>

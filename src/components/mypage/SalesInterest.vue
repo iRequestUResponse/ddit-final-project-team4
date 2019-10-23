@@ -16,7 +16,12 @@
                 비교하기
             </v-btn>
         </v-row>
-        <v-row class="mx-0 mb-10">
+        <v-row v-if="this.salesList.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
+        </v-row>
+        <v-row v-else class="mx-0 mb-10">
             <v-col 
                 v-for="sales in salesList"
                 :key="sales.APTSALES_NUM"
@@ -63,7 +68,12 @@
                 비교하기
             </v-btn>
         </v-row>
-        <v-row class="mx-0 mb-10">
+        <v-row v-if="this.norSalesList.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
+        </v-row>
+        <v-row v-else class="mx-0 mb-10">
             <v-col 
                 v-for="norSales in norSalesList"
                 :key="norSales.NORSALES_NUM"
@@ -96,16 +106,6 @@
     </v-container>
 </template>
 
-<style>
-    #app {
-        background-color: white;
-    }
-
-    div.bor {
-        border: 1px solid black;
-    }
-</style>
-
 <script>
 export default {
     beforeMount() {
@@ -113,7 +113,7 @@ export default {
             this.salesList = (await axios({
                 url: `${this.serverLocation}/mpSalesInterList`
             })).data;
-
+            
             this.norSalesList = (await axios({
                 url: `${this.serverLocation}/mpNorSalesInterList`
             })).data;
@@ -134,10 +134,18 @@ export default {
             this.$emit('receivedPage', this.trans);
         },
         comparisonOfsales() {
-            this.trans.aptSalesNum = undefined;
-            this.trans.page = 'CompareSales';
+            if(this.salesList.length === 0) {
+                alert('목록이 없습니다.');
+                return;
+            }else if(this.salesList.length === 1) {
+                alert('비교할 대상이 없습니다.');
+                return;
+            }else{
+                this.trans.aptSalesNum = undefined;
+                this.trans.page = 'CompareSales';
 
-            this.$emit('receivedPage', this.trans);
+                this.$emit('receivedPage', this.trans);
+            }
         },
         cancelInterest(interestSeq) {
             axios({
@@ -166,10 +174,18 @@ export default {
             this.$emit('receivedPage', this.trans);
         },
         comparisonOfnorsales() {
-            this.trans.aptSalesNum = undefined;
-            this.trans.page = 'CompareNorSales';
+            if(this.norSalesList.length === 0) {
+                alert('목록이 없습니다.');
+                return;
+            }else if(this.norSalesList.length === 1) {
+                alert('비교할 대상이 없습니다.');
+                return;
+            }else{
+                this.trans.aptSalesNum = undefined;
+                this.trans.page = 'CompareNorSales';
 
-            this.$emit('receivedPage', this.trans);
+                this.$emit('receivedPage', this.trans);
+            }
         },
         cancelNorInterest(interestSeq) {
             axios({
@@ -194,3 +210,17 @@ export default {
     }
 }
 </script>
+
+<style>
+    #app {
+        background-color: white;
+    }
+
+    div.bor {
+        border: 1px solid black;
+    }
+
+    .juk-empty_content {
+        height: 384px;
+    }
+</style>
