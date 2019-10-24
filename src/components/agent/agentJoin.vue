@@ -9,8 +9,7 @@
                             간편하게 가입하고 <br>
                             다양한 서비스를 이용하세요.<br><br>
                         </div>
-                    </v-row>
-                    
+                    </v-row>              
                     <v-row justify="center">
                         <v-col cols="12" lg="3">
                             <v-text-field
@@ -279,27 +278,28 @@ export default {
             })
             .then(res => {
                 if (res.data == 0){
-                    alert("사용 가능한 아이디입니다.")
+                    this.$swal('사용 가능한 아이디입니다.', ' ', 'success');
                     this.isValidId = true;
                 } else if (res.data == 1) {
-                    alert("아이디가 중복됩니다.")
+                    this.$swal('아이디가 중복됩니다.', ' ', 'info');
                     this.id = "";
                 } else if (res.data == 2){
-                    alert("아이디를 입력해주세요.")
+                    this.$swal('아이디를 입력해주세요.', ' ', 'info');
                 } else {
-                    alert("아이디 형식에 맞지 않습니다.")
+                    this.$swal('아이디 형식에 맞지 않습니다.', ' ', 'info');
                     this.id = "";
                 }
             })
         },
         join() {
             if (this.isValidId === false) {
-                alert("중복검사를 해주세요!!!");
+                this.$swal('중복검사를 해주세요!!!', ' ', 'info');
+
                 res.data = 0;
                 return;
             }
             if (this.id == "" || this.name == "" || this.pass == "" || this.conpass == "" || this.phone == "" || this.result.jibunAddress == "" || this.addr2 == "") {
-                alert('모두 입력해주세요!!!');
+                this.$swal('모두 입력해주세요!!!', ' ', 'info');
             } else {
                 axios({
                     url: `${this.serverLocation}/joinAgent`,
@@ -315,8 +315,15 @@ export default {
                 })
                 .then(res => {
                     if (res.data === 1) {
-                        alert("회원가입이 정상적으로 완료되었습니다.")
-                        this.$router.replace('/');
+                         this.$swal({
+                          type: 'success',
+                          title: '회원가입 성공',
+                          text: '회원가입이 정상적으로 완료되었습니다.',
+                          confirmButtonText: '시작하기',
+                        })
+                        .then((result) => {
+                          this.$router.push('/');
+                        })
                     }
                 })
             }
@@ -350,10 +357,8 @@ export default {
             // console.log(this.$refs.pond);
         },
         onload(error, result) {
-            console.log(result)
             let info = result.serverId;
 
-            console.log(info);
             this.filename = info.filename
         },
     },

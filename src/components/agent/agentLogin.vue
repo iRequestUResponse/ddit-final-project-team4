@@ -72,21 +72,35 @@ export default {
       })
       .then(res => {
         if (res.data.AGENT_WITHDRAWAL === 'Y') {
-          alert(this.id + "은 탈퇴한 회원입니다.");
+          this.$swal( this.id , '아이디는 탈퇴한 회원입니다.', 'info');
           return;
         }
         if (res.data.AGENT_APPR === 'N') {
-          alert(this.id + "은 승인 처리중입니다.");
+          this.$swal( this.id , '아이디는 승인 처리중입니다.', 'info');
           return;
         }
         if (res.data.AGENTID) {
           // if(this.checked === true){
 
           // }
-          alert("로그인 되었습니다!!!")
-          this.$router.push('/');
+          // this.$swal(this.id , '회원님 로그인 성공', 'success');
+          this.$swal({
+            type: 'success',
+            title: this.id + '님',
+            text: '로그인이 정상적으로 되었습니다.',
+            confirmButtonText: '시작하기',
+          })
+          .then((result) => {
+             this.$router.push('/');
+          })
+
         } else {
-          alert("일치하는 회원정보가 없습니다!!! \n 아이디 비밀번호를 다시 입력해주세요.");
+          this.$swal({
+            type: 'error',
+            title: '일치하는 정보가 없습니다.',
+            text: "아이디 비밀번호를 다시 확인해주세요.",
+            confirmButtonText: 'OK',
+          })
           this.pw = "";
         }
       })

@@ -23,7 +23,11 @@
                   </v-row> 
                 </v-form>
               </v-card-text>
-              <v-btn id="loginbtn" @click="login">로그인</v-btn>
+              <v-row>
+                <v-col>
+                  <v-btn class="loginbtn" @click="login">로그인</v-btn>
+                </v-col>
+              </v-row>
               <v-card-actions>
                 <v-spacer></v-spacer>
                  <router-link class="logo1" to="/join/user">회원가입</router-link>
@@ -63,13 +67,13 @@
         font-weight: bold;
         margin-top: 22px;
     }
-    #loginbtn{
+    .loginbtn{
         width: 82%;
         height: 50px;
-        margin-left: 60px;
+        margin-left: 30px;
         margin-bottom: 20px;
         margin-top: 130px;
-        background: rgb(228, 223, 223);
+        background: rgb(201, 196, 196);
         font-weight: bold;
         font-size: 1.2em;
     }
@@ -119,7 +123,7 @@ export default {
         })
         .then(res => {
           if (res.data.USER_WITHDRAWAL === 'Y') {
-            alert(this.id + "은 탈퇴한 회원입니다.");
+            this.$swal( this.id , '아이디는 탈퇴한 회원입니다.', 'info');
             return;
           }
           console.log(res.data)
@@ -134,6 +138,9 @@ export default {
       },
       idX() {
         this.id = "";
+      },
+      home() {
+        router.go(-1);
       },
     }
 }

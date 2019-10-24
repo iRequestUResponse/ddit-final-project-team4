@@ -3,7 +3,6 @@
         <v-app>
             <p>회원가입 페이지</p>
             <v-form>
-                {{ isError }}
                 <v-container>
                     <v-row justify="center">
                         <div id="firdiv">

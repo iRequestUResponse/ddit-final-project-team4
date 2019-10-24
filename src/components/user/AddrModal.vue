@@ -11,10 +11,11 @@
         <img src="@/assets/img/iconX.png" @click="del_data">
       </v-col>
     </v-row>
+    <div>
     <hr>
     <vue-daum-postcode @complete="getAddress" />
     <input type="text" v-model="del_password" class="form-control col-md-2">
-
+    </div>
   </div>
 </template>
 <script>

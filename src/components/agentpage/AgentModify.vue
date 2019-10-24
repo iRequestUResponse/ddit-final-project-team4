@@ -76,7 +76,7 @@
                                 <file-pond id="fileinput"
                                     name="test"
                                     ref="pond"
-                                    label-idle="파일 변경!!!"
+                                    label-idle="파일 수정"
                                     allow-multiple="false"
                                     accepted-file-types="image/jpeg, image/png"
                                     :server="server"
@@ -242,8 +242,9 @@ export default {
     },
     computed: {
         uploadImg() {
+            console.log(this.path)
             if (this.path) {
-                return `${this.fileServer}/file/agent/${this.path}`;
+                return `${this.fileServer}/file/${this.path}`;
             } 
             else {
                 return `${this.fileServer}/file/noimage.png`;
@@ -276,11 +277,12 @@ export default {
                         // simulate AJAX
                         setTimeout(() => {
                             this.isLoading = false
-                            alert("수정완료 되었습니다.")   
-                        },1000)
+                            this.$swal('수정완료', '안전하게 회원정보가 수정되었습니다.', 'success');
+                        },100)
                         
                         this.$router.push('/agentpage');
                     } else {
+                        this.$swal('수정실패', '회원정보 수정이 실패하였습니다.', 'error');
                         alert("수정 실패")
                     }
                 })
@@ -335,7 +337,8 @@ export default {
         },
         onload(error, result) {
             let info = JSON.parse(result.serverId);
-            this.path = info.files[0].filename
+            console.log(info.files[0].filename)
+            this.path = 'agent/' + info.files[0].filename
             this.originname = info.files[0].originalname
         },
     },

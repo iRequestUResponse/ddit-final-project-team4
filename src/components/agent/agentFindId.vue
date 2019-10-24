@@ -57,10 +57,19 @@ export default {
             .then(res => {
                 console.log(res.data);
                 if (res.data) {
-                    alert(this.name + " 회원님의 아이디는 " + res.data.AGENTID + " 입니다.");
-                    this.$router.push('/login/' + this.$route.params.func);
+                  this.$swal({
+                    type: 'success',
+                    title: this.name + ' 회원님',
+                    text: '아이디는 ' + res.data.AGENTID + ' 입니다.',
+                    confirmButtonText: '로그인하기',
+                  })
+                  .then((result) => {
+                     this.$router.push('/login/' + this.$route.params.func);
+                  })
+                } else if (!res.data) {
+                  this.$swal('공백을 입력해주세요.', ' ', 'info');
                 } else {
-                    alert("일치하는 회원정보가 없습니다!!!");
+                  this.$swal('일치하는 회원정보가 없습니다.', ' ', 'error');
                 }
             })
         }
