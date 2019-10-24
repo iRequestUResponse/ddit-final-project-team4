@@ -3,7 +3,8 @@ const axios = require('axios');
 module.exports = function({ app, db }) {
   app.get('/api/noticeList', async (req, res, next) => {
       let sql = db.readSQL(process.cwd() + '/sql/board/getNoticeList.sql');
-      let result = await db.getData(sql, [req.query.page || 1, req.query.size || 5]);
+      let result = await db.getData(sql);
+      console.log(result);
       res.send(result);
   });
 

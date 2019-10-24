@@ -1,0 +1,4 @@
+SELECT
+    *
+FROM REPORT
+WHERE USERID=:id

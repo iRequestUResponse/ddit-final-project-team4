@@ -26,7 +26,7 @@ module.exports = function(to, subject, html) {
         //gmail 계정과 암호 
         auth:{
             user:'khsok212@gmail.com',
-            pass:'tkfkdgo90!'
+            pass:'tlemsl90!!'
         },
         maxConnections: 5,
         maxMessages: 10

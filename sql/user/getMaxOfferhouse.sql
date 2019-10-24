@@ -1,0 +1,1 @@
+select max (offerhouse_seq) as offerNum from offerhouse

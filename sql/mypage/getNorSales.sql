@@ -1,0 +1,4 @@
+SELECT
+    *
+FROM NORSALES
+where NORSALES_NUM=:num
