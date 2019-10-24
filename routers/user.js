@@ -124,7 +124,14 @@ module.exports = function({ app, db }) {
  
   // 우리집 내놓기 등록
   app.post('/api/insertOfferHouse', async (req, res, next) => { 
+    
+    let result2 = 0;
 
+    if(req.body.fileList.length > 10){
+      console.log("10개 제한")
+      result2 = 2;
+      return;
+    }
     // 내용 등록
     let sql = db.readSQL(process.cwd() + '/sql/user/insertOfferHouse.sql');
     let result = await db.exec(sql, [req.session.user.USERID, req.body.addr, req.body.addr2, req.body.area, req.body.pyeong]);
@@ -134,18 +141,29 @@ module.exports = function({ app, db }) {
     
     console.log(MaxCount)
     // 이미지 추가
-    let result2 = 0;
+    
 
-    for (let i = 0; i < req.body.fileList.length; i++){
+    if (req.body.fileList.length == 0){
       let sql1 = db.readSQL(process.cwd() + '/sql/user/insertOfferImg.sql')
-      let result1 = (await db.exec(sql1, [MaxCount, req.body.fileList[i], 'user/' + req.body.fileList[i], i+1]));
-      if (result1 == 1) {
-        result2++;
+      let result1 = (await db.exec(sql1, [MaxCount, 'noimage.png', 'noimage.png', 1]));
+      
+      result2 = 0;
+      result = 1;
+      
+    } else{
+      for (let i = 0; i < req.body.fileList.length; i++){
+        let sql1 = db.readSQL(process.cwd() + '/sql/user/insertOfferImg.sql')
+        let result1 = (await db.exec(sql1, [MaxCount, req.body.fileList[i], 'user/' + req.body.fileList[i], i+1]));
+        if (result1 == 1) {
+          result2++;
+        }
       }
     }
     
     if(result2 == req.body.fileList.length && result == 1){
       res.send('1');
+    }else if(result2 == 2){
+      res.send('2');
     }else{
       res.send('0');
       console.log("저장실패");

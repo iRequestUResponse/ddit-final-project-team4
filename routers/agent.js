@@ -81,8 +81,8 @@ module.exports = function({ app, db }) {
     app.post('/api/modifyAgent', async (req, res, next) => {
         if (req.session.user.AGENTID === req.body.id) {
             let sql = db.readSQL(process.cwd() + '/sql/agent/modifyAgent.sql');
-            let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.filename, req.body.id]);
-            
+            let result = await db.exec(sql, [req.body.name, req.body.pass, req.body.phone, req.body.addr, req.body.originname, req.body.path, req.body.id]);
+
             let sql2 = db.readSQL(process.cwd() + '/sql/agent/getAgent.sql');
             let result2 = (await db.getData(sql2, [req.body.id, req.body.pass]))[0];
             req.session.user = {
