@@ -21,7 +21,6 @@
                     <img id="img2" src="@/assets/img/phone.png">
                     <v-text-field id="phone" label="휴대폰 번호" name="phone" type="text" v-model="phone"/>
                   </v-row>
-                  
                 </v-form>
               </v-card-text>
               <v-btn id="btn" @click="findId">아이디 찾기</v-btn>

@@ -5,6 +5,12 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VModal from 'vue-js-modal'
+ 
+//import material-icon scss
+import "font-awesome/css/font-awesome.min.css";
+ 
+//defined as global component
+Vue.component('VueFontawesome', require('vue-fontawesome-icon/src/components/VueFontawesome.vue').default);
 
 Vue.use(VModal, { dynamic: true })
 Vue.config.productionTip = false
