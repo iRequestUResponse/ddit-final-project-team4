@@ -4,7 +4,7 @@
         <v-container fluid class="white">
         <v-layout column>
             <v-flex>
-                <component :is="agentpage"/>
+                <component :is="agentpage" @agtPage="receivedPage"/>
             </v-flex>
         </v-layout>
         </v-container>
@@ -19,9 +19,14 @@
 import AgentMenu from '@/components/agentpage/AgentMenu';
 
 export default {
+    beforeMount() {
+        window.addEventListener('popstate', () => {
+            this.agentpage = this.$route.params.name;
+        });
+    },
     data() {
         return {
-            agentpage: 'AgentSalesManage',
+            agentpage: this.$route.params.name || 'AgentSalesManage',
         }
     },
     components: {
@@ -29,9 +34,11 @@ export default {
         AgentSalesManage: () => import('@/components/agentpage/AgentSalesManage'),
         AgentOfferedList: () => import('@/components/agentpage/AgentOfferedList'),
         AgentModify: () => import('@/components/agentpage/AgentModify'),
+        AgentSalesRegister: () => import('@/components/agentpage/AgentSalesRegister'),
     },
     methods:{
         receivedPage(page){
+            this.$router.push(`/agentpage/${page}`);
             this.agentpage = page;
         }
     }

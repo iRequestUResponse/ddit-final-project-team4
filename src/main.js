@@ -20,9 +20,17 @@ Vue.mixin({
   data() {
     return {
       serverLocation: 'http://localhost:3000/api',
+      fileServer: 'http://192.168.0.121:9000/api',
     }
   }
 });
+
+
+import VModal from 'vue-js-modal';
+import VueDaumPostcode from 'vue-daum-postcode';
+
+Vue.use(VModal);
+Vue.use(VueDaumPostcode);
 
 new Vue({
   router,

@@ -7,7 +7,7 @@
       >
         <v-layout align-center>
           <router-link class="logo" to="/">죽방</router-link>
-          <a class="offset-md-1 juk-menu" @click="sendPage('AgentSalesManage')">매물등록</a>
+          <a class="offset-md-1 juk-menu" @click="sendPage('AgentSalesManage')">매물관리</a>
           <a class="offset-md-1 juk-menu" @click="sendPage('AgentOfferedList')">내놓은방</a>
           <a class="offset-md-1 juk-menu" @click="sendPage('AgentModify')">개인정보수정</a>
           <v-spacer />

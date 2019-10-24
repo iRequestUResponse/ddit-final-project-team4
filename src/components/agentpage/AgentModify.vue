@@ -170,10 +170,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import VueDaumPostcode from "vue-daum-postcode"
-import VModal from 'vue-js-modal'
-
 // Import Vue FilePond
 import vueFilePond from 'vue-filepond';
  
@@ -197,9 +193,6 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
 // Create component
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
-
-Vue.use(VModal)
-Vue.use(VueDaumPostcode)
 
 export default {
     props: [
