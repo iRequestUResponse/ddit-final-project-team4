@@ -2,112 +2,153 @@
     <section>
         <v-app>
             <v-form>
-                <v-container>
-            
-                    <v-row justify="center">
-                        <v-col cols="12" lg="4">
-                            <v-text-field
-                                ref="name"
-                                v-model="name"
-                                :rules="[
-                                    () => !!name || '이름을 입력해주세요!!!',
-                                    () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
-                                ]"
-                                label="이름"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="password"
-                                ref="pass"
-                                v-model="pass"
-                                :rules="[
-                                    () => !!pass || '비밀번호를 입력해주세요!!!',
-                                ]"
-                                label="비밀번호 (최소 8자리 - 숫자 문자 특수문자 1개 이상 포함)"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="password"
-                                ref="conpass"
-                                v-model="conpass"
-                                :rules="[() => 
-                                            !!conpass || '비밀번호 확인을 입력해주세요!!!',
-                                            !!(pass === conpass) || '비밀번호가 일치하지 않습니다.'
-                                        ]"
-                                label="비밀번호 확인"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="tel"
-                                ref="phone"
-                                v-model="phone"
-                                label="휴대폰번호(예시:010-1234-5678)"
-                                :rules="[
-                                            () => !!phone || '핸드폰번호를 입력해주세요!!!',
-                                        ]"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-                    </v-col>
-                    </v-row>
-                        
-                    <v-row justify="center">
-                        <v-col cols="12" lg="4" id="addrff">
-                            <v-text-field
-                                ref="addr"
-                                id="addr"
-                                v-model="addr"
-                                label="주소"
-                                outlined
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
-                         </v-col>
-
-                        <v-col>
-                            <!-- 주소검색 다음 api -->
-                                <v-btn
-                                color="primary"
-                                dark
-                                class="hs_btn"
-                                @click.stop="dialog = true"
-                            >
-                                주소검색
-                            </v-btn>
-                            
-                            <v-dialog
-                                v-model="dialog"
-                                max-width="500"
-                            >
-                                <v-card>
-                                    <v-card-actions>
-                                        <div class="flex-grow-1"></div>
-                                        <img src="@/assets/img/iconX.png" text @click="dialog = false">
-                                    </v-card-actions>
-                                    <vue-daum-postcode @complete="getAddress" />
-                                </v-card>
-                            </v-dialog>
+                <v-container class="fill-height" style="height: 1000px;">
+                    <v-row align="center" justify="center">
+                        <v-col cols="12" sm="8" md="4">
+                            <v-row class="headline modifyuser-content">
+                                <v-col cols="8" class="mx-auto">
+                                    <div class="text-center">변경할 항목을 입력하여 개인정보를 변경해주세요</div>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-text-field
+                                    ref="name"
+                                    v-model="name"
+                                    :rules="[
+                                        () => !!name || '이름을 입력해주세요!!!',
+                                        () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
+                                    ]"
+                                    label="이름"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                >
+                                </v-text-field>
+                            </v-row>
+                            <v-row>
+                                <v-text-field
+                                    type="password"
+                                    ref="pass"
+                                    v-model="pass"
+                                    :rules="[
+                                        () => !!pass || '비밀번호를 입력해주세요!!!',
+                                    ]"
+                                    label="비밀번호 (최소 8자리 - 숫자 문자 특수문자 1개 이상 포함)"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                >
+                                </v-text-field>
+                            </v-row>
+                            <v-row>
+                                <v-text-field
+                                    type="password"
+                                    ref="conpass"
+                                    v-model="conpass"
+                                    :rules="[() => 
+                                                !!conpass || '비밀번호 확인을 입력해주세요!!!',
+                                                !!(pass === conpass) || '비밀번호가 일치하지 않습니다.'
+                                            ]"
+                                    label="비밀번호 확인"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                >
+                                </v-text-field>
+                            </v-row>
+                            <v-row>
+                                <v-text-field
+                                    type="tel"
+                                    ref="phone"
+                                    v-model="phone"
+                                    label="휴대폰번호(예시:010-1234-5678)"
+                                    :rules="[
+                                                () => !!phone || '핸드폰번호를 입력해주세요!!!',
+                                            ]"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                >
+                                </v-text-field>
+                            </v-row>
+                            <v-row align="top" justify="center">
+                                <v-col cols="10" class="ma-0 pa-0">
+                                    <v-text-field
+                                        ref="addr"
+                                        id="addr"
+                                        v-model="addr"
+                                        label="주소"
+                                        outlined
+                                        class="juk-mu_text-field"
+                                    >
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="2" class="d-flex justify-center">
+                                    <v-btn
+                                        color="primary"
+                                        dark
+                                        class="hs_btn"
+                                        @click.stop="dialog = true"
+                                    >
+                                        주소검색
+                                    </v-btn>
+                                    <v-dialog
+                                        v-model="dialog"
+                                        max-width="500"
+                                    >
+                                        <v-card>
+                                            <v-card-actions>
+                                                <div class="flex-grow-1"></div>
+                                                <img src="@/assets/img/iconX.png" text @click="dialog = false">
+                                            </v-card-actions>
+                                            <vue-daum-postcode @complete="getAddress" />
+                                        </v-card>
+                                    </v-dialog>
+                                </v-col>
+                            </v-row>
+                            <v-row class="mt-10 pt-4">
+                                <v-btn 
+                                    block 
+                                    dark
+                                    tile
+                                    depressed
+                                    class="jukBtnFont mb-2"
+                                    height="64px"
+                                    color="jukBtnColor"
+                                    @click="modifyUserData" 
+                                >수정하기</v-btn>
+                            </v-row>
+                            <!-- <v-row>
+                                <v-btn 
+                                    block 
+                                    dark
+                                    tile
+                                    depressed
+                                    class="jukBtnFont mb-2"
+                                    height="64px"
+                                    color="jukBtnColor"
+                                    @click="cancel"
+                                >취소하기</v-btn>
+                            </v-row> -->
+                            <v-row>
+                                <v-btn 
+                                    block 
+                                    dark
+                                    tile
+                                    depressed
+                                    class="jukBtnFont mb-2"
+                                    height="64px"
+                                    color="jukBtnCancelColor"
+                                    @click="leaveUser"
+                                >탈퇴하기</v-btn>
+                            </v-row>
                         </v-col>
                     </v-row>
 
-                    <v-row justify="center">
+                    <!-- <v-row justify="center">
                         <v-col cols="12" lg="2" id="btnff">
                             <v-btn  
                                 color="primary"
@@ -135,7 +176,7 @@
                                 @click="leaveUser">탈퇴하기
                             </v-btn>
                         </v-col>
-                    </v-row>
+                    </v-row> -->
 
                 </v-container>
             </v-form>
@@ -269,5 +310,20 @@ export default {
     }
     #leavebtn{
         margin-left: 300px;
+    }
+    .jukBtnColor {
+        background-color: #1669F7 !important;
+    }
+
+    .jukBtnFont {
+        font-size: 20pt !important;
+    }
+
+    .jukBtnCancelColor {
+        background-color: #E62E46 !important;
+    }
+
+    .modifyuser-content {
+        margin-bottom: 80px;
     }
 </style>

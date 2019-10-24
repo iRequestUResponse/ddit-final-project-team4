@@ -70,7 +70,7 @@
                     </v-row>
                     <v-row>   
                         <v-col id = "submit">
-                            <p>제출서류:   {{ this.filename }}</p>
+                            <p>제출서류:   {{ this.originname }}</p>
                             <img id="subimg" :src="uploadImg" alt="noimage">
                             
                                 <file-pond id="fileinput"
@@ -203,12 +203,11 @@ export default {
         window.addEventListener('FilePond:removefile', async event => {
             this.filename = (await axios.get(`${this.serverLocation}/agent/documentName?id=${this.id}`)).data;
         });
-        this.server.url = `http://192.168.0.121:9000/api/file/agent`;
+        this.server.url = `${this.fileServer}/file/agent`;
         (async () => {
             let result = await axios({
                 url: `${this.serverLocation}/check`
             });
-
 
             this.id = result.data.user.AGENTID;
             this.name = result.data.user.AGENT_NAME;
@@ -216,7 +215,8 @@ export default {
             this.conpass = result.data.user.AGENT_PASS;
             this.phone = result.data.user.AGENT_PHONE;
             this.addr = result.data.user.AGENT_ADDR;
-            this.filename = result.data.user.DOCUMENT_NAME;
+            this.originname = result.data.user.DOCUMENT_NAME;
+            this.path = result.data.user.DOCUMENT_PATH;
 
         })();
     },
@@ -229,7 +229,7 @@ export default {
             addr: '',
             withdrawal: 'N',
             addr2: '',
-            filename: '',
+            path: '',
             dialog: false,
             result: {},
             myFiles: [],
@@ -237,15 +237,16 @@ export default {
                 url: `http://192.168.0.121:9000/api/file/agent`,
             },
             isLoading: false,
+            originname: '',
         }
     },
     computed: {
         uploadImg() {
-            if (this.filename) {
-                return `http://192.168.0.121:9000/api/file/agent/${this.filename}`;
+            if (this.path) {
+                return `${this.fileServer}/file/agent/${this.path}`;
             } 
             else {
-                return `http://192.168.0.121:9000/api/file/noimage.png`;
+                return `${this.fileServer}/file/noimage.png`;
             }
         }
     },
@@ -265,8 +266,9 @@ export default {
                         pass: this.pass,
                         phone: this.phone,
                         addr: this.addr,
-                        filename: this.filename,
+                        path: this.path,
                         withdrawal: this.withdrawal,
+                        originname: this.originname,
                     },
                 })
                 .then(res => {
@@ -333,8 +335,8 @@ export default {
         },
         onload(error, result) {
             let info = JSON.parse(result.serverId);
-            console.log(info);
-            this.filename = info.files[0].filename
+            this.path = info.files[0].filename
+            this.originname = info.files[0].originalname
         },
     },
     components: {

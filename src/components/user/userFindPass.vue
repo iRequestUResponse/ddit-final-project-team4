@@ -37,6 +37,9 @@
 
 <script>
 export default {
+  props: [
+    'func',
+  ],
   data() {
         return {
             id: '',
@@ -52,7 +55,7 @@ export default {
             .then(res => {
                 if (res.data === 'success') {
                     alert(this.id + "메일주소로 임시비밀번호가 전송되었습니다.");
-                    this.$router.push('/login');
+                    this.$router.push('/login/' + this.$route.params.func);
                 } else {
                     alert("일치하는 회원정보가 없습니다!!!");
                 }

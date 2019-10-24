@@ -1,5 +1,5 @@
 <template>
-    <v-container full-height class="pa-0">
+    <v-container class="pa-0" style="height: 600px;">
         <v-row>
             <div class="title">
                 <v-icon large color="grey darken-4">apartment</v-icon>
@@ -8,21 +8,28 @@
             <v-spacer></v-spacer>
             <v-btn 
                 class="mr-6"
+                color="light-blue accent-4"
+                outlined
+                tile
                 @click="comparisonOfsales"
             >
                 비교하기
             </v-btn>
         </v-row>
-        <v-row class="ma-0">
+        <v-row v-if="this.salesList.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
+        </v-row>
+        <v-row v-else class="mx-0 mb-10">
             <v-col 
-                v-for="sales in salesItemList"
+                v-for="sales in salesList"
                 :key="sales.APTSALES_NUM"
                 cols="3"
-                @click="viewSales(sales.APTSALES_NUM)"
             >
                 <v-card outlined>
                     <v-img
-                        :src="sales.PHOTO_PATH"
+                        :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`"
                         class="text-right pa-2"
                         height="200px"
                     >
@@ -44,25 +51,60 @@
                 </v-card>
             </v-col>
         </v-row>
-        <div class="title mt-8">
-            <v-icon large color="grey darken-4">home_work</v-icon>
-            원룸/투룸
-        </div>
-        <v-row>
-              
+        
+        <v-row class="mt-10">
+            <div class="title">
+                <v-icon large color="grey darken-4">home_work</v-icon>
+                원룸/투룸
+            </div>
+            <v-spacer></v-spacer>
+            <v-btn 
+                class="mr-6"
+                color="light-blue accent-4"
+                outlined
+                tile
+                @click="comparisonOfnorsales"
+            >
+                비교하기
+            </v-btn>
+        </v-row>
+        <v-row v-if="this.norSalesList.length === 0" class="juk-empty_content" align="center">
+            <v-col>
+                <div class="title text-center">내용이 없습니다.</div>
+            </v-col>
+        </v-row>
+        <v-row v-else class="mx-0 mb-10">
+            <v-col 
+                v-for="norSales in norSalesList"
+                :key="norSales.NORSALES_NUM"
+                cols="3"
+            >
+                <v-card outlined>
+                    <v-img
+                        :src="`//192.168.0.121:9000/api/file/${norSales.PHOTO_PATH}`"
+                        class="text-right pa-2"
+                        height="200px"
+                    >
+                        <v-btn icon color="blue" @click="cancelNorInterest(norSales.INTEREST_SEQ)">
+                            <v-icon>mdi-heart</v-icon>
+                        </v-btn>
+                    </v-img>
+
+                    <div @click="viewNorSales(norSales.NORSALES_NUM)">
+                        <v-card-title>
+                            <div>{{ norSales.SALES_TITLE.substring(0,10) }}...</div>
+                        </v-card-title>
+                        <v-card-text>
+                            <div>{{ norSales.AREA }}평 {{ norSales.RELEVANT_FLOOR }}층/{{ norSales.WHOLE_FLOOR }}층</div>
+                            <div>{{ norSales.ADDRESS.substring(0,18) }}...</div>
+                            <div>{{ norSales.SALES_CONT.substring(0,18) }}...</div>
+                        </v-card-text>
+                    </div>
+                </v-card>
+            </v-col>
         </v-row>
     </v-container>
 </template>
-
-<style>
-    #app {
-        background-color: white;
-    }
-
-    div.bor {
-        border: 1px solid black;
-    }
-</style>
 
 <script>
 export default {
@@ -71,18 +113,18 @@ export default {
             this.salesList = (await axios({
                 url: `${this.serverLocation}/mpSalesInterList`
             })).data;
+            
+            this.norSalesList = (await axios({
+                url: `${this.serverLocation}/mpNorSalesInterList`
+            })).data;
         })();
     },
     data() {
         return {
             salesList: [],
+            norSalesList: [],
             trans: {},
         }
-    },
-    computed: {
-        salesItemList() {
-            return this.salesList.filter(e => e.BLACK_STATUS === 'N');
-        },
     },
     methods: {
         viewSales(aptSalesNum) {
@@ -92,10 +134,18 @@ export default {
             this.$emit('receivedPage', this.trans);
         },
         comparisonOfsales() {
-            this.trans.aptSalesNum = undefined;
-            this.trans.page = 'CompareSales';
+            if(this.salesList.length === 0) {
+                alert('목록이 없습니다.');
+                return;
+            }else if(this.salesList.length === 1) {
+                alert('비교할 대상이 없습니다.');
+                return;
+            }else{
+                this.trans.aptSalesNum = undefined;
+                this.trans.page = 'CompareSales';
 
-            this.$emit('receivedPage', this.trans);
+                this.$emit('receivedPage', this.trans);
+            }
         },
         cancelInterest(interestSeq) {
             axios({
@@ -117,6 +167,60 @@ export default {
                 }
             })
         },
+        viewNorSales(SalesNum) {
+            this.trans.aptSalesNum = SalesNum;
+            this.trans.page = 'SalesNorDetail';
+            
+            this.$emit('receivedPage', this.trans);
+        },
+        comparisonOfnorsales() {
+            if(this.norSalesList.length === 0) {
+                alert('목록이 없습니다.');
+                return;
+            }else if(this.norSalesList.length === 1) {
+                alert('비교할 대상이 없습니다.');
+                return;
+            }else{
+                this.trans.aptSalesNum = undefined;
+                this.trans.page = 'CompareNorSales';
+
+                this.$emit('receivedPage', this.trans);
+            }
+        },
+        cancelNorInterest(interestSeq) {
+            axios({
+                url: `${this.serverLocation}/cancelInterest`,
+                method: 'POST',
+                data: {
+                    seq: interestSeq,
+                },
+            })
+            .then(res => {
+                if (res.data === 1) {
+                    (async () => {
+                        this.norSalesList = (await axios({
+                            url: `${this.serverLocation}/mpNorSalesInterList`
+                        })).data;
+                    })();
+                }else{
+                    console.log('데이터를 삭제하지 못함');
+                }
+            })
+        },
     }
 }
 </script>
+
+<style>
+    #app {
+        background-color: white;
+    }
+
+    div.bor {
+        border: 1px solid black;
+    }
+
+    .juk-empty_content {
+        height: 384px;
+    }
+</style>
