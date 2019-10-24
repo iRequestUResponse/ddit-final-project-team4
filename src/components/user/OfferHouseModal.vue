@@ -31,20 +31,25 @@
               :files="myFiles"
               @init="handleFilePondInit"
               @processfile="onload"
+              type="file"
+              data-max-files="10"
           />
         </div>
          
         <h3 id="h3id">우리집 아파트</h3>
         <v-row class="fieldrow">
           <v-col cols="12" lg="8">
-            <v-text-field ref="addr" id="addr" v-model="addr" label="주소" outlined
+            <v-text-field ref="addr" id="addr" v-model="addr" label="주소" outlined disabled
               class="juk-mu_text-field">
             </v-text-field>
-          </v-col>
+            </v-col>
+            <v-col>
+               <button type="button" id="addressbtn" class="btn-green" @click="doc_del_rendar">주소 검색</button>
+            </v-col>
         </v-row>
         <v-row class="fieldrow">
           <v-col cols="12" lg="8">
-            <v-text-field ref="addr2" v-model="addr2" label="아파트이름" outlined class="juk-mu_text-field">
+            <v-text-field ref="addr2" v-model="addr2" label="아파트이름" outlined class="juk-mu_text-field" disabled>
             </v-text-field>
           </v-col>
         </v-row>
@@ -54,16 +59,21 @@
           </v-col>
         </v-row>
          <v-row class="fieldrow">
+          <!-- 동입력 -->
           <v-col cols="12" lg="4">
-            <v-text-field ref="floor" v-model="floor" label="층입력(예:1층)" outlined class="juk-mu_text-field">
+            <v-text-field ref="hosu" v-model="dong" label="동입력(예:11동)" outlined class="juk-mu_text-field">
             </v-text-field>
           </v-col>
-          
+          <!-- 호입력 -->
           <v-col cols="12" lg="4">
             <v-text-field ref="hosu" v-model="hosu" label="호수입력(예:111호)" outlined class="juk-mu_text-field">
             </v-text-field>
           </v-col>
-          
+          <!-- 층입력 -->
+          <v-col cols="12" lg="4">
+            <v-text-field ref="floor" v-model="floor" label="층입력(예:1층)" outlined class="juk-mu_text-field">
+            </v-text-field>
+          </v-col>
         </v-row>
         <v-row>
           <v-col>
@@ -106,10 +116,18 @@
         </slot>
       </footer>
     </div>
+    <div class="row">
+      <modals-container
+        @receiveJibun="receivedJibun"
+        @receivebuilding="receivedBuilding"
+      />
+    </div>
   </div>
+
 </template>
 
 <script>
+import DelPopup from './AddrModal.vue'
 import Vue from "vue"
 // Import Vue FilePond
 import vueFilePond from 'vue-filepond';
@@ -126,6 +144,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 // Import image preview and file type validation plugins
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
 
 // Create component
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
@@ -162,9 +181,11 @@ export default {
       checked2: false,
       floor: '',
       hosu: '',
+      dong: '',
       area: '',
       pyeong: '',
       fileList: [],
+      uploadnum: 0,
     }
   },
   methods: {
@@ -175,19 +196,22 @@ export default {
       this.$emit('close');
     },
     handleFilePondInit: function() {
-    // console.log('FilePond has initialized');
 
-    // FilePond instance methods are available on `this.$refs.pond`
-    // console.log(this.$refs.pond);
     },
     onload(error, result) {
-      let info = JSON.parse(result.serverId);
-      console.log(info);
-      
-      this.filename = info.files[0].filename
-      this.fileList = [...this.fileList, this.filename];
+
+        let info = JSON.parse(result.serverId);
+        console.log(info);
+        
+        this.filename = info.files[0].filename
+        
+        this.fileList = [...this.fileList, this.filename];
     },
     insertOfferHouse() {
+      if(this.fileList.length > 10){
+        alert("첨부파일 10개이상 금지!!!")
+        return;
+      }
       if(this.checked1 === true && this.checked2 === true){
         axios({
           url: `${this.serverLocation}/insertOfferHouse`,
@@ -197,29 +221,52 @@ export default {
             floor: this.floor,
             area: this.area,
             pyeong: this.pyeong,
-            addr: this.addr + ' ' + this.addr2,
-            addr2: this.floor + ' ' + this.hosu,
+            dong: this.dong,
+            addr: this.addr,
+            addr2: this.addr2 + ' ' + this.dong + ' ' + this.hosu + ' ' + this.floor + ' ',
             filename: this.filename,
             fileList: this.fileList,
           },
         })
         .then(res => {
+          
           if (res.data === 1) {
             alert("우리집 내놓기 등록이 정상적으로 완료되었습니다.")
             this.$router.replace('/');
             this.$emit('close');
           }else if(res.data === 0){
             alert("서버에 등록 실패!!!")
+          }else if(res.data === 2){
+            alert("파일은 10개까지 등록 할 수 있습니다.")
+            return;
           }
         })
       }else{
         alert('필수항목에 동의 해주세요!!!')
       }
+    },
+    doc_del_rendar(){
+      this.$modal.show(
+        DelPopup,{
+        hot_table : 'data',
+        modal : this.$modal },
+        {
+          name: 'dynamic-modal',
+          width : '35%',
+          height: '600px',
+          scrollable: true,
+        })
+      },
+      receivedJibun(jibun) {
+        this.addr = jibun;
+      },
+      receivedBuilding(e) {
+        this.addr2 = e;
+      },
+    },
+    components:{
+      FilePond
     }
-  },
-  components:{
-    FilePond
-  }
 };
 </script>
 
@@ -243,7 +290,8 @@ export default {
     display: flex;
     flex-direction: column;
     width: 40%;
-    height: 80%;
+    height: 90%;
+    margin-left: 400px;
   }
 
   .modal-header,
@@ -273,6 +321,9 @@ export default {
     font-weight: bold;
     color: #4AAE9B;
     background: transparent;
+  }
+  .greenbtn {
+    background: #4AAE9B;
   }
   .btn-gray {
     color: white;
@@ -319,5 +370,9 @@ export default {
     font-weight: bold;
     margin-top: 22px;
   }
+  #addressbtn{
+    margin-top: 2px;
+  }
+  
   
 </style>

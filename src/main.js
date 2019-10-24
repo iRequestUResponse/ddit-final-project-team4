@@ -4,7 +4,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import VModal from 'vue-js-modal'
 
+Vue.use(VModal, { dynamic: true })
 Vue.config.productionTip = false
 
 Vue.mixin({
@@ -19,7 +21,7 @@ Vue.mixin({
   },
   data() {
     return {
-      serverLocation: 'http://192.168.0.91:3000/api',
+      serverLocation: 'http://localhost:3000/api',
       optionMapping: {
         1: '주차장',
         2: '엘리베이터',

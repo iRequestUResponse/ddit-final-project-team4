@@ -3,8 +3,11 @@
     <h1>내놓은 집 상세보기</h1>
         <v-container class="px-auto bor">
             <v-row>
-                <v-col cols="7"><h3>집 주소 : {{ offer.OFFERHOUSE_ADDR }} - {{ offer.OFFERHOUSE_ADDR2 }}</h3></v-col>
-                <v-col cols="4"> 
+              <!-- http://local.daum.net/map/index.jsp?q=[원하는 검색어] -->
+                <v-col cols="7"><h2>집 주소 : {{ offer.OFFERHOUSE_ADDR }} </h2></v-col>
+                <v-col><a :href="`http://local.daum.net/map/index.jsp?q=${ offer.OFFERHOUSE_ADDR }`" target="_blank">위치확인</a></v-col>
+                <v-col cols="7"><h2>아파트 상세 정보 : {{ offer.OFFERHOUSE_ADDR2 }}</h2></v-col>
+                <v-col cols="4">
                     <v-row>
                         <v-text-field
                                 type="number"
@@ -22,8 +25,8 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="3">면적 : {{ offer.OFFERHOUSE_AREA }} ㎡</v-col>
-                <v-col cols="2">평수 : {{ offer.OFFERHOUSE_PYEONG }}평</v-col>
+                <v-col cols="3"><h3>면적 : {{ offer.OFFERHOUSE_AREA }} ㎡</h3></v-col>
+                <v-col cols="2"><h3>평수 : {{ offer.OFFERHOUSE_PYEONG }}평</h3></v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="4">회원아이디 : [ {{ offer.USERID }} ]</v-col>
             </v-row>
@@ -34,9 +37,7 @@
             <v-row>
                 <v-col></v-col>
             </v-row>
-            <v-row>
-                <v-col cols="4">해당층/전체층 :층/층</v-col>
-            </v-row>
+            
             <v-row justify="center">
                 <v-col v-for="photo in offer.photolist" :key="photo.OFFERHOUSE_SEQ" cols="12">
                     [사진] <v-img :src="`//192.168.0.121:9000/api/file/${photo.OFFERPHOTO_PATH}`" width="512px"></v-img>
