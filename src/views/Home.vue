@@ -70,7 +70,7 @@
         </v-layout>
       </section>
     </v-content>
-
+<a class="offset-md-1 juk-menu" style="cursor: pointer" @click="showModal">우리집내놓기</a>
     <v-footer color="grey darken-4" height="50">
       <v-layout row wrap align-center style="margin: 0 10%;">
         <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-facebook</v-icon></a>
@@ -114,10 +114,16 @@
         </v-container>
       </section>
     </div> -->
+     <modal
+      id="modal"
+      v-show="isModalVisible"
+      @close="closeModal"
+    />
   </v-app>
 </template>
 
 <script>
+import modal from '@/components/user/OfferHouseModal.vue';
 import HomeMenu from '@/components/common/MainHomeMenu.vue';
 import axios from 'axios';
 
@@ -135,9 +141,12 @@ export default {
   },
   components: {
     HomeMenu,
+    modal,
   },
   data() {
     return {
+      modalVisibility: false,
+      isModalVisible: false,
       noticeList: [],
       newsList: [],
       slides: [
@@ -149,6 +158,19 @@ export default {
         },
       ],
     }
+  },
+  methods:{
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
+    hideModal(event) {
+      if (event.target === document.querySelector('#modal')) {
+        this.isModalVisible = false;
+      }
+    },
   }
 };
 </script>

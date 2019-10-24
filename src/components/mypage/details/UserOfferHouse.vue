@@ -5,6 +5,7 @@
                 <div class="title text-center">내역이 없습니다.</div>
             </v-col>
         </v-row>
+        
         <v-row v-else>
             <v-col cols="3">
                 <v-card 
@@ -17,19 +18,26 @@
                 >
                     <v-img
                         :src="`//192.168.0.121:9000/api/file/${offerHouse.OFFERPHOTO_PATH}`"
+                        class="text-right pa-2"
                         height="300px"
-                    />
-
+                    >
+                        <v-btn id="deletebtn" icon color="red lighten-1" @click="deleteY(offerHouse.OFFERHOUSE_SEQ)">
+                            <v-icon id ="deleteicon" size="40">highlight_off</v-icon>
+                        </v-btn>
+                    </v-img>
+                  
                     <v-card-title>
                         <div> {{ offerHouse.OFFERHOUSE_ADDR }} </div>
                     </v-card-title>
                     <v-card-text>
                         <div> {{ offerHouse.OFFERHOUSE_ADDR2 }}</div>
-                        <div> {{ offerHouse.OFFERHOUSE_AREA }}㎡ / {{ offerHouse.OFFERHOUSE_PYEONG }}평</div>
+                        <div> {{ offerHouse.OFFERHOUSE_AREA }}㎡ / {{ offerHouse.OFFERHOUSE_PYEONG }}평 {{ offerHouse.OFFERHOUSE_DELETE }}</div>
                     </v-card-text>
                 </v-card>
+               
             </v-col>
             <v-spacer></v-spacer>
+            
             <v-col v-if="this.estimateList.length === 0" cols="5">
                 <div class="title">
                     <v-icon large color="grey darken-4">mdi-script-text-outline</v-icon>
@@ -86,6 +94,7 @@ export default {
         return {
             offerHouseList: {},
             estimateList: {},
+            offerHouseNo: 0,
         }
     },
     filters: {
@@ -97,12 +106,31 @@ export default {
     },
     methods: {
         viewEstimate(estimateSeq) {
-            axios({
-                    url: `${this.serverLocation}/getMyEstimateList?seq=${estimateSeq}`
-                })
+          this.offerHouseNo = estimateSeq;
+          axios({
+                  url: `${this.serverLocation}/getMyEstimateList?seq=${estimateSeq}`
+              })
+          .then(res => {
+              this.estimateList = res.data;
+          });
+        },
+        deleteY(seq){
+           axios({
+                url: `${this.serverLocation}/deleteOfferHouse?offerHouseNo=${seq}`
+            })
             .then(res => {
-                this.estimateList = res.data;
-            });
+                console.log(res.data);
+                if (res.data) {
+                    alert("삭제가 완료되었습니다.");
+                    (async () => {
+                        this.offerHouseList = (await axios({
+                            url: `${this.serverLocation}/getMyOfferHouseList`
+                        })).data;
+                    })();
+                } else {
+                    alert("삭제할 수 없습니다.");
+                }
+            })
         }
     }
 }
@@ -130,4 +158,9 @@ export default {
         border: 4px solid #EDB72F;
         border-radius: 20px;
     }
+    #deletebtn{
+      border-radius: 30px;
+      width: 50px;
+    }
+    
 </style>

@@ -10,15 +10,15 @@
         </slot>
       </header>
         <v-row>
-          <v-col>
+          <v-col id = "ptag1">
             <p>손쉽게 우리집 아파트의 견적을 받아 볼 수 있습니다.</p>
             <p>별도의 비용 없이 중개사와 매물 정보가 공유하여</p>
             <p>구체적인 정보를 알 수 있습니다.</p>
             <p>사진을 등록하시면 좀 더 정확한 견적을 확인 할 수 있습니다.</p>
           </v-col>
         </v-row>
-        <h3 id="h3id">사진</h3>
-        <img class="offerimg" src="@/assets/img/offerHouse.png">
+
+        <img class="offerimg" src="@/assets/img/offerhouse_02.png">
         <div id="app">
           {{ filename }}
           <file-pond
@@ -151,14 +151,16 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 
 export default {
   name: 'modal',
+ 
   beforeMount() {
     (async () => {
       let result = await axios({
         url: `${this.serverLocation}/check`
       });
 
-      this.addr = result.data.user.USER_ADDR;
-
+      window.addEventListener('FilePond:removefile', event => {
+            this.filename = '';
+      });
      })();
     },
   data() {
@@ -301,7 +303,7 @@ export default {
   }
   .modal-header {
     border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
+    color: rgba(121, 193, 202);
     justify-content: space-between;
   }
   .modal-footer {
@@ -319,11 +321,11 @@ export default {
     margin-top: -30px;
     cursor: pointer;
     font-weight: bold;
-    color: #4AAE9B;
+    color: rgba(121, 193, 202);
     background: transparent;
   }
   .greenbtn {
-    background: #4AAE9B;
+    background: rgba(121, 193, 202);
   }
   .btn-gray {
     color: white;
@@ -338,8 +340,8 @@ export default {
   }
   .btn-green {
     color: white;
-    background: #4AAE9B;
-    border: 1px solid #4AAE9B;
+    background: rgba(121, 193, 202);
+    border: 1px solid rgba(121, 193, 202);
     border-radius: 2px;
     width: 70%;
     height: 50px;
@@ -347,7 +349,8 @@ export default {
     margin-top: 10px;
   }
   .offerimg {
-    width: 50%;
+    width: 80%;
+    margin-left: 60px;
   }
   .modal {
     padding: 30px;
@@ -373,6 +376,28 @@ export default {
   #addressbtn{
     margin-top: 2px;
   }
+  #ptag1{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  .filepond--panel-root {
+    background-color: transparent;
+    border: 2px solid #4a6bff;
+  }
+  @media (min-width: 50em) {
+    .filepond--item {
+      width: calc(48% - .5em);
+      margin-left: 15px;
+    }
+  }
+  #subimg{
+    width: 20%;
+  }
+  #fileinput{
+    width: 50%;
+    margin-left: 400px;
+  }
+
   
   
 </style>
