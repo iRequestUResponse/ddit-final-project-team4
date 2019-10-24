@@ -4,4 +4,4 @@ from
     from      notice
     where     notice_type = 1
     order by  notice_seq desc)
-where RN between (:p - 1) * :s + 1 and :p * :s
+/*where RN between (:p - 1) * :s + 1 and :p * :s*/
