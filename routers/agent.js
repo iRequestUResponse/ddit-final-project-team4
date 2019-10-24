@@ -1,19 +1,6 @@
 const axios = require('axios');
 const mailer = require('../js/mailer');
 
-const multer = require('multer');
-
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, process.cwd() + '/uploads/agent');
-  },
-  filename(req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  }
-});
-
-const upload = multer({ storage });
-
 module.exports = function({ app, db }) {
     
     // 공인중개사 회원 로그인
@@ -139,21 +126,6 @@ module.exports = function({ app, db }) {
         res.send(result[0].CNT + '');
     });
 
-    // 파일 업로드
-    app.post('/api/file/agent', upload.any(), (req, res, next) => {
-        let {
-            fieldname,
-            originalname,
-            filename,
-        } = req.files[0];
-        
-        res.send({
-            fieldname,
-            originalname,
-            filename,
-        });
-    });
-
     // X버튼 클릭시 업로드 올라간 파일 삭제
     app.delete('/api/file/agent', require('body-parser').text(), (req, res, next) => {
         let target = JSON.parse(req.body).filename;
@@ -162,15 +134,6 @@ module.exports = function({ app, db }) {
         let result = require('fs').unlinkSync(`${process.cwd()}/uploads/agent/${target}`);
         
         res.status(204).send(result + '');
-    });
-
-    // 파일 다운로드
-    app.get('/api/file/agent/:filename?', (req, res, next) => {
-        if (/.html$/.test(req.params.filename || !req.params.filename)) {
-            res.send(`failed to load ${req.params.filename} try again`);
-            return;
-        }
-        res.sendFile(`${process.cwd()}/uploads/agent/${req.params.filename}`);
     });
 
     // 내놓은 방 리스트
@@ -196,4 +159,81 @@ module.exports = function({ app, db }) {
         console.log(result)
         res.send(result);
     })
+
+    app.post('/api/apt/register', async (req, res, next) => {
+        let info = req.body;
+
+        // console.log(info);
+        
+        // 검증하기(일부만 구현됨. 추후 나머지 모두 구현하기)
+        let agentid = (req.session.user || {}).AGENTID;
+        if (!agentid) {
+          console.log('failed');
+          res.send(`${0}/${info.photoList.length + 1}`);
+          return;
+        }
+
+        console.log(info);
+
+        let seq = (await db.getData('select aptsales_num.nextval from dual', []))[0].NEXTVAL;
+        let insertAptSales = db.readSQL(process.cwd() + '/sql/agent/insertAptSales.sql');
+        let insertAptSalesPhoto = db.readSQL(process.cwd() + '/sql/agent/insertAptSalesPhoto.sql');
+        
+        let result = await db.exec(insertAptSales, [seq, info.apt_seq, agentid, info.sales_type, info.price, info.deposit, info.pyeong,
+          info.whole_floor, info.relevant_floor, info.dong, info.direction, info.utility_cost, info.availability_date,
+          info.sales_title, info.sales_cont, info.sales_lng, info.sales_lat]);
+        
+        /* 
+        console.log([seq, info.apt_seq, agentid, info.sales_type, info.price, info.deposit, info.pyeong,
+          info.whole_floor, info.relevant_floor, info.dong, info.direction, info.utility_cost, info.availability_date,
+          info.sales_title, info.sales_cont, info.sales_lng, info.sales_lat]); */
+          
+        for (let index in info.photoList) {
+          let [photo_path, photo_name] = info.photoList[index].split(';');
+          result += await db.exec(insertAptSalesPhoto, [seq, photo_name, photo_path, index + 1]);
+          // console.log([seq, photo_name, photo_path, index + 1]);
+        }
+        res.send(`${result}/${info.photoList.length + 1}`);
+    });
+
+    app.post('/api/normal/register', async (req, res, next) => {
+        let info = req.body;
+
+        // console.log(info);
+        
+        // 검증하기(일부만 구현됨. 추후 나머지 모두 구현하기)
+        let agentid = (req.session.user || {}).AGENTID;
+        if (!agentid) {
+          res.send(`${0}/${info.photoList.length + 1}`);
+          return;
+        }
+
+        let seq = (await db.getData('select norsales_num.nextval from dual', []))[0].NEXTVAL;
+        let insertNorSales = db.readSQL(process.cwd() + '/sql/agent/insertNorSales.sql');
+        let insertNorSalesPhoto = db.readSQL(process.cwd() + '/sql/agent/insertNorSalesPhoto.sql');
+
+        let result = await db.exec(insertNorSales, [seq, agentid, info.build_type, info.sales_type, info.price, info.deposit,
+          info.area, info.structure, info.whole_floor, info.relevant_floor, info.utility_cost, info.address, info.availability_date,
+          info.sales_title, info.sales_cont, info.sales_lng, info.sales_lat]);
+        
+        /* 
+        console.log([seq, agentid, info.build_type, info.sales_type, info.price, info.deposit,
+          info.area, info.structure, info.whole_floor, info.relevant_floor, info.utility_cost, info.address, info.availability_date,
+          info.sales_title, info.sales_cont, info.sales_lng, info.sales_lat]); */
+          
+        for (let index in info.photoList) {
+          let [photo_path, photo_name] = info.photoList[index].split(';');
+          result += await db.exec(insertNorSalesPhoto, [seq, photo_name, photo_path, index + 1]);
+          // console.log([seq, photo_name, photo_path, index + 1]);
+        }
+
+        info.selectedOptions.sort((a, b) => a - b);
+
+        for (let option of info.selectedOptions) {
+          result += await db.exec('insert into SALESOPTION (option_seq, norsales_num, option_code) values (option_seq.nextval, :norsales_num, :option_cde)',
+          [seq, option]);
+        }
+
+        res.send(`${result}/${info.photoList.length + info.selectedOptions.length + 1}`);
+    });
 };

@@ -37,15 +37,20 @@ module.exports = function({ app, db }) {
 
   app.get('/api/searchApt/:query', async (req, res, next) => {
     let query = req.params.query;
+    let sql = db.readSQL(process.cwd() + '/sql/map/getAptListQuery.sql');
+    let factor;
     if (query.includes(':')) {
       let [area, name] = query.split(':').map(e => e.trim());
-      console.log(area, name);
-      // let sql = db.readSQL(process.cwd() + '/sql/map/getAptNameQuery.sql');
+      factor = [area, name];
     } else {
-      console.log(query);
-      // let sql = db.readSQL(process.cwd() + '/sql/map/getAptAreaQuery.sql');
+      factor = [query, null];
     }
-    res.send('hello');
+
+    console.log(factor);
+
+    let result = await db.getData(sql, factor);
+
+    res.send(result);
   });
 };
 

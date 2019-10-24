@@ -9,13 +9,13 @@ const port = 3000;
 
 // session
 app.use(session({
-    secret: 'hello world',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: false,
-        maxAge: 1000 * 60 * 60,
-    }
+  secret: 'hello world',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false,
+    maxAge: 1000 * 60 * 60,
+  }
 }));
 
 // app.set('trust proxy', 1); // 필요 없는 설정인듯
@@ -25,9 +25,9 @@ app.use(require('body-parser').json());
 
 // cors
 app.use(cors({
-    origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:80', 'http://localhost'],
-    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'CONNECT', 'TRACE'],
-    credentials: true
+  origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:80', 'http://localhost'],
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'CONNECT', 'TRACE'],
+  credentials: true
 }));
 
 // use static
@@ -35,22 +35,34 @@ app.use(express.static('static'));
 
 // db config
 db.config({
-    user: 'team4_201904F',
-    pass: 'java',
-    conn: '112.220.114.130:1521/xe'
+  user: 'team4_201904F',
+  pass: 'java',
+  conn: '112.220.114.130:1521/xe'
 });
 
 // -----------
-app.listen(port, () => {
-    console.log(`listening ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`listening ${port}`);
+// });
+
+app.set('sessionList', []);
 
 app.get('/:id*', (req, res, next) => {
-    if (req.params.id === 'api') next();
-    else res.sendFile(process.cwd() + '/static/index.html');
+  app.set('sessionList', [...new Set([...app.settings.sessionList, req.sessionID])]);
+  // console.log(app.settings.sessionList);
+  if (req.params.id === 'api') next();
+  else res.sendFile(process.cwd() + '/static/index.html');
 });
 
 fs.readdirSync('./routers').forEach(e => {
-    let router = require(`./routers/${e}`);
-    router({ app, db });
+  let router = require(`./routers/${e}`);
+  router({ app, db });
 });
+
+// socket.io
+const http = require('http').createServer(app);
+http.listen(port, () => {
+  console.log(`liseten on *:${port}`);
+});
+const io = require('socket.io')(http);
+require('./chat')({ app, db, io, http });
