@@ -17,9 +17,33 @@
           <v-btn v-if="!loginUser" to="/login/user">로그인 / 회원가입</v-btn>
           <v-btn v-if="!loginUser" to="/login/agent">공인중개사 회원전용</v-btn>
   
-          <v-btn v-if="(loginUser || {}).type === 'user'" to="/mypage">마이페이지</v-btn>
-          <v-btn v-if="(loginUser || {}).type === 'agent'" to="/agentpage">중개사페이지</v-btn>
-          <v-btn v-if="loginUser" @click="logout">로그아웃</v-btn>
+          <v-btn 
+            v-if="(loginUser || {}).type === 'user'" 
+            to="/mypage"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            마이페이지
+          </v-btn>
+          <v-btn 
+            v-if="(loginUser || {}).type === 'agent'" 
+            to="/agentpage"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            중개사페이지
+          </v-btn>
+          <v-btn 
+            v-if="loginUser" 
+            @click="logout"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            로그아웃
+          </v-btn>
 
         </v-layout>
       </v-container>

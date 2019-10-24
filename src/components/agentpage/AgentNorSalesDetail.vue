@@ -1,5 +1,13 @@
 <template>
     <v-container class="px-auto bor">
+        <v-row 
+            align="center"
+            justify="center"
+            style="height: 300px;"
+            class="ma-0 "
+        >
+            <p class="display-2 black--text">매물관리</p>
+        </v-row>
         <v-row>
             <v-col cols="2">{{ norsale.SALES_TITLE }}</v-col>
         </v-row>
@@ -38,11 +46,11 @@
 
 <script>
 export default {
-    props: ['aptNum'],
+    props: ['offerNum'],
     beforeMount() {
         (async () => {
             let result = (await axios({
-                url: `${this.serverLocation}/mpGetNorSalesDetail?num=${this.aptNum}`
+                url: `${this.serverLocation}/mpGetNorSalesDetail?num=${this.offerNum}`
             })).data;
 
             let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));

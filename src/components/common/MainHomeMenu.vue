@@ -1,5 +1,5 @@
 <template>
-<div @click.stop="hideModal">
+<div>
     <v-toolbar 
         absolute
         color="transparent"
@@ -26,17 +26,11 @@
         </v-layout>
       </v-container>
     </v-toolbar>
-    <modal
-      id="modal"
-      v-show="isModalVisible"
-      @close="closeModal"
-    />
 </div>
 </template>
 
 <script>
 import axios from 'axios';
-import modal from '@/components/user/OfferHouseModal.vue';
 
 export default {
   beforeMount() {
@@ -51,8 +45,6 @@ export default {
   data() {
     return {
       loginUser: undefined,
-      modalVisibility: false,
-      isModalVisible: false,
     };
   },
   methods: {
@@ -72,20 +64,9 @@ export default {
           this.$router.push('/');
       })
     },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
-    hideModal(event) {
-      if (event.target === document.querySelector('#modal')) {
-        this.isModalVisible = false;
-      }
-    },
   },
   components: {
-    modal,
+
   },
  
 }
