@@ -171,4 +171,16 @@ module.exports = function({ app, db }) {
 
   })
   
+
+  // 우리집 내놓기 삭제
+  app.get('/api/deleteOfferHouse', async (req, res, next) => {
+    console.log("삭제왔어")
+    
+    let sql = db.readSQL(process.cwd() + '/sql/mypage/deleteOfferHouse.sql');
+    let result = (await db.exec(sql, [req.query.offerHouseNo]));
+
+    console.log(result)
+
+    res.send(result + '');
+  })
 };
