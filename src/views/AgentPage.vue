@@ -1,7 +1,11 @@
 <template>
     <v-app>
         <AgentMenu @agtPage="receivedPage"/>
-        <v-container fluid class="white">
+        <v-container 
+            fluid 
+            class="pa-0 white "
+            fill-height
+        >
         <v-layout column>
             <div class="px-0">
                 <v-row class="pa-0 ma-0" justify="center">
@@ -14,10 +18,6 @@
         </v-container>
     </v-app>
 </template>
-
-<style>
-
-</style>
 
 <script>
 import AgentMenu from '@/components/agentpage/AgentMenu';
@@ -41,6 +41,8 @@ export default {
         AgentModify: () => import('@/components/agentpage/AgentModify'),
         AgentSalesRegister: () => import('@/components/agentpage/AgentSalesRegister'),
         OfferDetail: () => import('@/components/agentpage/OfferDetail'),
+        AgentAptSalesDetail: () => import('@/components/agentpage/AgentAptSalesDetail'),
+        AgentNorSalesDetail: () => import('@/components/agentpage/AgentNorSalesDetail'),
     },
     methods:{
         receivedPage(page){
@@ -49,9 +51,14 @@ export default {
         },
         switchScreen(convertPage) {
             this.offerhouse_seq = convertPage.offerhouse_seq;
-            console.log(convertPage)
             this.agentpage = convertPage.page;
         }
     }
 }
 </script>
+
+<style>
+    #app {
+        background-color: white;
+    }
+</style>

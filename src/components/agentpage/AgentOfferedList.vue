@@ -1,8 +1,16 @@
 <template>
     <v-container>
-        <h1>내놓은방 조회</h1>
-        <v-row justify="center">
-            <v-col cols="12" lg="2" id="sbcol">
+        <v-row 
+            align="end"
+            justify="center"
+            style="height: 180px;"
+            class="ma-0 "
+        >
+            <p class="display-2 black--text">내놓은방</p>
+        </v-row>
+        <v-row justify="center" class="juk-select-bottomspace">
+            <v-spacer/>
+            <v-col cols="12" lg="2" class="ma-4">
                 <v-select
                 label="선택1"
                 :items="sidoList"
@@ -14,7 +22,7 @@
                 @change="selectSido"
                 ></v-select>
             </v-col>
-            <v-col cols="12" lg="2">
+            <v-col cols="12" lg="2" class="ma-4">
                 <v-select
                 :items="gugunList"
                 item-text="GUGUN"
@@ -27,13 +35,12 @@
                 @change="selectGugun"
                 ></v-select>
             </v-col>
-            <v-col>
+            <v-col cols="12" lg="1" md="1" class="ma-4">
                 <img id="reset" src="@/assets/img/reset.png" text @click="reset">
             </v-col>
+            <v-spacer/>
         </v-row>
-        <span>시도선택함: {{ selected }}</span>
-        <span>구군선택함: {{ selected1 }}</span>
-        
+
             <v-row>
                 <v-col
                     v-for="offer in offerList"
@@ -160,8 +167,8 @@ export default {
 </script>
 
 <style scoped>
-    #sbcol{
-        margin-right: 50px;
+    .juk-select-bottomspace{
+        margin-bottom: 80px;
     }
     #reset{
         width: 38px;

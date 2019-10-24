@@ -1,161 +1,192 @@
 <template>
     <section>
         <v-app>
-            <p>공인중개사 수정 페이지</p>
             <v-form>
-                <v-container>
-            
+                <v-container style="height: 1000px;">
                     <v-row justify="center">
-                        <v-col cols="12" lg="4">
-                            <v-text-field
-                                ref="name"
-                                v-model="name"
-                                :rules="[
-                                    () => !!name || '이름을 입력해주세요!!!',
-                                    () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
-                                ]"
-                                label="이름"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
+                        <v-col cols="12" sm="8" md="4">
+                            <v-row class="headline modifyuser-content mt-12">
+                                <v-col cols="8" class="mx-auto">
+                                    <div class="text-center mt-12">변경할 항목을 입력하여 개인정보를 변경해주세요</div>
+                                </v-col>
+                            </v-row>
 
-                            <v-text-field
-                                type="password"
-                                ref="pass"
-                                v-model="pass"
-                                :rules="[
-                                    () => !!pass || '비밀번호를 입력해주세요!!!',
-                                ]"
-                                label="비밀번호 (최소 8자리 - 숫자 문자 특수문자 1개 이상 포함)"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="password"
-                                ref="conpass"
-                                v-model="conpass"
-                                :rules="[() => 
-                                            !!conpass || '비밀번호 확인을 입력해주세요!!!',
-                                            !!(pass === conpass) || '비밀번호가 일치하지 않습니다.'
-                                        ]"
-                                label="비밀번호 확인"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="tel"
-                                ref="phone"
-                                v-model="phone"
-                                label="휴대폰번호(예시:010-1234-5678)"
-                                :rules="[
-                                            () => !!phone || '핸드폰번호를 입력해주세요!!!',
-                                        ]"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-                    </v-col>
-                    </v-row>
-                    <v-row>   
-                        <v-col id = "submit">
-                            <p>제출서류:   {{ this.originname }}</p>
-                            <img id="subimg" :src="uploadImg" alt="noimage">
-                            
-                                <file-pond id="fileinput"
-                                    name="test"
-                                    ref="pond"
-                                    label-idle="파일 변경!!!"
-                                    allow-multiple="false"
-                                    accepted-file-types="image/jpeg, image/png"
-                                    :server="server"
-                                    :files="myFiles"
-                                    @init="handleFilePondInit"
-                                    @processfile="onload"
-                                    imagePreviewHeight="280px"
+                            <v-row>
+                                <v-text-field
+                                    ref="name"
+                                    v-model="name"
+                                    :rules="[
+                                        () => !!name || '이름을 입력해주세요!!!',
+                                        () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
+                                    ]"
+                                    label="이름"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
                                 />
-                            
-                        </v-col>
-                        
-                          
-                    </v-row>
-                    <v-row justify="center">
-                        <v-col cols="12" lg="4" id="addrff">
-                            <v-text-field
-                                ref="addr"
-                                id="addr"
-                                v-model="addr"
-                                label="주소"
-                                outlined
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
-                         </v-col>
+                            </v-row>
 
-                        <v-col>
-                            <!-- 주소검색 다음 api -->
-                                <v-btn
-                                color="primary"
-                                dark
-                                class="hs_btn"
-                                @click.stop="dialog = true"
-                            >
-                                주소검색
-                            </v-btn>
-                            
-                            <v-dialog
-                                v-model="dialog"
-                                max-width="500"
-                            >
-                                <v-card>
-                                    <v-card-actions>
-                                        <div class="flex-grow-1"></div>
-                                        <img src="@/assets/img/iconX.png" text @click="dialog = false">
-                                    </v-card-actions>
-                                    <vue-daum-postcode @complete="getAddress" />
-                                </v-card>
-                            </v-dialog>
-                        </v-col>
-                    </v-row>
-                   
-                    <v-row justify="center">
-                        <v-col cols="12" lg="2" id="btnff">
-                            <v-btn  
-                                color="primary"
-                                class="hs_btn"
-                                @click="modifyAgentData" 
-                            >수정하기
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" lg="2">
-                            <v-btn 
-                                color="primary"
-                                dark
-                                @click="cancel" 
-                                class="hs_btn">취소하기
-                            </v-btn>
-                        </v-col>
-                    </v-row>
+                            <v-row>
+                                <v-text-field
+                                    type="password"
+                                    ref="pass"
+                                    v-model="pass"
+                                    :rules="[
+                                        () => !!pass || '비밀번호를 입력해주세요!!!',
+                                    ]"
+                                    label="비밀번호 (최소 8자리 - 숫자 문자 특수문자 1개 이상 포함)"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                />
+                            </v-row>
 
-                    <v-row justify="center">
-                        <v-col cols="12" lg="2" id="leavebtn">
-                            <v-btn  
-                                color="primary"
-                                v-model="withdrawal"
-                                class="hs_btn"
-                                @click="leaveAgent">탈퇴하기
-                            </v-btn>
+                            <v-row>
+                                <v-text-field
+                                    type="password"
+                                    ref="conpass"
+                                    v-model="conpass"
+                                    :rules="[() => 
+                                                !!conpass || '비밀번호 확인을 입력해주세요!!!',
+                                                !!(pass === conpass) || '비밀번호가 일치하지 않습니다.'
+                                            ]"
+                                    label="비밀번호 확인"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                />
+                            </v-row>
+
+                            <v-row>
+                                <v-text-field
+                                    type="tel"
+                                    ref="phone"
+                                    v-model="phone"
+                                    label="휴대폰번호(예시:010-1234-5678)"
+                                    :rules="[
+                                                () => !!phone || '핸드폰번호를 입력해주세요!!!',
+                                            ]"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                />
+                            </v-row>
+
+                            <v-row>
+                                <v-text-field
+                                    type="tel"
+                                    ref="phone"
+                                    v-model="phone"
+                                    label="휴대폰번호(예시:010-1234-5678)"
+                                    :rules="[
+                                                () => !!phone || '핸드폰번호를 입력해주세요!!!',
+                                            ]"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                />
+                            </v-row>
+
+                            <v-row justify="center">
+                                <v-col cols="10" class="ma-0 pa-0">
+                                    <v-text-field
+                                        ref="addr"
+                                        id="addr"
+                                        v-model="addr"
+                                        label="주소"
+                                        outlined
+                                        class="juk-mu_text-field"
+                                    />
+                                </v-col>
+                                <v-col cols="2" class="d-flex justify-center">
+                                    <v-btn
+                                        color="primary"
+                                        dark
+                                        class="hs_btn"
+                                        @click.stop="dialog = true"
+                                    >
+                                        주소검색
+                                    </v-btn>
+                                    <v-dialog
+                                        v-model="dialog"
+                                        max-width="500"
+                                    >
+                                        <v-card>
+                                            <v-card-actions>
+                                                <div class="flex-grow-1"></div>
+                                                <img src="@/assets/img/iconX.png" text @click="dialog = false">
+                                            </v-card-actions>
+                                            <vue-daum-postcode @complete="getAddress" />
+                                        </v-card>
+                                    </v-dialog>
+                                </v-col>
+                            </v-row>
+
+                            <v-row>
+                                 <div class="body2 grey--text">제출서류:   {{ this.originname }}</div>
+                            </v-row>
+                            <v-row justify="center">
+                                <img id="subimg" :src="uploadImg" alt="noimage">
+                            </v-row>
+                            <v-row>
+                                <div class="d-flex-row fileinput">
+                                    <file-pond 
+                                        name="test"
+                                        ref="pond"
+                                        label-idle="파일 변경!!!"
+                                        allow-multiple="false"
+                                        accepted-file-types="image/jpeg, image/png"
+                                        :server="server"
+                                        :files="myFiles"
+                                        @init="handleFilePondInit"
+                                        @processfile="onload"
+                                        imagePreviewHeight="280px"
+                                    />
+                                </div>
+                            </v-row>
+
+                            <v-row class="mt-10 pt-4">
+                                <v-btn 
+                                    block 
+                                    dark
+                                    tile
+                                    depressed
+                                    class="jukBtnFont mb-2"
+                                    height="64px"
+                                    color="jukBtnColor"
+                                    @click="modifyAgentData"
+                                >수정하기</v-btn>
+                            </v-row>
+
+                            <v-row>
+                                <v-btn 
+                                    block 
+                                    dark
+                                    tile
+                                    depressed
+                                    class="jukBtnFont mb-2"
+                                    height="64px"
+                                    color="jukBtnColor"
+                                    @click="cancel"
+                                >취소하기</v-btn>
+                            </v-row>
+
+                            <v-row>
+                                <v-btn 
+                                    block 
+                                    dark
+                                    tile
+                                    depressed
+                                    class="jukBtnFont mb-2"
+                                    height="64px"
+                                    color="jukBtnCancelColor"
+                                    @click="leaveAgent"
+                                >탈퇴하기</v-btn>
+                            </v-row>
                         </v-col>
                         <loading 
                             :active.sync="isLoading" 
@@ -243,7 +274,7 @@ export default {
     computed: {
         uploadImg() {
             if (this.path) {
-                return `${this.fileServer}/file/agent/${this.path}`;
+                return `${this.fileServer}/file/${this.path}`;
             } 
             else {
                 return `${this.fileServer}/file/noimage.png`;
@@ -335,7 +366,7 @@ export default {
         },
         onload(error, result) {
             let info = JSON.parse(result.serverId);
-            this.path = info.files[0].filename
+            this.path = 'agent/' + info.files[0].filename
             this.originname = info.files[0].originalname
         },
     },
@@ -384,8 +415,30 @@ export default {
         width: 48%;
         height: auto;
     }
-    #fileinput{
-        width: 48%;
+
+    .fileinput{
+
+        width: 100%;
         margin-top: 20px;
+    }
+
+    .jukBtnColor {
+        background-color: #1669F7 !important;
+    }
+
+    .jukBtnFont {
+        font-size: 20pt !important;
+    }
+
+    .jukBtnCancelColor {
+        background-color: #E62E46 !important;
+    }
+
+    .modifyuser-content {
+        margin-bottom: 80px;
+    }
+
+    .bor {
+        border: 1px solid black;
     }
 </style>

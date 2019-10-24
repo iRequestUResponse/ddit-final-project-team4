@@ -73,8 +73,6 @@ Vue.mixin({
 
 });
 
-
-import VModal from 'vue-js-modal';
 import VueDaumPostcode from 'vue-daum-postcode';
 
 Vue.use(VModal);
