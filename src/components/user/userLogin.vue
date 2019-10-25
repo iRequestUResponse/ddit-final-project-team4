@@ -54,7 +54,7 @@
     </v-content>
 </template>
 
-<style>
+<style scoped>
     a.logo {
         margin-left: 10px;
         color:#FFFDE7;
@@ -100,7 +100,7 @@
         margin-left: 1px;
     }
     .logo1{
-        margin-left: 25px;
+        margin-right: 30px;
     }
     #xx{
         cursor: pointer;

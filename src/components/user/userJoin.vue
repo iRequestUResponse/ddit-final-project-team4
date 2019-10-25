@@ -305,7 +305,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .juk-mu_text-field {
         border-radius: 0;
     }

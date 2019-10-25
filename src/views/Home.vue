@@ -22,7 +22,7 @@
         </v-carousel-item>
       </v-carousel>
       <div class="slider-text-position">
-        <div class="display-2 white--text text-center">어떤 아파트, 어떤 동네에서</div>>
+        <div class="display-2 white--text text-center">어떤 아파트, 어떤 동네에서</div><br>
         <div class="display-2 white--text text-center">살고 싶으신가요?<br><br></div>
         <!-- <div class="title white--text text-center mt-2 mb-4">이제 죽방과 시작해보세요</div> -->
         <div>
@@ -43,33 +43,60 @@
           wrap
           class="my-12"
           align-center
-        >
+        > 
           <v-flex xs12 style="width: 80%;" class="my-8">
             <v-container grid-list-xl>
               <v-layout row wrap align-start>
-                <v-flex xs12 md6>
+                <v-flex xs12 md4>
                   <v-card flat class="transparent">
-                    <v-card-text class="text-center">
-                      <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
-                    </v-card-text>
-                    <v-card-title primary-title class="layout justify-center">
-                      <div class="headline">News</div>
-                    </v-card-title>
-                    <div v-for="news in newsList" :key="news.originallink" class="d-flex justify-center">
-                      <a :href="news.originallink" class="caption blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
+                    <v-carousel class="carousel"
+                      cycle
+                      hide-delimiter-background
+                      width="500"
+                      height="500"
+                    >
+                      <v-carousel-item
+                        v-for="(slide,i) in slides"
+                        :key="i"
+                        :src="slide.src"
+                      >
+                        <v-sheet
+                          color="#00000011"
+                          height="100%"
+                          tile
+                        >
+                        </v-sheet>
+                      </v-carousel-item>
+                    </v-carousel>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md4>
+                  <v-card flat class="transparent">
+                    <div class="d1">
+                      <v-card-text class="text-center">
+                        <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                      </v-card-text>
+                      <v-card-title primary-title class="layout justify-center">
+                        <div class="headline">News</div>
+                      </v-card-title>
+                    </div>
+                    <div v-for="news in newsList" :key="news.originallink" class="board" id="newsboard">
+                      <a :href="news.originallink" class="listfont subtitle-1 blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
                     </div>
                   </v-card>
                 </v-flex>
-                <v-flex xs12 md6>
+                <v-flex xs12 md4>
                   <v-card flat class="transparent">
-                    <v-card-text class="text-center">
-                      <v-icon x-large class="blue--text text--lighten-2">mdi-flash</v-icon>
-                    </v-card-text>
-                    <v-card-title primary-title class="layout justify-center">
-                      <div class="headline">Notice</div>
-                    </v-card-title>
+                    <div class="d1">
+                      <v-card-text class="text-center">
+                        <v-icon x-large class="blue--text text--lighten-2">mdi-flash</v-icon>
+                      </v-card-text>
+                      <v-card-title primary-title class="layout justify-center">
+                        <div class="headline">Notice</div>
+                      </v-card-title>
+                    </div>
                     <div class="content">
-                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ" class="d-flex caption blue-grey--text nonAtag justify-center">{{ notice.NOTICE_TITLE }}</div>
+                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ" class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
                     </div>
                   </v-card>
                 </v-flex>
@@ -116,33 +143,7 @@
       </section>
 
       <section class="juk-deepback">
-        <v-container grid-list-xl class="my-12">
-          <v-layout row wrap justify-center class="my-12">
-            <v-flex xs12 sm4 class="my-12">
-              <v-card flat class="transparent">
-                <v-carousel 
-                  cycle
-                  hide-delimiter-background
-                  width="500"
-                  height="700"
-                >
-                  <v-carousel-item
-                    v-for="(slide,i) in slides"
-                    :key="i"
-                    :src="slide.src"
-                  >
-                    <v-sheet
-                      color="#000000AA"
-                      height="100%"
-                      tile
-                    >
-                    </v-sheet>
-                  </v-carousel-item>
-                </v-carousel>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
+       
         <v-parallax src="@/assets/img/aggregation_back.jpg" height="380">
           <v-layout column align-center justify-center>
             <div class="headline white--text mb-4 text-center">Web development has never been easier</div>
@@ -247,7 +248,7 @@ export default {
       })).data;
 
       this.newsList = (await axios({
-        url: `${this.serverLocation}/newsList?start=5`
+        url: `${this.serverLocation}/newsList?start=1`
       })).data;
 
       this.userType = (await axios({
@@ -310,7 +311,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   .slider-position {
     position: relative;
   }
@@ -360,5 +361,23 @@ export default {
 
   #offercont{
     margin-left: 30px;
+  }
+
+  .board {
+    margin-top: 7px;
+    margin-left: 140px;
+  }
+  .caption {
+    font-size: 1.2em;
+  }
+  #newsboard{
+    margin-left: 80px;
+  }
+  .d1 {
+    margin-left: 50px;
+    margin-bottom: 35px;
+  }
+  .carousel {
+    margin-left: -30px
   }
 </style>

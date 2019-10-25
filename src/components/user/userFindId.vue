@@ -6,7 +6,9 @@
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar id="toolbar" color="primary" dark flat>
-                <router-link class="logo" to="/">아이디 찾기</router-link>
+                <router-link class="logo" to="/">
+                 <v-icon size="50" icon color="#FFFDE7" id="email">email</v-icon>
+                아이디 찾기</router-link>
               </v-toolbar>
               <v-card-text>
                 <v-form id="idform">
@@ -14,16 +16,16 @@
                     <h3>가입 시 등록한 이름과<br> 휴대폰 번호를 입력해주세요.</h3>
                   
                     <v-row align="center" justify="center">
-                        <img id="img1" src="@/assets/img/icon-loginId.png">
-                        <v-text-field label="이름" id="user"  v-model="name"/>
+                         <v-icon size="49" icon color="#039BE5" id="face" class="icon1">face</v-icon>
+                        <v-text-field label="이름" id="user"  v-model="name" class="tf"/>
                     </v-row>
                   <v-row align="center" justify="center">
-                    <img id="img2" src="@/assets/img/phone.png">
-                    <v-text-field id="phone" label="휴대폰 번호" name="phone" type="text" v-model="phone"/>
+                     <v-icon size="45" icon color="#039BE5" id="phone_iphone" class="icon1">phone_iphone</v-icon>
+                    <v-text-field id="phone" label="휴대폰 번호" name="phone" type="text" v-model="phone" class="tf"/>
                   </v-row>
                 </v-form>
               </v-card-text>
-              <v-btn id="btn" @click="findId">아이디 찾기</v-btn>
+              <v-btn id="btn" color="primary" @click="findId">아이디 찾기</v-btn>
               <v-card-actions>
                 
               </v-card-actions>
@@ -74,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #img1{
     width: 45px;
     height: 45px;
@@ -112,5 +114,15 @@ h3{
     background: rgb(228, 223, 223);
     font-weight: bold;
     font-size: 1.2em;
+}
+.tf{
+    margin-right: 50px;
+}
+.icon1 {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+#phone_iphone {
+  margin-left: 22px;
 }
 </style>
