@@ -8,7 +8,7 @@
             <v-spacer></v-spacer>
             <v-btn 
                 class="mr-6"
-                color="light-blue accent-4"
+                color="rgb(18,98,249)"
                 outlined
                 tile
                 @click="comparisonOfsales"
@@ -18,7 +18,7 @@
         </v-row>
         <v-row v-if="this.salesList.length === 0" class="juk-empty_content" align="center">
             <v-col>
-                <div class="title text-center">내용이 없습니다.</div>
+                <div class="title text-center">관심 목록이 없습니다</div>
             </v-col>
         </v-row>
         <v-row v-else class="mx-0 mb-10">
@@ -59,8 +59,8 @@
             </div>
             <v-spacer></v-spacer>
             <v-btn 
-                class="mr-6"
-                color="light-blue accent-4"
+                class="mr-10"
+                color="rgb(18,98,249)"
                 outlined
                 tile
                 @click="comparisonOfnorsales"
@@ -70,7 +70,7 @@
         </v-row>
         <v-row v-if="this.norSalesList.length === 0" class="juk-empty_content" align="center">
             <v-col>
-                <div class="title text-center">내용이 없습니다.</div>
+                <div class="title text-center">관심 목록이 없습니다</div>
             </v-col>
         </v-row>
         <v-row v-else class="mx-0 mb-10">
@@ -135,10 +135,10 @@ export default {
         },
         comparisonOfsales() {
             if(this.salesList.length === 0) {
-                alert('목록이 없습니다.');
+                this.$swal('목록이 없습니다.', ' ', 'info');
                 return;
             }else if(this.salesList.length === 1) {
-                alert('비교할 대상이 없습니다.');
+                this.$swal('비교할 대상이 없습니다.', ' ', 'info');
                 return;
             }else{
                 this.trans.aptSalesNum = undefined;
@@ -175,10 +175,10 @@ export default {
         },
         comparisonOfnorsales() {
             if(this.norSalesList.length === 0) {
-                alert('목록이 없습니다.');
+                this.$swal('목록이 없습니다.', ' ', 'info');
                 return;
             }else if(this.norSalesList.length === 1) {
-                alert('비교할 대상이 없습니다.');
+                this.$swal('비교할 대상이 없습니다.', ' ', 'info');
                 return;
             }else{
                 this.trans.aptSalesNum = undefined;

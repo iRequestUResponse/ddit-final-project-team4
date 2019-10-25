@@ -86,15 +86,9 @@
                                     >
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="2" class="d-flex justify-center">
-                                    <v-btn
-                                        color="primary"
-                                        dark
-                                        class="hs_btn"
-                                        @click.stop="dialog = true"
-                                    >
-                                        주소검색
-                                    </v-btn>
+                                <v-col cols="2" id="btncol">
+                                    <button type="button" id="addressbtn" class="btn-green" @click.stop="dialog = true">주소검색
+                                    </button>
                                     <v-dialog
                                         v-model="dialog"
                                         max-width="500"
@@ -240,12 +234,10 @@ export default {
                 })
                 .then(res => {
                     if (res.data === 1) {
-                        alert("수정완료 되었습니다.")
-                        this.$router.push('/mypage');
+                      this.$swal('수정완료', '회원정보가 정상적으로 수정되었습니다.', 'success');
                     } else {
-                        alert("수정 실패")
+                      this.$swal('수정실패', '수정이 실패하였습니다.', 'warning');
                     }
-
                 })
             } else {
                 alert("비밀번호가 일치하지 않습니다.");
@@ -265,30 +257,42 @@ export default {
             this.isError = event;
         },
         leaveUser(){
-            axios({
+           this.$swal({
+
+            title: '탈퇴하시겠습니까?',
+            text: '죽방의 다양한 서비스를 이용할 수 없습니다.',
+            type: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            confirmButtonText: '탈퇴',
+            cancelButtonText: '취소',
+
+          }).then((result) => {
+            if (result.value) {
+              axios({
                 url: `${this.serverLocation}/leaveUser`,
                 method: 'POST',
                 data: {
                     id: this.id,
                     withdrawal: this.withdrawal,
                 },
-            })
-            .then(res => {
+              })
+              .then(res => {
                 if (res.data === 1) {
-                    alert("회원탈퇴가 완료되었습니다.");
+                  this.$swal('탈퇴가 완료되었습니다.', '', 'success');
 
-                    axios({
-                        url: `${this.serverLocation}/logout`
-                    });
+                  axios({
+                      url: `${this.serverLocation}/logout`
+                  });
 
-                    this.isLogin = false;
-                    this.$router.push('/');
-                 }
-            })
+                  this.isLogin = false;
+                  this.$router.push('/');
+                }
+              })
+            }
+          })
         },
-        cancel () {
-            this.$router.push('/login/' + this.$route.params.func);
-        }
     }
 }
 </script>
@@ -320,10 +324,18 @@ export default {
     }
 
     .jukBtnCancelColor {
-        background-color: #E62E46 !important;
+        background-color: rgba(255, 0, 0, 0.7) !important;
     }
 
     .modifyuser-content {
         margin-bottom: 80px;
+    }
+
+    .btn-green {
+      width: 75px;
+    }
+
+    #btncol {
+      margin-top: -11px;
     }
 </style>

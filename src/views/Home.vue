@@ -241,17 +241,15 @@ import axios from 'axios';
 
 export default {
   beforeMount() {
-    // (async () => {
-    //   this.noticeList = (await axios({
-    //     url: `${this.serverLocation}/noticeList`
-    //   })).data;
-
-    //   this.newsList = (await axios({
-    //     url: `${this.serverLocation}/newsList?start=5`
-    //   })).data;
-    // })();
-
     (async () => {
+      this.noticeList = (await axios({
+        url: `${this.serverLocation}/noticeList`
+      })).data;
+
+      this.newsList = (await axios({
+        url: `${this.serverLocation}/newsList?start=5`
+      })).data;
+
       this.userType = (await axios({
         url: `${this.serverLocation}/check`
       })).data.user.type;

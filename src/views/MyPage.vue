@@ -3,7 +3,7 @@
     <HomeMenu />
     <v-container 
       fluid 
-      class="pa-0 white "
+      class="pa-00 white "
       fill-height
     >
       <v-layout column>
@@ -11,23 +11,24 @@
           <v-row 
             align="center"
             justify="center"
-            style="height: 300px;"
+            style="height: 200px;"
             class="ma-0 "
           >
-            <p class="display-2 black--text">마이페이지</p>
+            <v-icon size="50" icon color="rgb(18,98,249)" id="offertitle">face</v-icon>&nbsp;&nbsp;
+            <h1 id="myh1">마이페이지</h1>
           </v-row>
           <v-row class="ma-0" justify="center">
             <v-col class="pa-0 mb-10" cols="10">
               <v-tabs
-                color="black"
+                color="rgb(18,98,249)"
                 background-color="transparent"
                 height="76"
                 slider-size="4"
                 grow
               >
                 <v-tab class="headline bottom-border" @click="ConvertMyPage('SalesInterest')">관심목록</v-tab>
-                <v-tab class="headline bottom-border" @click="ConvertMyPage('ModifyUser')">개인정보수정</v-tab>
                 <v-tab class="headline bottom-border" @click="ConvertMyPage('DetailsInquiry')">내역조회</v-tab>
+                <v-tab class="headline bottom-border" @click="ConvertMyPage('ModifyUser')">개인정보수정</v-tab>
               </v-tabs>
             </v-col>
           </v-row>
@@ -91,5 +92,8 @@ export default {
 <style>
   .bottom-border {
     border-bottom: 1px solid #aeaeae;
+  }
+  #myh1{
+    margin-right: 40px;
   }
 </style>
