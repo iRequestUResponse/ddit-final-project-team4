@@ -3,7 +3,7 @@
     <v-row 
       align="center"
       justify="center"
-      style="height: 300px;"
+      style="height: 260px;"
       class="ma-0 "
     >
       <p class="display-2 black--text">매물관리</p>
@@ -94,7 +94,21 @@
     </v-row>
 
     <!-- 매물등록 버튼 -->
-    <a class="offset-md-1 juk-menu" @click="sendPage('AgentSalesRegister')">매물등록</a>
+    <v-btn
+      absolute
+      dark
+      fab
+      bottom
+      right
+      fixed
+      width="80px"
+      height="80px"
+      color="juk-color"
+      class="juk-btn_position "
+      @click="sendPage('AgentSalesRegister')"
+    >
+      <v-icon x-large>add</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
@@ -141,5 +155,14 @@ export default {
 <style>
   .juk-empty_content {
     height: 384px;
+  }
+
+  .juk-color {
+    background-color: #1564f9 !important;
+  }
+
+  .juk-btn_position {
+    bottom: 50px !important;
+    right: 50px !important;
   }
 </style>
