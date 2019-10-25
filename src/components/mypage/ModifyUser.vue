@@ -3,7 +3,7 @@
         <v-app>
             <v-form>
                 <v-container class="fill-height" style="height: 1000px;">
-                    <v-row align="center" justify="center">
+                    <v-row justify="center">
                         <v-col cols="12" sm="8" md="4">
                             <v-row class="headline modifyuser-content">
                                 <v-col cols="8" class="mx-auto">
@@ -74,7 +74,7 @@
                                 >
                                 </v-text-field>
                             </v-row>
-                            <v-row align="top" justify="center">
+                            <v-row justify="center">
                                 <v-col cols="10" class="ma-0 pa-0">
                                     <v-text-field
                                         ref="addr"

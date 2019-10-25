@@ -1,7 +1,7 @@
 <template>
 <div @click.stop="hideModal">
   <header>
-    <v-toolbar height="110px" app flat>
+    <v-toolbar height="110px" flat>
       <v-container
         mx-auto
         py-0

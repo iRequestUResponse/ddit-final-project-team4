@@ -1,10 +1,5 @@
 <template>
   <div>
-    원룸 이름 : {{ info.apt_name }} <br>
-    address : {{ info.address }} <br>
-    info: {{ info }} <br>
-    photoList: {{ photoList }} <br>
-    selectedOptions: {{ selectedOptions }} <br>
     <component
       :is="view"
       @selectAddress="setAddress"
@@ -23,9 +18,46 @@
       @sales_cont-changed="info.sales_cont = $event"
       @selectedOptions-changed="selectedOptions = $event"
     />
-    <v-btn @click="prev" v-if="step > 0">이전</v-btn>
-    <v-btn @click="next" v-if="step < views.length - 1">다음</v-btn>
-    <v-btn v-if="step === views.length - 1" @click="submit">완료</v-btn>
+    <div class="d-flex justify-center my-12">
+      <v-btn 
+        @click="prev" 
+        v-if="step > 0"
+        width="100px"
+        height="50px"
+        color="grey darken-2"
+        class="mr-4 title"
+        outlined
+        tile
+      >
+        이전
+      </v-btn>
+
+      <v-btn 
+        @click="next" 
+        v-if="step < views.length - 1"
+        width="100px"
+        height="50px"
+        color="grey darken-2"
+        class="title"
+        outlined
+        tile
+      >
+        다음
+      </v-btn>
+
+      <v-btn 
+        v-if="step === views.length - 1" 
+        @click="submit"
+        width="100px"
+        height="50px"
+        color="grey darken-2"
+        class="title"
+        outlined
+        tile
+      >
+        완료
+      </v-btn>
+    </div>
   </div>
 </template>
 

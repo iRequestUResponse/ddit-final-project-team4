@@ -1,19 +1,23 @@
 <template>
   <div>
-    <h1>매물등록(아파트)</h1>
-    <hr>
     <v-container>
       <v-row>
         <h2>기본정보</h2>
       </v-row>
+
+      <!-- 매물 제목 -->
       <v-row>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             label="매물 제목"
             v-model="sales_title"
           />
         </v-col>
-        <v-col>
+      </v-row>
+
+      <!-- 입주가능일 -->
+      <v-row>
+        <v-col cols="4">
           <v-menu
             v-model="menu2"
             :close-on-content-click="false"
@@ -35,71 +39,99 @@
           </v-menu>
         </v-col>
       </v-row>
+
+      <!-- 거래유형 -->
       <v-row>
-        <v-col>
+        <v-col cols="3">
           <v-select
             :items="['매매', '전세', '월세']"
             v-model="sales_type"
+            label="거래유형"
           />
         </v-col>
-        <v-col>
+        <v-col cols="3">
           <v-text-field
+            v-if="sales_type != ''"
             :label="typeLabel"
             v-model="price"
           />
         </v-col>
-        <v-col v-if="sales_type === '월세'">
+        <v-col 
+          v-if="sales_type === '월세'"
+          cols="3"
+        >
           <v-text-field
             label="보증금"
             v-model="deposit"
           />
         </v-col>
       </v-row>
+
       <v-row>
-        <v-col>
+        <v-col cols="3">
           <v-text-field
             label="평수"
             v-model="pyeong"
           />
         </v-col>
-        <v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="3">
           <v-text-field
             label="해당 층"
             v-model="relevant_floor"
           />
         </v-col>
-        <v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="3">
+          <v-text-field
+            label="해당 층"
+            v-model="relevant_floor"
+          />
+        </v-col>
+        <v-col cols="3">
           <v-text-field
             label="전체 층"
             v-model="whole_floor"
           />
         </v-col>
-        <v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="3">
           <v-text-field
             label="동"
             v-model="dong"
           />
         </v-col>
-        <v-col>
+        <v-col cols="3">
           <v-text-field
             label="방향(예: 남향)"
             v-model="direction"
           />
         </v-col>
       </v-row>
+
       <v-row>
-        <v-col>
+        <v-col cols="3">
           <v-text-field
             label="관리비"
             v-model="utility_cost"
           />
         </v-col>
       </v-row>
+
       <v-row>
-        <v-col>
+        <v-col cols="12">
           <v-textarea
             label="상세내용"
             v-model="sales_cont"
+            auto-grow
+            rows="1"
+            row-height="15"
           />
         </v-col>
       </v-row>
@@ -114,7 +146,7 @@ export default {
       title: '',
       menu2: false,
       // info
-      sales_type: '매매',
+      sales_type: '',
       price: '',
       deposit: '',
       pyeong: '',
@@ -168,11 +200,7 @@ export default {
   },
   computed: {
     typeLabel() {
-      if (this.sales_type === '매매') {
-        return '매매가';
-      } else {
-        return this.sales_type;
-      }
+      return this.sales_type + '가';
     }
   },
 }

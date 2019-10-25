@@ -1,7 +1,5 @@
 <template>
   <div>
-    아파트 이름 : {{ info.apt_name }} <br>
-    address : {{ info.address }} <br>
     <component
       :is="view"
       @selectAddress="setAddress"
@@ -20,9 +18,44 @@
       @sales_title-changed="info.sales_title = $event"
       @sales_cont-changed="info.sales_cont = $event"
     />
-    <v-btn @click="prev" v-if="step > 0">이전</v-btn>
-    <v-btn @click="next" v-if="step < views.length - 1">다음</v-btn>
-    <v-btn v-if="step === views.length - 1" @click="submit">완료</v-btn>
+    <div class="d-flex justify-center my-12">
+      <v-btn 
+        @click="prev" 
+        v-if="step > 0"
+        width="100px"
+        height="50px"
+        color="grey darken-2"
+        class="mr-4 title"
+        outlined
+        tile
+      >
+        이전
+      </v-btn>
+      <v-btn 
+        @click="next" 
+        v-if="step < views.length - 1"
+        width="100px"
+        height="50px"
+        color="grey darken-2"
+        class="title"
+        outlined
+        tile
+      >
+        다음
+      </v-btn>
+      <v-btn 
+        v-if="step === views.length - 1" 
+        @click="submit"
+        width="100px"
+        height="50px"
+        color="grey darken-2"
+        class="title"
+        outlined
+        tile
+      >
+        완료
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -117,6 +150,9 @@ export default {
     next() {
       if (this.step < this.views.length - 1 && this.views[this.step].condition()) {
         this.step = this.step + 1;
+      } else {
+        // 미입력 후 다음버튼 누를 때
+        alert('내용을 입력해주세요');
       }
     },
     prev() {
@@ -162,5 +198,7 @@ export default {
 </script>
 
 <style>
-
+  .bor {
+    border: 1px solid black;
+  }
 </style>

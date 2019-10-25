@@ -4,90 +4,28 @@
             <v-form>
                 <v-container style="height: 1000px;">
                     <v-row justify="center">
-                        <v-col cols="12" lg="4">
-
-                            <v-text-field
-                                ref="name"
-                                v-model="name"
-                                :rules="[
-                                    () => !!name || '이름을 입력해주세요!!!',
-                                    () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
-                                ]"
-                                label="이름"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="password"
-                                ref="pass"
-                                v-model="pass"
-                                :rules="[
-                                    () => !!pass || '비밀번호를 입력해주세요!!!',
-                                ]"
-                                label="비밀번호 (최소 8자리 - 숫자 문자 특수문자 1개 이상 포함)"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="password"
-                                ref="conpass"
-                                v-model="conpass"
-                                :rules="[() => 
-                                            !!conpass || '비밀번호 확인을 입력해주세요!!!',
-                                            !!(pass === conpass) || '비밀번호가 일치하지 않습니다.'
-                                        ]"
-                                label="비밀번호 확인"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
-                                type="tel"
-                                ref="phone"
-                                v-model="phone"
-                                label="휴대폰번호(예시:010-1234-5678)"
-                                :rules="[
-                                            () => !!phone || '핸드폰번호를 입력해주세요!!!',
-                                        ]"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>   
-                        <v-col id = "submit">
-                           <v-row>
-                            <p>제출서류:   {{ this.originname }}</p>
-                            <img id="subimg" :src="uploadImg" alt="noimage">
-                            
-                                <file-pond id="fileinput"
-                                    name="test"
-                                    ref="pond"
-                                    label-idle="파일 수정"
-                                    allow-multiple="false"
-                                    accepted-file-types="image/jpeg, image/png"
-                                    :server="server"
-                                    :files="myFiles"
-                                    @init="handleFilePondInit"
-                                    @processfile="onload"
-                                    imagePreviewHeight="280px"
-                                />
+                        <v-col cols="12" sm="8" md="4">
+                            <v-row class="headline modifyuser-content mt-12">
+                                <v-col cols="8" class="mx-auto">
+                                    <div class="text-center mt-12">변경할 항목을 입력하여 개인정보를 변경해주세요</div>
+                                </v-col>
                             </v-row>
 
+                            <v-row>
+                                <v-text-field
+                                    ref="name"
+                                    v-model="name"
+                                    :rules="[
+                                        () => !!name || '이름을 입력해주세요!!!',
+                                        () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
+                                    ]"
+                                    label="이름"
+                                    outlined
+                                    required
+                                    class="juk-mu_text-field"
+                                    @update:error="error"
+                                />
+                            </v-row>
                             <v-row>
                                 <v-text-field
                                     type="password"
@@ -254,7 +192,6 @@
                             :can-cancel="true" 
                         ></loading>
                     </v-row>
-                
                 </v-container>
             </v-form>
         </v-app>
