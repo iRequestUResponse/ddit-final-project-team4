@@ -38,21 +38,6 @@
                     <v-row justify="center">
                         <v-col cols="12" lg="4">
                             <v-text-field
-                                ref="name"
-                                v-model="name"
-                                :rules="[
-                                    () => !!name || '이름을 입력해주세요!!!',
-                                    () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
-                                ]"
-                                label="이름"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
-                            <v-text-field
                                 type="password"
                                 ref="pass"
                                 v-model="pass"
@@ -140,6 +125,20 @@
 
                         <v-row justify="center">
                          <v-col cols="12" lg="4">
+                            <v-text-field
+                                  ref="name"
+                                  v-model="name"
+                                  :rules="[
+                                      () => !!name || '이름을 입력해주세요!!!',
+                                  ]"
+                                  label="공인중개사사무소 이름"
+                                  outlined
+                                  required
+                                  class="juk-mu_text-field"
+                                  @update:error="error"
+                              >
+                            </v-text-field>
+
                             <v-text-field
                                 ref="addr1"
                                 id="addr1"
@@ -330,9 +329,9 @@ export default {
         },
         getAddress(event) {
             this.result = event;
-            console.log(this.result);
             this.dialog = false;
 
+            this.name = this.result.buildingName;
             if (!event.jibunAddress) {
                 this.result.jibunAddress = event.autoJibunAddress;
             }

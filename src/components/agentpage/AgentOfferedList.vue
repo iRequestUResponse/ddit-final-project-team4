@@ -2,17 +2,16 @@
     <v-container>
         <v-row 
             align="end"
-            justify="center"
-            style="height: 180px;"
-            class="ma-0 "
+            style="height: 100px;"
+            class="ma-0"
         >
-            <p class="display-2 black--text">내놓은방</p>
+          <p class="display-1 black--text">내놓은방</p>
         </v-row>
-        <v-row justify="center" class="juk-select-bottomspace">
-            <v-spacer/>
+        
+        <v-row class="juk-select-bottomspace">
             <v-col cols="12" lg="2" class="ma-4">
                 <v-select
-                label="선택1"
+                label="시도선택"
                 :items="sidoList"
                 item-text="SIDO"
                 v-model="selected"
@@ -27,7 +26,7 @@
                 :items="gugunList"
                 item-text="GUGUN"
                 v-model="selected1"
-                label="선택2"
+                label="시구군선택"
                 single-line
                 auto
                 hide-details
@@ -40,7 +39,6 @@
             </v-col>
             <v-spacer/>
         </v-row>
-
             <v-row>
                 <v-col
                     v-for="offer in offerList"

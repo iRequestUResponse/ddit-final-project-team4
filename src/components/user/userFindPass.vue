@@ -54,10 +54,19 @@ export default {
             })
             .then(res => {
                 if (res.data === 'success') {
-                    alert(this.id + "메일주소로 임시비밀번호가 전송되었습니다.");
+                  this.$swal({
+                    type: 'success',
+                    title: this.name + ' 회원님',
+                    text: '메일주소로 임시비밀번호가 전송되었습니다.',
+                    confirmButtonText: '로그인하기',
+                  })
+                  .then((result) => {
                     this.$router.push('/login/' + this.$route.params.func);
+                  })
+                } else if (this.id == '' && this.name == '') {
+                  this.$swal('공백을 입력해주세요.', ' ', 'info');
                 } else {
-                    alert("일치하는 회원정보가 없습니다!!!");
+                  this.$swal('일치하는 회원정보가 없습니다.', ' ', 'error');
                 }
             })
         }
