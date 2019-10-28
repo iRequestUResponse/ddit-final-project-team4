@@ -113,8 +113,7 @@ module.exports = function({ app, db }) {
     })
 
     // 아이디 중복처리
-    app.get('/api/checkAgentId', async (req, res, next) => { 
-        console.log(req.query.id);
+    app.get('/api/checkAgentId', async (req, res, next) => {
         // 정규식 처리 || 
         if (!req.query.id) {
             res.send('2');
@@ -264,5 +263,19 @@ module.exports = function({ app, db }) {
         let sql = db.readSQL(process.cwd() + '/sql/agent/insertEstimate.sql');
         let result = (await db.exec(sql, [req.body.offerNum, req.session.user.AGENTID, req.body.price]));
         res.send(result + '');
+    })
+
+    // 매물관리 아파트매물목록 출력
+    app.get('/api/getAgentAptSalesList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getAgentAptSalesList.sql');
+        let result = await db.getData(sql, [req.session.user.AGENTID]);
+        res.send(result);
+    })
+
+    // 매물관리 일반매물(원룸/투룸)목록 출력
+    app.get('/api/getAgentNorSalesList', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/agent/getAgentNorSalesList.sql');
+        let result = await db.getData(sql, [req.session.user.AGENTID]);
+        res.send(result);
     })
 };
