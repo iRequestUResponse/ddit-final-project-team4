@@ -198,13 +198,13 @@
 
 <script>
 export default {
+    props: ['aptNum'],
     beforeMount() {
         this.getReviewList();
     },
     data() {
         return {
             rating: 0,
-            aptSeq: 6794,
             reviewList: [],
             rvdialog: false,
             trafficRating: 0,
@@ -218,11 +218,11 @@ export default {
     methods: {
         async getReviewList() {
             this.reviewList = (await axios({
-                url: `${this.serverLocation}/getAptReivewList?seq=${this.aptSeq}`
+                url: `${this.serverLocation}/getAptReivewList?seq=${this.aptNum}`
             })).data;
 
             this.rating = (await axios({
-                url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptSeq}`
+                url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptNum}`
             })).data.SCORE;
         },
         async insertReview() {
@@ -230,7 +230,7 @@ export default {
                 url: `${this.serverLocation}/insertAptReview`,
                 method: 'POST',
                 data: {
-                    seq: this.aptSeq,
+                    seq: this.aptNum,
                     trarat: this.trafficRating,
                     surrat: this.surroundingsRating,
                     resrat: this.residenceRating,
