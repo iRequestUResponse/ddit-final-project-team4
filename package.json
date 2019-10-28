@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start . --watch",
+    "start": "pm2 start . --watch --name 'main-server'",
     "kill": "pm2 kill"
   },
   "author": "",

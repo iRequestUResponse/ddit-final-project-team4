@@ -17,7 +17,7 @@ module.exports = function({ app, db }) {
       } = address.data.documents[0].address;
 
       let sql = db.readSQL(process.cwd() + '/sql/map/getAptList.sql');
-      let result = await db.getData(sql, [sido, req.query.y, req.query.x]);
+      let result = await db.getData(sql, [req.query.type || null, sido, req.query.y, req.query.x]);
 
       res.send(result);
     } catch (err) {
@@ -51,6 +51,24 @@ module.exports = function({ app, db }) {
     let result = await db.getData(sql, factor);
 
     res.send(result);
+  });
+
+  app.get('/api/searchAptCenter/:query', async (req, res, next) => {
+    let query = req.params.query;
+    let sql = db.readSQL(process.cwd() + '/sql/map/getAgvLatLngQuery.sql');
+    let factor;
+    if (query.includes(':')) {
+      let [area, name] = query.split(':').map(e => e.trim());
+      factor = [area, name];
+    } else {
+      factor = [query, null];
+    }
+
+    console.log(factor);
+
+    let result = await db.getData(sql, factor);
+
+    res.send(result[0]);
   });
 };
 
