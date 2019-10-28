@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       info: {},
-      mapPage: 'ReviewMain',
+      mapPage: '',
     };
   },
   components: {
