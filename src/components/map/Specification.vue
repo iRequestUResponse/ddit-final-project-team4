@@ -1,6 +1,6 @@
 <template>
   <v-container id="specification" class="pa-0 ma-0">
-    <v-row class="pa-0 ma-0">
+    <v-row class="juk-map_toparea pa-0 ma-0">
       <router-link class="logo pa-4" to="/">죽방</router-link>
     </v-row>
     <component
@@ -22,12 +22,8 @@ export default {
   data() {
     return {
       info: {},
+      mapPage: 'ReviewMain',
     };
-  },
-  data() {
-    return {
-      mapPage: '',
-    }
   },
   components: {
     ReviewMain: () => import('@/components/map/review/ReviewMain'),
@@ -48,13 +44,17 @@ export default {
 }
 
 a.logo {
-  color: #1564f9;
+  color: #FFF;
   font-size: 24pt;
   font-weight: bold;
   text-decoration: none;
 }
 
+.juk-map_toparea {
+  background-color: #1564f9;
+}
+
 .bor {
-  border: 4px solid black;
+  border: 1px solid black;
 }
 </style>
