@@ -1,21 +1,23 @@
 <template>
   <div>
-    <Map />
-    <Specification />
-    <Search />
+    <v-app>
+      <Map />
+      <Specification />
+      <AptSearch />
+    </v-app>
   </div>
 </template>
 
 <script>
 import Map from '@/components/map/Map.vue';
 import Specification from '@/components/map/Specification.vue';
-import Search from '@/components/map/Search.vue';
+import AptSearch from '@/components/map/AptSearch.vue';
 
 export default {
   components: {
     Map,
     Specification,
-    Search,
+    AptSearch,
   }
 }
 </script>

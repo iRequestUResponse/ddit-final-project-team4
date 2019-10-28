@@ -1,12 +1,21 @@
 <template>
   <div id="specification">
     <router-link class="logo" to="/">죽방</router-link>
+    {{ info }}
   </div>
 </template>
 
 <script>
 export default {
   beforeMount() {
+    this.$parent.$on('selectApt', event => {
+      this.info = event;
+    });
+  },
+  data() {
+    return {
+      info: {},
+    };
   },
 }
 </script>
