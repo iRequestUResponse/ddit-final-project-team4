@@ -52,13 +52,15 @@
                     <v-carousel class="carousel"
                       cycle
                       hide-delimiter-background
+                      :show-arrows="false"
                       width="500"
                       height="500"
                     >
                       <v-carousel-item
-                        v-for="(slide,i) in slides"
+                        v-for="(slide,i) in bannerList"
                         :key="i"
-                        :src="slide.src"
+                        :src="`//192.168.0.121:9000/api/file/${slide.BANNER_PATH}`"
+                        :href="slide.BANNER_LINK"
                       >
                         <v-sheet
                           color="#00000011"
@@ -251,6 +253,10 @@ export default {
         url: `${this.serverLocation}/newsList?start=1`
       })).data;
 
+      this.bannerList = (await axios({
+        url: `${this.serverLocation}/bannerList`
+      })).data;
+
       this.userType = (await axios({
         url: `${this.serverLocation}/check`
       })).data.user.type;
@@ -267,6 +273,7 @@ export default {
       isModalVisible: false,
       noticeList: [],
       newsList: [],
+      bannerList: [],
       slides: [
         {
           src: require('../assets/img/slider_02.jpg'),

@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row v-if="nor_information != ''" class="mb-8">
-        <v-col cols="4">
+        <v-col cols="12">
           <div class="pr-5 mr-5">
             <p class="pa-0 ma-0">주소</p>
             <p class="display-1 black--text">{{ nor_information }}</p>

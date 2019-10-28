@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <v-app>
     <Map />
     <Specification />
     <Search />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -21,5 +21,5 @@ export default {
 </script>
 
 <style>
-
+  
 </style>

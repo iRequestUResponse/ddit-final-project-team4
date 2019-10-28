@@ -1,13 +1,29 @@
 <template>
-  <div id="specification">
-    <router-link class="logo" to="/">죽방</router-link>
-  </div>
+  <v-container id="specification" class="pa-0 ma-0">
+    <v-row class="pa-0 ma-0">
+      <router-link class="logo pa-4" to="/">죽방</router-link>
+    </v-row>
+    <component
+      :is="mapPage"
+    />
+  </v-container>
 </template>
 
 <script>
 export default {
   beforeMount() {
   },
+  data() {
+    return {
+      mapPage: '',
+    }
+  },
+  components: {
+    ReviewMain: () => import('@/components/map/review/ReviewMain'),
+  },
+  methods: {
+
+  }
 }
 </script>
 
@@ -21,9 +37,13 @@ export default {
 }
 
 a.logo {
-    color: #1564f9;
-    font-size: 24pt;
-    font-weight: bold;
-    text-decoration: none;
+  color: #1564f9;
+  font-size: 24pt;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.bor {
+  border: 4px solid black;
 }
 </style>
