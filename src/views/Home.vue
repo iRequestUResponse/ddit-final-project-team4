@@ -14,7 +14,7 @@
           :src="slide.src"
         >
           <v-sheet
-            color="#000000AA"
+            color="#00000090"
             height="100%"
             tile
           >
@@ -22,13 +22,14 @@
         </v-carousel-item>
       </v-carousel>
       <div class="slider-text-position">
-        <div class="display-2 white--text text-center">방을 검색해주세요</div>
-        <div class="title white--text text-center mt-2 mb-4">죽방으로 원하는 방을 찾으세요</div>
+        <div class="display-2 white--text text-center">어떤 아파트, 어떤 동네에서</div><br>
+        <div class="display-2 white--text text-center">살고 싶으신가요?<br><br></div>
+        <!-- <div class="title white--text text-center mt-2 mb-4">이제 죽방과 시작해보세요</div> -->
         <div>
           <v-text-field
             dark
             outlined
-            label="지도검색"
+            label="지도 검색"
             prepend-inner-icon="place"
             class="juk-mapsearch"
           ></v-text-field>
@@ -42,33 +43,60 @@
           wrap
           class="my-12"
           align-center
-        >
+        > 
           <v-flex xs12 style="width: 80%;" class="my-8">
             <v-container grid-list-xl>
               <v-layout row wrap align-start>
-                <v-flex xs12 md6>
+                <v-flex xs12 md4>
                   <v-card flat class="transparent">
-                    <v-card-text class="text-center">
-                      <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
-                    </v-card-text>
-                    <v-card-title primary-title class="layout justify-center">
-                      <div class="headline">News</div>
-                    </v-card-title>
-                    <div v-for="news in newsList" :key="news.originallink" class="d-flex justify-center">
-                      <a :href="news.originallink" class="caption blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
+                    <v-carousel class="carousel"
+                      cycle
+                      hide-delimiter-background
+                      width="500"
+                      height="500"
+                    >
+                      <v-carousel-item
+                        v-for="(slide,i) in slides"
+                        :key="i"
+                        :src="slide.src"
+                      >
+                        <v-sheet
+                          color="#00000011"
+                          height="100%"
+                          tile
+                        >
+                        </v-sheet>
+                      </v-carousel-item>
+                    </v-carousel>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md4>
+                  <v-card flat class="transparent">
+                    <div class="d1">
+                      <v-card-text class="text-center">
+                        <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                      </v-card-text>
+                      <v-card-title primary-title class="layout justify-center">
+                        <div class="headline">News</div>
+                      </v-card-title>
+                    </div>
+                    <div v-for="news in newsList" :key="news.originallink" class="board" id="newsboard">
+                      <a :href="news.originallink" class="listfont subtitle-1 blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
                     </div>
                   </v-card>
                 </v-flex>
-                <v-flex xs12 md6>
+                <v-flex xs12 md4>
                   <v-card flat class="transparent">
-                    <v-card-text class="text-center">
-                      <v-icon x-large class="blue--text text--lighten-2">mdi-flash</v-icon>
-                    </v-card-text>
-                    <v-card-title primary-title class="layout justify-center">
-                      <div class="headline">Notice</div>
-                    </v-card-title>
+                    <div class="d1">
+                      <v-card-text class="text-center">
+                        <v-icon x-large class="blue--text text--lighten-2">mdi-flash</v-icon>
+                      </v-card-text>
+                      <v-card-title primary-title class="layout justify-center">
+                        <div class="headline">Notice</div>
+                      </v-card-title>
+                    </div>
                     <div class="content">
-                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ" class="d-flex caption blue-grey--text nonAtag justify-center">{{ notice.NOTICE_TITLE }}</div>
+                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ" class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
                     </div>
                   </v-card>
                 </v-flex>
@@ -90,18 +118,20 @@
             <v-flex xs12 sm4 offset-sm1 align-self-center>
               <v-card flat class="transparent">
                 <v-card-title primary-title class="layout justify-center">
-                  <div class="juk-title">My offered house</div>
+                  <div class="juk-title"><v-icon size="50" icon color="teal accent-3" id="offertitle">home_work</v-icon> 우리집은 얼마나 할까?</div>
                 </v-card-title>
                 <v-row class="mt-4 mb-12">
-                  <div class="juk-subtitle text-center">별도의 비용 없이 중개사에게 매물 정보가 제공되어 빠른 거래가 진행되도록 손쉽게 본인의 집을 내놓아 보세요.</div>
+                  <div class="juk-subtitle text-center" id="offercont">▶ 별도의 비용 없이 손 쉬운 우리집 내놓기를 이용하여<br>시세를 알아보고 공인중개사와 정보를 공유할 수 있습니다.</div>
                 </v-row>
                 <v-row justify="center">
                   <v-btn 
+                    id="offerbtn"
                     width="200"
                     height="60"
                     class="headline"
                     color="teal"
                     outlined
+                    @click="showModal"
                   >
                     우리집 내놓기
                   </v-btn>
@@ -113,33 +143,7 @@
       </section>
 
       <section class="juk-deepback">
-        <v-container grid-list-xl class="my-12">
-          <v-layout row wrap justify-center class="my-12">
-            <v-flex xs12 sm4 class="my-12">
-              <v-card flat class="transparent">
-                <v-carousel 
-                  cycle
-                  hide-delimiter-background
-                  width="500"
-                  height="700"
-                >
-                  <v-carousel-item
-                    v-for="(slide,i) in slides"
-                    :key="i"
-                    :src="slide.src"
-                  >
-                    <v-sheet
-                      color="#000000AA"
-                      height="100%"
-                      tile
-                    >
-                    </v-sheet>
-                  </v-carousel-item>
-                </v-carousel>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
+       
         <v-parallax src="@/assets/img/aggregation_back.jpg" height="380">
           <v-layout column align-center justify-center>
             <div class="headline white--text mb-4 text-center">Web development has never been easier</div>
@@ -180,7 +184,6 @@
         </v-container>
       </section>
     </v-content>
-<a class="offset-md-1 juk-menu" style="cursor: pointer" @click="showModal">우리집내놓기</a>
     <v-footer color="grey darken-4" height="50">
       <v-layout row wrap align-center style="margin: 0 10%;">
         <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-facebook</v-icon></a>
@@ -245,8 +248,12 @@ export default {
       })).data;
 
       this.newsList = (await axios({
-        url: `${this.serverLocation}/newsList?start=5`
+        url: `${this.serverLocation}/newsList?start=1`
       })).data;
+
+      this.userType = (await axios({
+        url: `${this.serverLocation}/check`
+      })).data.user.type;
     })();
   },
   components: {
@@ -255,26 +262,42 @@ export default {
   },
   data() {
     return {
+      userType: undefined,
       modalVisibility: false,
       isModalVisible: false,
       noticeList: [],
       newsList: [],
       slides: [
         {
-          src: require('../assets/img/slider_01.png'),
+          src: require('../assets/img/slider_02.jpg'),
         },
         {
           src: require('../assets/img/slider_03.jpg'),
         },
         {
-          src: require('../assets/img/slider_04.jpg'),
+          src: require('../assets/img/slider_01.png'),
         },
       ],
     }
   },
   methods:{
     showModal() {
-      this.isModalVisible = true;
+      if(this.userType === 'user'){
+        this.isModalVisible = true;
+      }else if(this.userType == undefined){
+        this.$swal({
+          type: 'info',
+          title: '로그인이 필요합니다',
+          text: ' ',
+          confirmButtonText: '로그인 하기',
+        })
+        .then((result) => {
+          this.$router.replace('/login/user');
+        })
+
+      }else if(this.userType === 'agent'){
+        this.$swal('일반 회원만 가능한 서비스입니다.', ' ', 'info');
+      }
     },
     closeModal() {
       this.isModalVisible = false;
@@ -288,7 +311,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   .slider-position {
     position: relative;
   }
@@ -331,5 +354,30 @@ export default {
 
   .juk-deepback {
     background-color: #E0E0E0 !important;
+  }
+  #offertitle {
+    margin-left: -10px;
+  }
+
+  #offercont{
+    margin-left: 30px;
+  }
+
+  .board {
+    margin-top: 7px;
+    margin-left: 140px;
+  }
+  .caption {
+    font-size: 1.2em;
+  }
+  #newsboard{
+    margin-left: 80px;
+  }
+  .d1 {
+    margin-left: 50px;
+    margin-bottom: 35px;
+  }
+  .carousel {
+    margin-left: -30px
   }
 </style>

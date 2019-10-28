@@ -1,3 +1,4 @@
+
 <template>
   <div class="modal-backdrop">
     <div class="modal">
@@ -170,7 +171,7 @@ export default {
       addr2: '',
       myFiles: [],  //미리 가져오는값
       server: {
-          url: `${this.fileServer}/file/user`,
+          url: `http://192.168.0.121:9000/api/file/user`,
           revert: {
             onload: (e) => {
               console.log('revert', JSON.parse(e));
@@ -233,9 +234,18 @@ export default {
         .then(res => {
           
           if (res.data === 1) {
-            alert("우리집 내놓기 등록이 정상적으로 완료되었습니다.")
-            this.$router.replace('/');
-            this.$emit('close');
+            this.$swal({
+                type: 'success',
+                title: '등록성공',
+                text: '우리집 내놓기 등록이 정상적으로 완료되었습니다.',
+                showCancelButton: true,
+                confirmButtonText: '내역확인',
+                cancelButtonText: '홈화면',
+            })
+            .then((result) => {
+              this.$emit('close');
+              this.$router.replace('/mypage/DetailsInquiry');
+            })
           }else if(res.data === 0){
             alert("서버에 등록 실패!!!")
           }else if(res.data === 2){
@@ -255,7 +265,7 @@ export default {
         {
           name: 'dynamic-modal',
           width : '35%',
-          height: '600px',
+          height: 'auto',
           scrollable: true,
         })
       },
@@ -272,7 +282,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   .modal-backdrop {
     position: fixed;
     top: 0;
@@ -292,8 +302,8 @@ export default {
     display: flex;
     flex-direction: column;
     width: 40%;
-    height: 90%;
-    margin-left: 400px;
+    height: 100%;
+    margin-left: 260px;
   }
 
   .modal-header,

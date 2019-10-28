@@ -3,7 +3,6 @@
         <v-app>
             <p>회원가입 페이지</p>
             <v-form>
-                {{ isError }}
                 <v-container>
                     <v-row justify="center">
                         <div id="firdiv">
@@ -235,27 +234,27 @@ export default {
             })
             .then(res => {
                 if (res.data == 0){
-                    alert("사용 가능한 아이디입니다.")
+                    this.$swal('사용 가능한 아이디입니다.', ' ', 'success');
                     this.isValidId = true;
                 } else if (res.data == 1) {
-                    alert("아이디가 중복됩니다.")
+                    this.$swal('아이디가 중복됩니다.', ' ', 'info');
                     this.id = "";
                 } else if (res.data == 2){
-                    alert("아이디를 입력해주세요.")
+                     this.$swal('아이디를 입력해주세요.', ' ', 'info');
                 } else {
-                    alert("아이디 형식에 맞지 않습니다.")
+                    this.$swal('아이디 형식에 맞지 않습니다.', ' ', 'info');
                     this.id = "";
                 }
             })
         },
         join() {
             if (this.isValidId === false) {
-                alert("중복검사를 해주세요!!!");
+                 this.$swal('중복검사를 해주세요!!!', ' ', 'info');
                 res.data = 0;
                 return;
             }
             if (this.id == "" || this.name == "" || this.pass == "" || this.conpass == "" || this.phone == "" || this.result.jibunAddress == "" ||this.addr2 == "") {
-                alert('모두 입력해주세요!!!');
+                this.$swal('모두 입력해주세요!!!', ' ', 'info');
             } else {
                  axios({
                     url: `${this.serverLocation}/join`,
@@ -269,10 +268,15 @@ export default {
                     },
                 })
                 .then(res => {
-                    if (res.data === 1) {
-                        alert("회원가입이 정상적으로 완료되었습니다.")
-                        this.$router.replace('/');
-                    }
+                     this.$swal({
+                        type: 'success',
+                        title: '회원가입 성공',
+                        text: '회원가입이 정상적으로 완료되었습니다.',
+                        confirmButtonText: '시작하기',
+                      })
+                      .then((result) => {
+                        this.$router.push('/');
+                      })
                 })
             }
         },
@@ -301,7 +305,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .juk-mu_text-field {
         border-radius: 0;
     }

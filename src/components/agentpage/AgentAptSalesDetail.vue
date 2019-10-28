@@ -1,5 +1,23 @@
 <template>
-    <v-container class="px-10 py-0 mt-12">
+    <v-container class="px-auto">
+        <v-row 
+            align="center"
+            justify="center"
+            style="height: 300px;"
+            class="ma-0 "
+        >
+            <p class="display-2 black--text">매물관리</p>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <div class="grey--text">
+                    아파트명
+                </div>
+                <div class="display-2">
+                    {{ aptsale.APT_NAME }}
+                </div>
+            </v-col>
+        </v-row>
         <v-row class="pl-4 my-4">
             <v-col cols="12" md="4">
                 <div class="juk-leftdevide">
@@ -7,7 +25,7 @@
                         거래유형 / 금액
                     </div>
                     <div class="display-1">
-                        {{ norsale.SALES_TYPE }} {{ norsale | comma }}
+                        {{ aptsale.SALES_TYPE }} {{ aptsale | comma }}
                     </div>
                 </div>
             </v-col>
@@ -17,7 +35,7 @@
                         면적
                     </div>
                     <div class="display-1">
-                        {{ norsale.AREA }}평
+                        {{ aptsale.PYEONG }}평
                     </div>
                 </div>
             </v-col>
@@ -27,25 +45,25 @@
                     person
                 </v-icon>
                 <div class="pl-2">
-                    {{ norsale.AGENTID }}
+                    {{ aptsale.AGENTID }}
                 </div>
             </v-col>
         </v-row>
         <v-row class="juk-maindivide py-1">
-            <v-col>{{ norsale.SALES_TITLE }}</v-col>
+            <v-col>{{ aptsale.SALES_TITLE }}</v-col>
         </v-row>
         <v-row class="juk-bottomdivide py-1">
-            <v-col cols="3">해당층/전체층 : {{ norsale.RELEVANT_FLOOR }}층/{{ norsale.WHOLE_FLOOR }}층</v-col>
-            <v-col cols="3">방향 : {{ norsale.DIRECTION }}</v-col>
-            <v-col cols="3">준공년도 : {{ norsale.COMPLETION_DATE.substring(0,4) }}년</v-col>
-            <v-col cols="3">입주가능일 : {{ norsale.AVAILABILITY_DATE }}</v-col>
+            <v-col cols="3">해당층/전체층 : {{ aptsale.RELEVANT_FLOOR }}층/{{ aptsale.WHOLE_FLOOR }}층</v-col>
+            <v-col cols="3">방향 : {{ aptsale.DIRECTION }}</v-col>
+            <v-col cols="3">준공년도 : {{ aptsale.COMPLETION_DATE.substring(0,4) }}년</v-col>
+            <v-col cols="3">입주가능일 : {{ aptsale.AVAILABILITY_DATE }}</v-col>
         </v-row>
         <v-row justify="center" class="px-12">
             <v-col cols="12" sm="12" md="8">
                 <v-container>
                     <v-row>
                         <v-col
-                            v-for="photo in norsale.photolist"
+                            v-for="photo in aptsale.photolist"
                             :key="photo.PHOTO_SEQ"
                             class="d-flex child-flex"
                             cols="12"
@@ -77,7 +95,7 @@
         <v-row class="mt-8 px-8">
             <v-card min-height="500" flat tile>
                 <div class="display-1">
-                    {{ norsale.SALES_CONT }}
+                    {{ aptsale.SALES_CONT }}
                 </div>
             </v-card>
         </v-row>
@@ -86,18 +104,18 @@
 
 <script>
 export default {
-    props: ['aptNum'],
+    props: ['offerNum'],
     beforeMount() {
         (async () => {
             let result = (await axios({
-                url: `${this.serverLocation}/mpGetNorSalesDetail?num=${this.aptNum}`
+                url: `${this.serverLocation}/mpGetAptSalesDetail?aptNum=${this.offerNum}`
             })).data;
 
             let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));
             result.COMPLETION_DATE = `${completeionDate.getFullYear()}.${completeionDate.getMonth() + 1}.${completeionDate.getDate()}`;
             result.AVAILABILITY_DATE = `${availability_date.getFullYear()}.${availability_date.getMonth() + 1}.${availability_date.getDate()}`;
 
-            this.norsale = result;
+            this.aptsale = result;
         })();
     },
     filters: {
@@ -131,7 +149,7 @@ export default {
     },
     data() {
         return {
-            norsale: {},
+            aptsale: {},
         }
     },
 }

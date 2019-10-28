@@ -1,25 +1,49 @@
 <template>
 <div @click.stop="hideModal">
   <header>
-    <v-toolbar height="110px" app flat>
+    <v-toolbar height="110px" flat>
       <v-container
         mx-auto
         py-0
       >
         <v-layout align-center>
+          <v-icon size="50" icon color="#1564f9" @click="home" id="homeicon">apartment</v-icon>&nbsp;&nbsp;
           <router-link class="logo" to="/">죽방</router-link>
           <router-link to="/map/apart" class="offset-md-1 juk-menu">아파트</router-link>
-          <router-link to="/map/village" class="offset-md-1 juk-menu">빌라+투룸</router-link>
           <router-link to="/map/oneRoom" class="offset-md-1 juk-menu">원룸</router-link>
-          <a v-if="(loginUser || {}).type === 'user'" class="offset-md-1 juk-menu" style="cursor: pointer" @click="showModal">우리집내놓기</a>
+          <router-link to="/map/village" class="offset-md-1 juk-menu">투룸</router-link>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
           <v-btn v-if="!loginUser" to="/login/user">로그인 / 회원가입</v-btn>
           <v-btn v-if="!loginUser" to="/login/agent">공인중개사 회원전용</v-btn>
   
-          <v-btn v-if="(loginUser || {}).type === 'user'" to="/mypage">마이페이지</v-btn>
-          <v-btn v-if="(loginUser || {}).type === 'agent'" to="/agentpage">중개사페이지</v-btn>
-          <v-btn v-if="loginUser" @click="logout">로그아웃</v-btn>
+          <v-btn 
+            v-if="(loginUser || {}).type === 'user'" 
+            to="/mypage"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            마이페이지
+          </v-btn>
+          <v-btn 
+            v-if="(loginUser || {}).type === 'agent'" 
+            to="/agentpage"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            중개사페이지
+          </v-btn>
+          <v-btn 
+            v-if="loginUser" 
+            @click="logout"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            로그아웃
+          </v-btn>
 
         </v-layout>
       </v-container>
@@ -75,6 +99,9 @@ export default {
         this.isModalVisible = false;
       }
     },
+    home(){
+      this.$router.push('/');
+    }
   },
   components: {
     modal,
@@ -96,9 +123,13 @@ a.logo {
 }
 
 a.juk-menu {
-  font-size: 18pt;
-  font-weight: 500;
+  font-size: 19pt;
   color: black;
   text-decoration: none;
 }
+
+#homeicon {
+  cursor: pointer;
+}
+
 </style>

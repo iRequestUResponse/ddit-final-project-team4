@@ -5,8 +5,8 @@
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
-              <v-toolbar id="toolbar" color="primary" dark flat>
-                <router-link class="logo" to="/">비밀번호 찾기</router-link>
+              <v-toolbar color="primary" dark flat>
+                <router-link class="logo" to="/">중개사 비밀번호 찾기</router-link>
               </v-toolbar>
               <v-card-text>
                 <v-form id="idform">
@@ -54,10 +54,19 @@ methods: {
         })
         .then(res => {
             if (res.data === 'success') {
-                alert(this.id + "메일주소로 임시비밀번호가 전송되었습니다.");
-                this.$router.push('/login/' + this.$route.params.func);
+                this.$swal({
+                    type: 'success',
+                    title: this.name + ' 회원님',
+                    text: '메일주소로 임시비밀번호가 전송되었습니다.',
+                    confirmButtonText: '로그인하기',
+                })
+                .then((result) => {
+                     this.$router.push('/login/' + this.$route.params.func);
+                })
+            } else if (this.id == '' && this.name == '') {
+              this.$swal('공백을 입력해주세요.', ' ', 'info');
             } else {
-                alert("일치하는 회원정보가 없습니다!!!");
+              this.$swal('일치하는 회원정보가 없습니다.', ' ', 'error');
             }
         })
     }

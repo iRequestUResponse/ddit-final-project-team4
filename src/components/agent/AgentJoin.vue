@@ -9,8 +9,7 @@
                             간편하게 가입하고 <br>
                             다양한 서비스를 이용하세요.<br><br>
                         </div>
-                    </v-row>
-                    
+                    </v-row>              
                     <v-row justify="center">
                         <v-col cols="12" lg="3">
                             <v-text-field
@@ -38,21 +37,6 @@
             
                     <v-row justify="center">
                         <v-col cols="12" lg="4">
-                            <v-text-field
-                                ref="name"
-                                v-model="name"
-                                :rules="[
-                                    () => !!name || '이름을 입력해주세요!!!',
-                                    () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
-                                ]"
-                                label="이름"
-                                outlined
-                                required
-                                class="juk-mu_text-field"
-                                @update:error="error"
-                            >
-                            </v-text-field>
-
                             <v-text-field
                                 type="password"
                                 ref="pass"
@@ -141,6 +125,20 @@
 
                         <v-row justify="center">
                          <v-col cols="12" lg="4">
+                            <v-text-field
+                                  ref="name"
+                                  v-model="name"
+                                  :rules="[
+                                      () => !!name || '이름을 입력해주세요!!!',
+                                  ]"
+                                  label="공인중개사사무소 이름"
+                                  outlined
+                                  required
+                                  class="juk-mu_text-field"
+                                  @update:error="error"
+                              >
+                            </v-text-field>
+
                             <v-text-field
                                 ref="addr1"
                                 id="addr1"
@@ -279,27 +277,28 @@ export default {
             })
             .then(res => {
                 if (res.data == 0){
-                    alert("사용 가능한 아이디입니다.")
+                    this.$swal('사용 가능한 아이디입니다.', ' ', 'success');
                     this.isValidId = true;
                 } else if (res.data == 1) {
-                    alert("아이디가 중복됩니다.")
+                    this.$swal('아이디가 중복됩니다.', ' ', 'info');
                     this.id = "";
                 } else if (res.data == 2){
-                    alert("아이디를 입력해주세요.")
+                    this.$swal('아이디를 입력해주세요.', ' ', 'info');
                 } else {
-                    alert("아이디 형식에 맞지 않습니다.")
+                    this.$swal('아이디 형식에 맞지 않습니다.', ' ', 'info');
                     this.id = "";
                 }
             })
         },
         join() {
             if (this.isValidId === false) {
-                alert("중복검사를 해주세요!!!");
+                this.$swal('중복검사를 해주세요!!!', ' ', 'info');
+
                 res.data = 0;
                 return;
             }
             if (this.id == "" || this.name == "" || this.pass == "" || this.conpass == "" || this.phone == "" || this.result.jibunAddress == "" || this.addr2 == "") {
-                alert('모두 입력해주세요!!!');
+                this.$swal('모두 입력해주세요!!!', ' ', 'info');
             } else {
                 axios({
                     url: `${this.serverLocation}/joinAgent`,
@@ -315,17 +314,24 @@ export default {
                 })
                 .then(res => {
                     if (res.data === 1) {
-                        alert("회원가입이 정상적으로 완료되었습니다.")
-                        this.$router.replace('/');
+                         this.$swal({
+                          type: 'success',
+                          title: '회원가입 성공',
+                          text: '회원가입이 정상적으로 완료되었습니다.',
+                          confirmButtonText: '시작하기',
+                        })
+                        .then((result) => {
+                          this.$router.push('/');
+                        })
                     }
                 })
             }
         },
         getAddress(event) {
             this.result = event;
-            console.log(this.result);
             this.dialog = false;
 
+            this.name = this.result.buildingName;
             if (!event.jibunAddress) {
                 this.result.jibunAddress = event.autoJibunAddress;
             }
@@ -350,10 +356,8 @@ export default {
             // console.log(this.$refs.pond);
         },
         onload(error, result) {
-            console.log(result)
             let info = result.serverId;
 
-            console.log(info);
             this.filename = info.filename
         },
     },

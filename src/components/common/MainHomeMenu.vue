@@ -1,5 +1,5 @@
 <template>
-<div @click.stop="hideModal">
+<div>
     <v-toolbar 
         absolute
         color="transparent"
@@ -9,11 +9,12 @@
     >
       <v-container fluid>
         <v-layout align-center>
-          <router-link class="logo mr-10" to="/">죽방</router-link>
-          <router-link to="/map/apart" class="juk-mainmenu mx-10">아파트</router-link>
-          <router-link to="/map/village" class="juk-mainmenu mx-10">투룸</router-link>
-          <router-link to="/map/oneRoom" class="juk-mainmenu mx-10">원룸</router-link>
-          <a v-if="(loginUser || {}).type === 'user'" class="juk-mainmenu mx-4" style="cursor: pointer" @click="showModal">우리집내놓기</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-icon size="50" icon color="yellow">apartment</v-icon>&nbsp;&nbsp;
+          <router-link class="logo mr-10" to="/">죽방</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
+          <router-link to="/map/apart" class="juk-mainmenu mx-12">아파트</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
+          <router-link to="/map/oneRoom" class="juk-mainmenu mx-12">원룸</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
+          <router-link to="/map/village" class="juk-mainmenu mx-12">투룸</router-link>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
           <router-link v-if="!loginUser" to="/login/user" class="juk-mainmenu mx-4">로그인 / 회원가입</router-link>
@@ -25,17 +26,11 @@
         </v-layout>
       </v-container>
     </v-toolbar>
-    <modal
-      id="modal"
-      v-show="isModalVisible"
-      @close="closeModal"
-    />
 </div>
 </template>
 
 <script>
 import axios from 'axios';
-import modal from '@/components/user/OfferHouseModal.vue';
 
 export default {
   beforeMount() {
@@ -45,14 +40,11 @@ export default {
       });
 
       this.loginUser = result.data.user;
-      console.log(this.$route);
     })();
   },
   data() {
     return {
       loginUser: undefined,
-      modalVisibility: false,
-      isModalVisible: false,
     };
   },
   methods: {
@@ -62,22 +54,19 @@ export default {
       });
       
       this.loginUser = undefined;
-      this.$router.push('/');
-    },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
-    hideModal(event) {
-      if (event.target === document.querySelector('#modal')) {
-        this.isModalVisible = false;
-      }
+
+      this.$swal({
+        type: 'success',
+        title: '로그아웃',
+        text: '로그아웃이 정상적으로 되었습니다.',
+      })
+      .then((result) => {
+          this.$router.push('/');
+      })
     },
   },
   components: {
-    modal,
+
   },
  
 }
@@ -89,16 +78,17 @@ header {
 }
 
 a.logo {
-    color: #1564f9;
+    color:  yellow;
     font-size: 32pt;
-    font-weight: bold;
     text-decoration: none;
 }
 
 a.juk-mainmenu {
-  font-size: 14pt;
-  font-weight: 500;
+  font-size: 19pt;
   color: white;
   text-decoration: none;
+}
+a.juk-mainmenu:hover{
+  color: lightskyblue;
 }
 </style>

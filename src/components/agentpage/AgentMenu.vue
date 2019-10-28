@@ -12,7 +12,15 @@
           <a class="offset-md-1 juk-menu" @click="sendPage('AgentModify')">개인정보수정</a>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
-          <v-btn v-if="loginUser" @click="logout">로그아웃</v-btn>
+          <v-btn 
+            v-if="loginUser" 
+            @click="logout"
+            color="grey darken-3"
+            outlined
+            tile
+          >
+            로그아웃
+          </v-btn>
         </v-layout>
       </v-container>
     </v-toolbar>

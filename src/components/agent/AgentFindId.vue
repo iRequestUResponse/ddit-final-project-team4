@@ -6,7 +6,7 @@
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar id="toolbar" color="primary" dark flat>
-                <router-link class="logo" to="/">아이디 찾기</router-link>
+                <router-link class="logo" to="/">중개사 아이디 찾기</router-link>
               </v-toolbar>
               <v-card-text>
                 <v-form id="idform">
@@ -21,6 +21,7 @@
                     <img id="img2" src="@/assets/img/phone.png">
                     <v-text-field id="phone" label="휴대폰 번호" name="phone" type="text" v-model="phone"/>
                   </v-row>
+                  
                 </v-form>
               </v-card-text>
               <v-btn id="btn" @click="findId">아이디 찾기</v-btn>
@@ -50,16 +51,25 @@ export default {
     methods: {
         findId() {
             axios({
-                url: `${this.serverLocation}/findId?name=${this.name}&phone=${this.phone}`,
+                url: `${this.serverLocation}/agentFindId?name=${this.name}&phone=${this.phone}`,
                 method: 'GET',
             })
             .then(res => {
                 console.log(res.data);
                 if (res.data) {
-                    alert(this.name + " 회원님의 아이디는 " + res.data.USERID + " 입니다.");
-                    this.$router.push('/login/' + this.$route.params.func);
+                  this.$swal({
+                    type: 'success',
+                    title: this.name + ' 회원님',
+                    text: '아이디는 ' + res.data.AGENTID + ' 입니다.',
+                    confirmButtonText: '로그인하기',
+                  })
+                  .then((result) => {
+                     this.$router.push('/login/' + this.$route.params.func);
+                  })
+                } else if (!res.data) {
+                  this.$swal('공백을 입력해주세요.', ' ', 'info');
                 } else {
-                    alert("일치하는 회원정보가 없습니다!!!");
+                  this.$swal('일치하는 회원정보가 없습니다.', ' ', 'error');
                 }
             })
         }

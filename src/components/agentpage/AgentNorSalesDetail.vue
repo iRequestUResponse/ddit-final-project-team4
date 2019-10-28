@@ -1,5 +1,13 @@
 <template>
-    <v-container class="px-10 py-0 mt-12">
+    <v-container class="px-auto">
+        <v-row 
+            align="center"
+            justify="center"
+            style="height: 300px;"
+            class="ma-0 "
+        >
+            <p class="display-2 black--text">매물관리</p>
+        </v-row>
         <v-row class="pl-4 my-4">
             <v-col cols="12" md="4">
                 <div class="juk-leftdevide">
@@ -86,11 +94,11 @@
 
 <script>
 export default {
-    props: ['aptNum'],
+    props: ['offerNum'],
     beforeMount() {
         (async () => {
             let result = (await axios({
-                url: `${this.serverLocation}/mpGetNorSalesDetail?num=${this.aptNum}`
+                url: `${this.serverLocation}/mpGetNorSalesDetail?num=${this.offerNum}`
             })).data;
 
             let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));

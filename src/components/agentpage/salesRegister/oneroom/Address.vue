@@ -1,9 +1,21 @@
 <template>
   <div>
-    <v-container class="address">
-      <vue-daum-postcode
-        @complete="getAddress"
-      />
+    <v-container>
+      <v-row v-if="nor_information != ''" class="mb-8">
+        <v-col cols="4">
+          <div class="pr-5 mr-5">
+            <p class="pa-0 ma-0">주소</p>
+            <p class="display-1 black--text">{{ nor_information }}</p>
+          </div>
+        </v-col>
+        <v-spacer></v-spacer>
+      </v-row>
+
+      <div class="address">
+        <vue-daum-postcode
+          @complete="getAddress"
+        />
+      </div>
     </v-container>
   </div>
 </template>
@@ -17,7 +29,7 @@ export default {
   },
   data() {
     return {
-
+      nor_information: '',
     };
   },
   methods: {
@@ -32,6 +44,8 @@ export default {
         this.$emit('selectAddress', {
           address, lng, lat,
         });
+
+        this.nor_information = address;
       });
     },
     // ------------
