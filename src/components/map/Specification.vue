@@ -6,12 +6,23 @@
     <component
       :is="mapPage"
     />
+    <v-row class="pa-0 ma-0">
+      {{ info }}
+    </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
   beforeMount() {
+    this.$parent.$on('selectApt', event => {
+      this.info = event;
+    });
+  },
+  data() {
+    return {
+      info: {},
+    };
   },
   data() {
     return {

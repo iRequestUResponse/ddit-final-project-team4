@@ -23,15 +23,15 @@ Vue.use(VModal, { dynamic: true })
 Vue.config.productionTip = false
 
 Vue.mixin({
-    methods: {
-        async loginCheck() {
-            let result = await axios({
-                url: `${this.serverLocation}/check`
-            })
+  methods: {
+    async loginCheck() {
+      let result = await axios({
+        url: `${this.serverLocation}/check`
+      })
 
-            return typeof result.data.user !== 'undefined'
-        }
-    },
+      return typeof result.data.user !== 'undefined'
+    }
+  },
   data() {
     return {
       serverLocation: 'http://localhost:3000/api',
