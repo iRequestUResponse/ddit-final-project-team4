@@ -109,10 +109,10 @@ export default {
           url: `${this.serverLocation}/getPopulApt?addr=${ this.addr }`
         })).data;
 
-        console.log("찍혀라" , this.populaptList)
+        console.log("찍혀라" , this.populaptList.value)
       })();
 
-      // for(let i; i < this.populaptList[0].length(); i++){
+      // for(let i; i < this.populaptList.length; i++){
 
       // }
 
