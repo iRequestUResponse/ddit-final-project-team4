@@ -22,8 +22,33 @@ module.exports = function({ app, db }) {
 
     let sql = db.readSQL(process.cwd() + '/sql/apt/getPopulApt.sql');
     let result = (await db.getData(sql, [req.query.addr, req.query.addr]));
-    console.log("----------------------")
-    console.log("populresult" , result)
+
+    res.send(result);
+  })
+
+  // 아파트 인기순위 정하기 (동별)
+  app.get('/api/getPopulAptDong', async (req, res, next) => {
+
+    let sql = db.readSQL(process.cwd() + '/sql/apt/getPopulAptDong.sql');
+    let result = (await db.getData(sql, [req.query.addr, req.query.addr]));
+
+    res.send(result);
+  })
+
+  // 아파트 월별 평균가격 가져오기
+  app.get('/api/getChartPrice', async (req, res, next) => {
+
+    let sql = db.readSQL(process.cwd() + '/sql/apt/getChartPrice.sql');
+    let result = (await db.getData(sql, [req.query.aptNo]));
+
+    res.send(result);
+  })
+
+  // 아파트 월별 거래 건수 가져오기
+  app.get('/api/getAptGunsu', async (req, res, next) => {
+
+    let sql = db.readSQL(process.cwd() + '/sql/apt/getAptGunsu.sql');
+    let result = (await db.getData(sql, [req.query.aptNo]));
 
     res.send(result);
   })
