@@ -1,6 +1,6 @@
 <template>
-  <v-container id="specification" class="pa-0 ma-0">
-    <v-row class="juk-map_toparea pa-0 ma-0">
+  <v-container id="specification" class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
+    <v-row class="juk-map_toparea pa-0 ma-0 "> 
       <router-link class="logo pa-4" to="/">죽방</router-link>
     </v-row>
     <component
@@ -13,43 +13,6 @@
 
 <script>
 export default {
-  beforeMount() {
-    this.$parent.$on('selectApt', event => {
-
-      this.info = event;
-      this.aptNo = this.info.APT_SEQ;
-      this.addr = this.info.APT_ADDR;
-
-      // 아파트에 대한 3개월 평균값 가져오기
-      (async () => {
-        this.avgPrice = (await axios({
-          url: `${this.serverLocation}/getAptPrice?aptNo=${ this.aptNo }`
-        })).data;
-      })();
-
-      // 매물에 대한 1개월 평균값 가져오기
-      (async () => {
-        this.salesPrice = (await axios({
-          url: `${this.serverLocation}/getSalesPrice?aptNo=${ this.aptNo }`
-        })).data;
-      })();
-
-      // 인기순위 정하기(구별)
-      (async () => {
-        this.populaptList = (await axios({
-          url: `${this.serverLocation}/getPopulApt?addr=${ this.addr }`
-        })).data;
-
-        console.log("찍혀라" , this.populaptList.value)
-      })();
-
-      // for(let i; i < this.populaptList.length; i++){
-
-      // }
-
-    });
-
-  },
   data() {
     return {
       mapPage: 'AptInfo',
@@ -75,7 +38,7 @@ export default {
 #specification {
   position: fixed;
   right: 0;
-  width: 400px;
+  width: 500px;
   background: #FFF;
   height: 100vh;
 }
