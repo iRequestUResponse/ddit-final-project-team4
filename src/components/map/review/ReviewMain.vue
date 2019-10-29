@@ -200,6 +200,14 @@
 export default {
     props: ['aptNum'],
     beforeMount() {
+        this.$parent.$parent.$on('selectApt', event => {
+            if(event != null) {
+                this.trans.aptSalesNum = 0;
+                this.trans.page = 'AptInfo';
+                this.$emit('receivedPage', this.trans);
+            }
+        });
+
         this.getReviewList();
     },
     data() {
@@ -213,6 +221,7 @@ export default {
             reviewCont: '',
             reviewSeq: 0,
             mode: 'insert',
+            trans: {},
         }
     },
     methods: {
@@ -292,6 +301,14 @@ export default {
                 }
             })
         },
+        showInfo() {
+            console.log("ReviewMain.vue - showInfo");
+            this.trans.aptSalesNum = 0;
+            this.trans.page = 'AptInfo';
+            
+            this.$emit('receivedPage', this.trans);
+            console.log("ReviewMain.vue - ", this.trans);
+        }
     }
 }
 </script>

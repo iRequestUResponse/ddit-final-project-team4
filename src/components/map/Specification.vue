@@ -13,43 +13,6 @@
 
 <script>
 export default {
-  beforeMount() {
-    this.$parent.$on('selectApt', event => {
-
-      this.info = event;
-      this.aptNo = this.info.APT_SEQ;
-      this.addr = this.info.APT_ADDR;
-
-      // 아파트에 대한 3개월 평균값 가져오기
-      (async () => {
-        this.avgPrice = (await axios({
-          url: `${this.serverLocation}/getAptPrice?aptNo=${ this.aptNo }`
-        })).data;
-      })();
-
-      // 매물에 대한 1개월 평균값 가져오기
-      (async () => {
-        this.salesPrice = (await axios({
-          url: `${this.serverLocation}/getSalesPrice?aptNo=${ this.aptNo }`
-        })).data;
-      })();
-
-      // 인기순위 정하기(구별)
-      (async () => {
-        this.populaptList = (await axios({
-          url: `${this.serverLocation}/getPopulApt?addr=${ this.addr }`
-        })).data;
-
-        console.log("찍혀라" , this.populaptList.value)
-      })();
-
-      // for(let i; i < this.populaptList.length; i++){
-
-      // }
-
-    });
-
-  },
   data() {
     return {
       mapPage: 'AptInfo',
@@ -60,6 +23,8 @@ export default {
   components: {
     ReviewMain: () => import('@/components/map/review/ReviewMain'),
     AptInfo: () => import('@/components/map/apt/AptInfo'),
+    AptSalesList: () => import('@/components/map/apt/AptSalesList'),
+    AptSalesDetail: () => import('@/components/map/apt/AptSalesDetail'),
   },
 
   methods: {

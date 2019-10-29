@@ -1,0 +1,61 @@
+<template>
+  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 90vh">
+    <v-row class="mx-0">
+      <v-col cols="12" v-for="sales in salesList" :key="sales.APTSALES_NUM">
+        <v-card outlined @click="viewSales(sales.APTSALES_NUM)">
+          <v-img :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`" height="200px" />
+
+          <div>
+            <v-card-title>
+              <div>{{ sales.SALES_TITLE }}</div>
+            </v-card-title>
+            <v-card-text>
+              <div>{{ sales.PYEONG }}평 {{ sales.RELEVANT_FLOOR }}층/{{ sales.WHOLE_FLOOR }}층</div>
+              <div>{{ sales.APT_NAME }} {{ sales.DONG }}</div>
+              <div>{{ sales.SALES_CONT.substring(0,24) }}...</div>
+            </v-card-text>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+  export default {
+    props: ['aptNum'],
+    beforeMount() {
+      this.$parent.$parent.$on('selectApt', event => {
+        if (event != null) {
+          this.trans.aptSalesNum = 0;
+          this.trans.page = 'AptInfo';
+          this.$emit('receivedPage', this.trans);
+        }
+      });
+
+      (async () => {
+        this.salesList = (await axios({
+          url: `${this.serverLocation}/getMapAptSalesList?seq=${this.aptNum}`
+        })).data;
+      })();
+    },
+    data() {
+      return {
+        trans: {},
+        salesList: [],
+      }
+    },
+    methods: {
+      viewSales(aptSalesNum) {
+        this.trans.aptSalesNum = aptSalesNum;
+        this.trans.page = 'AptSalesDetail';
+
+        this.$emit('receivedPage', this.trans);
+      },
+    }
+  }
+</script>
+
+<style>
+
+</style>

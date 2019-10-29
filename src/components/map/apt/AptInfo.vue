@@ -162,7 +162,10 @@
         },
         methods: {
             salesListView() {
-
+                this.trans.aptSalesNum = this.aptNo;
+                this.trans.page = 'AptSalesList';
+                
+                this.$emit('receivedPage', this.trans);
             },
             showReview() {
                 this.trans.aptSalesNum = this.aptNo;
