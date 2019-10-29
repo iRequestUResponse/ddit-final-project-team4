@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Map />
-    <Specification />
+    <Specification/>
     <AptSearch />
   </v-app>
 </template>

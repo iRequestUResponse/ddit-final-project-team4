@@ -1,6 +1,6 @@
 <template>
-  <v-container id="specification" class="pa-0 ma-0">
-    <v-row class="juk-map_toparea pa-0 ma-0">
+  <v-container id="specification" class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
+    <v-row class="juk-map_toparea pa-0 ma-0 "> 
       <router-link class="logo pa-4" to="/">죽방</router-link>
     </v-row>
     <component
@@ -40,7 +40,7 @@ export default {
 #specification {
   position: fixed;
   right: 0;
-  width: 400px;
+  width: 500px;
   background: #FFF;
   height: 100vh;
 }
