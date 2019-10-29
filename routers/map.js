@@ -52,5 +52,12 @@ module.exports = function({ app, db }) {
 
     res.send(result);
   });
+
+  app.get('/api/getMapAptSalesList', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/getAptSalesList.sql');
+    let result = await db.getData(sql, [req.query.seq]);
+    console.log(result);
+    res.send(result);
+  });
 };
 
