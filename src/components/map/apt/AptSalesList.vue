@@ -1,6 +1,11 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 90vh">
-    <v-row class="mx-0">
+    <v-row v-if="this.salesList.length === 0">
+      <v-col class="mt-12 pt-12">
+        <div class="title text-center">매물이 없습니다.</div>
+      </v-col>
+    </v-row>
+    <v-row v-else class="mx-0">
       <v-col cols="12" v-for="sales in salesList" :key="sales.APTSALES_NUM">
         <v-card outlined @click="viewSales(sales.APTSALES_NUM)">
           <v-img :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`" height="200px" />

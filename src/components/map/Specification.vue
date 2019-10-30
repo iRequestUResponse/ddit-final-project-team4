@@ -15,6 +15,7 @@
 export default {
   data() {
     return {
+      beforeSalesNum: 0,
       mapPage: 'AptInfo',
       aptSalesNum: 0,
     }
@@ -26,12 +27,24 @@ export default {
     AptSalesList: () => import('@/components/map/apt/AptSalesList'),
     AptSalesDetail: () => import('@/components/map/apt/AptSalesDetail'),
   },
-
+  
   methods: {
     switchScreen(convertPage) {
+      this.beforeSalesNum = this.aptSalesNum;
       this.aptSalesNum = convertPage.aptSalesNum;
       this.mapPage = convertPage.page;
-    }
+    },
+    // back() {
+    //   let backList = {
+    //     AptInfo: 'AptInfo',
+    //     AptSalesList: 'AptInfo',
+    //     AptSalesDetail: 'AptSalesList',
+    //     ReviewMain: 'AptInfo',
+    //   };
+
+    //   this.mapPage = backList[this.mapPage];
+    //   this.aptSalesNum = this.beforeSalesNum;
+    // }
   }
 }
 </script>

@@ -1,14 +1,22 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 90vh">
     <v-row class="pa-0 mx-0 titleRow">
-      <v-col cols=12 class="text-center">
+      <v-btn icon dark @click="backview" class="ml-4">
+        <v-icon large>arrow_back</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon dark @click="insertInterest" class="mr-4">
+        <v-icon large>notifications</v-icon>
+      </v-btn>
+    </v-row>
+    <v-row class="pa-0 mx-0 pb-4 titleRow">
+      <v-col cols=12 class="text-center pa-0 mb-2">
         <div class="display-1 white--text">{{ aptsale.APT_NAME }}</div>
       </v-col>
-      <v-col cols=12 class="text-center">
-        <div class="subtitle grey--text">{{ aptsale.APT_ADDR }}</div>
+      <v-col cols=12 class="text-center pa-0">
+        <div class="subtitle white--text">{{ aptsale.APT_ADDR }}</div>
       </v-col>
     </v-row>
-
     <v-row class="mx-0 px-4 py-2" align="center">
       <v-col cols="12" class="pa-0 ma-0">
         <div>
@@ -27,7 +35,7 @@
     <v-row>
       <v-carousel class="carousel" cycle hide-delimiter-background height="300">
         <v-carousel-item v-for="(photos,i) in aptsale.photolist" :key="i" width="100%"
-          :src="`//192.168.0.121:9000/api/file/${photos.PHOTO_PATH}`"/>
+          :src="`//192.168.0.121:9000/api/file/${photos.PHOTO_PATH}`" />
       </v-carousel>
     </v-row>
 
@@ -95,7 +103,35 @@
     <hr id="hrstyle">
 
     <v-btn class="mt-5" id="btn" color="juk-blue">문의하기</v-btn>
-    <v-btn class="mt-0 mb-5" id="btn" color="juk-red">신고하기</v-btn>
+    <v-btn class="mt-0 mb-5" id="btn" color="juk-red" @click="showReport">신고하기</v-btn>
+
+    <!-- 신고하기 다이얼로그 및 버튼 -->
+    <v-dialog v-model="rpdialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">신고하기</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="4" class="pa-0 mt-4">
+                <v-select v-model="select" :items="items" item-text="text" item-value="text"
+                  :rules="[v => !!v || '선택하시오!!!']" label="신고사유" required>
+                </v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-textarea label="상세내용" v-model="reportCont" auto-grow rows="1" row-height="15" />
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="insertReport">작성</v-btn>
+          <v-btn color="blue darken-1" text @click="rpdialog = false">취소</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -130,6 +166,14 @@
           `${availability_date.getFullYear()}.${availability_date.getMonth() + 1}.${availability_date.getDate()}`;
 
         this.aptsale = result;
+
+        this.reportCheck = (await axios({
+          url: `${this.serverLocation}/checkAptReport?num=${this.aptNum}`
+        })).data;
+
+        this.interestCheck = (await axios({
+          url: `${this.serverLocation}/checkAptInterest?num=${this.aptNum}`
+        })).data;
       })();
     },
     filters: {
@@ -202,10 +246,88 @@
         trans: {},
         aptsale: {},
         salesPrice: 0,
+        rpdialog: false,
+        select: '',
+        reportCont: '',
+        items: [{
+            text: '허위매물'
+          },
+          {
+            text: '나간매물'
+          },
+          {
+            text: '기타'
+          },
+        ],
+        interestCheck: 0,
+        reportCheck: 0,
       }
     },
     methods: {
-
+      async insertInterest() {
+        if(this.interestCheck == 0){
+          await axios({
+            url: `${this.serverLocation}/insertAptInterest`,
+            method: 'POST',
+            data: {
+              num: this.aptsale.APTSALES_NUM,
+            },
+          })
+          .then(res => {
+            if (res.data === 1) {
+              alert("등록이 완료되었습니다.");
+              this.interestChecking();
+            } else {
+              console.log('데이터를 삭제하지 못함');
+            }
+          })
+        }else{
+          alert("이미 등록하셨습니다.");
+        }
+      },
+      backview() {
+        this.trans.aptSalesNum = this.aptsale.APT_SEQ;
+        this.trans.page = 'AptSalesList';
+        
+        this.$emit('receivedPage', this.trans);
+      },
+      async insertReport() {
+        await axios({
+            url: `${this.serverLocation}/insertAptReport`,
+            method: 'POST',
+            data: {
+              num: this.aptsale.APTSALES_NUM,
+              rea: this.select,
+              cont: this.reportCont,
+            },
+          })
+          .then(res => {
+            if (res.data === 1) {
+              this.reportChecking();
+              this.rpdialog = false;
+            } else {
+              console.log('데이터를 삽입하지 못함');
+            }
+          })
+      },
+      showReport() {
+        if(this.reportCheck == 0) {
+          
+          this.rpdialog = true;
+        }else{
+          alert('이미 작성하셨습니다.');
+        }
+      },
+      async reportChecking() {
+        this.reportCheck = (await axios({
+          url: `${this.serverLocation}/checkAptReport?num=${this.aptNum}`
+        })).data;
+      },
+      async interestChecking() {
+        this.reportCheck = (await axios({
+          url: `${this.serverLocation}/checkAptInterest?num=${this.aptNum}`
+        })).data;
+      },
     }
   }
 </script>
