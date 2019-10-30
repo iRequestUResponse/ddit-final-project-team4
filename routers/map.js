@@ -59,5 +59,12 @@ module.exports = function({ app, db }) {
     console.log(result);
     res.send(result);
   });
+
+  app.get('/api/getAptMaxMinPrice', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/getAptMaxMinPrice.sql');
+    let result = await db.getData(sql, [req.query.seq]);
+    console.log(result);
+    res.send(result);
+  });
 };
 
