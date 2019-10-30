@@ -2,6 +2,7 @@
   <v-container id="specification" class="pa-0 ma-0">
     <v-row class="pa-0 ma-0">
       <router-link class="logo pa-4" to="/">죽방</router-link>
+      <v-btn @click="joinTest">chat test</v-btn>
     </v-row>
     <component
       :is="mapPage"
@@ -22,10 +23,6 @@ export default {
   data() {
     return {
       info: {},
-    };
-  },
-  data() {
-    return {
       mapPage: '',
     }
   },
@@ -33,7 +30,9 @@ export default {
     ReviewMain: () => import('@/components/map/review/ReviewMain'),
   },
   methods: {
-
+    joinTest() {
+      this.$store.dispatch('chatJoin', prompt(''));
+    }
   }
 }
 </script>

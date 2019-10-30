@@ -106,7 +106,8 @@ export default {
             confirmButtonText: '시작하기',
           })
           .then((result) => {
-             this.$router.push('/');
+            this.$router.push('/');
+            location.reload();
           })
 
         } else {

@@ -57,8 +57,8 @@ export default {
       map: null,
       cluster: null,
       markerImage: {
-        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/icons8-apartment-48.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
-        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/icons8-booking-48.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],
