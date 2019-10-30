@@ -50,7 +50,7 @@
             <v-col cols="3">준공년도 : {{ aptsale.COMPLETION_DATE.substring(0,4) }}년</v-col>
             <v-col cols="3">입주가능일 : {{ aptsale.AVAILABILITY_DATE }}</v-col>
         </v-row>
-        <v-row justify="center" class="px-12">
+        <v-row class="px-12">
             <v-col cols="12" sm="12" md="8">
                 <v-container>
                     <v-row>
