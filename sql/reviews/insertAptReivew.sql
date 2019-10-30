@@ -1,0 +1,20 @@
+INSERT INTO SALESREVIEW (
+    REVIEW_SEQ, 
+    APT_SEQ, 
+    USERID, 
+    TRAFFIC_SCORE, 
+    SURROUNDINGS_SCORE, 
+    RESIDENCE_SCORE, 
+    REVIEW_CONT, 
+    REVIEW_STATUS
+)
+VALUES(
+    review_seq.nextval, 
+    :seq, 
+    :id, 
+    :trarat, 
+    :surrat, 
+    :resrat, 
+    :cont, 
+    'Y'
+)

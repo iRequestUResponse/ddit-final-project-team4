@@ -70,5 +70,36 @@ module.exports = function({ app, db }) {
 
     res.send(result[0]);
   });
+
+  app.get('/api/getMapAptSalesList', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/getAptSalesList.sql');
+    let result = await db.getData(sql, [req.query.seq]);
+    res.send(result);
+  });
+
+  app.post('/api/insertAptInterest', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/insertAptInterest.sql');
+    let result = await db.exec(sql, [req.session.user.USERID, req.body.num]);
+    res.send(result + '');
+  });
+
+  app.post('/api/insertAptReport', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/insertAptReport.sql');
+    let result = await db.exec(sql, [req.body.num, req.session.user.USERID, req.body.rea, req.body.cont]);
+    res.send(result + '');
+  });
+
+  app.get('/api/checkAptReport', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/checkAptReport.sql');
+    let result = (await db.getData(sql, [req.session.user.USERID, req.query.num]))[0].CNT;
+    res.send(result + '');
+  });
+
+  app.get('/api/checkAptInterest', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/checkAptInterest.sql');
+    let result = (await db.getData(sql, [req.session.user.USERID, req.query.num]))[0].CNT;
+    console.log('관심목록내역체크 : ', result);
+    res.send(result + '');
+  });
 };
 

@@ -1,0 +1,7 @@
+UPDATE SALESREVIEW 
+SET 
+    TRAFFIC_SCORE=:trarat, 
+    SURROUNDINGS_SCORE=:surrat, 
+    RESIDENCE_SCORE=:resrat,
+    REVIEW_CONT=:cont
+WHERE REVIEW_SEQ=:seq
