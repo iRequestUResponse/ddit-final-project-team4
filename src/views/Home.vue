@@ -257,9 +257,9 @@ export default {
         url: `${this.serverLocation}/bannerList`
       })).data;
 
-      // this.userType = (await axios({
-      //   url: `${this.serverLocation}/check`
-      // })).data.user.type;
+      this.userType = (await axios({
+        url: `${this.serverLocation}/check`
+      })).data.user.type;
     })();
   },
   components: {

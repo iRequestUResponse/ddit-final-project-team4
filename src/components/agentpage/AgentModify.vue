@@ -273,10 +273,10 @@ export default {
         uploadImg() {
             console.log(this.path)
             if (this.path) {
-                return `${this.fileServer}/file/${this.path}`;
+                return `//192.168.0.121:9000/api/file/${this.path}`;
             } 
             else {
-                return `${this.fileServer}/file/noimage.png`;
+                return `//192.168.0.121:9000/api/file/noimage.png`;
             }
         }
     },

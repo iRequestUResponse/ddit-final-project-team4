@@ -1,7 +1,7 @@
 <template>
   <v-container id="specification" class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
     <v-row class="juk-map_toparea pa-0 ma-0 "> 
-      <router-link class="logo pa-4" to="/">죽방</router-link>
+      
     </v-row>
     <component
       :is="mapPage"
@@ -53,14 +53,14 @@ export default {
 #specification {
   position: fixed;
   right: 0;
-  width: 500px;
+  width: 450px;
   background: #FFF;
   height: 100vh;
 }
 
 a.logo {
   color: #FFF;
-  font-size: 24pt;
+  font-size: 18pt;
   font-weight: bold;
   text-decoration: none;
 }

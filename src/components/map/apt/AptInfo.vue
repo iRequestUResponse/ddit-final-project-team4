@@ -1,11 +1,13 @@
 <template>
   <v-container fluid class="pa-0 ma-0">
     <v-row class="pa-5 ma-0 titleRow">
+      <v-row>
+        <v-col cols=12 class="text-center">
+          <h1>{{ info.APT_NAME }}</h1>
+        </v-col>
+      </v-row>
       <v-col cols=12 class="text-center">
-        <h1>{{ info.APT_NAME }}</h1>
-      </v-col>
-      <v-col cols=12 class="text-center">
-        <h4>주소 : {{ info.APT_ADDR }}</h4>
+        <h3>주소 : {{ info.APT_ADDR }}</h3>
       </v-col>
     </v-row>
 
@@ -105,6 +107,7 @@ import BarChart from './BarChart.js'
       LineChart,
       BarChart
     },
+    props: ['data', 'options'],
     beforeMount() {
       this.$parent.$parent.$on('selectApt', event => {
         
@@ -191,9 +194,9 @@ import BarChart from './BarChart.js'
 
           let priceList = this.chartPrice.map(e => e.AVGPRICE);
           let month = this.chartPrice.map(e => e.MON);
-
+          
           this.datacollection = {
-
+            
             // x축(월)
             labels: month,
             
@@ -208,18 +211,21 @@ import BarChart from './BarChart.js'
                 data: priceList,
               },
             ],
-            
             options: {
               responsive: false,
               scales: {
-                  yAxes: [{
-                      ticks: {
-                        max: 50000,
-                        min: 10000,
-                        stepSize: 5000,
-                        beginAtZero: true,
-                      }
-                  }]
+                xAxes: [{
+                  type: 'category',
+                }],
+                yAxes: [{
+                    type: 'y축',
+                    ticks: {
+                      max: 50000,
+                      min: 10000,
+                      stepSize: 10000,
+                      beginAtZero: true,
+                    }
+                }]
               }
             }
            
@@ -354,7 +360,7 @@ import BarChart from './BarChart.js'
   }
 
   .titleRow {
-    background: rgb(21, 101, 250);
+    background: rgba(21, 101, 250);
     color: white;
   }
 
