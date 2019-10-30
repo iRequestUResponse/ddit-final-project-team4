@@ -4,7 +4,6 @@ module.exports = function({ app, db }) {
   app.get('/api/noticeList', async (req, res, next) => {
       let sql = db.readSQL(process.cwd() + '/sql/board/getNoticeList.sql');
       let result = await db.getData(sql);
-      console.log(result);
       res.send(result);
   });
 

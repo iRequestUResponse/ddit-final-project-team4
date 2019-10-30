@@ -1,0 +1,1 @@
+select newMsg(:chatting_seq, :msg, :writerid, :user_type) seq from dual

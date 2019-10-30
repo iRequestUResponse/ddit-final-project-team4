@@ -8,7 +8,7 @@ const fs = require('fs');
 const port = 3000;
 
 // session
-app.use(session({
+let mSession = session({
   secret: 'hello world',
   resave: false,
   saveUninitialized: true,
@@ -16,7 +16,8 @@ app.use(session({
     secure: false,
     maxAge: 1000 * 60 * 60,
   }
-}));
+});
+app.use(mSession);
 
 // app.set('trust proxy', 1); // 필요 없는 설정인듯
 
@@ -47,10 +48,22 @@ db.config({
 
 app.set('sessionList', []);
 
+// socket.io
+const http = require('http').createServer(app);
+http.listen(port, () => {
+  console.log(`liseten on *:${port}`);
+});
+const io = require('socket.io')(http);
+io.use((socket, next) => {
+  mSession(socket.request, socket.request.res, next);
+})
+require('./chat')({ app, db, io, http });
+
 app.get('/:id*', (req, res, next) => {
   app.set('sessionList', [...new Set([...app.settings.sessionList, req.sessionID])]);
   // console.log(app.settings.sessionList);
   if (req.params.id === 'api') next();
+  else if (req.params.id === 'chat') res.sendFile(process.cwd() + '/chat/index.html');
   else res.sendFile(process.cwd() + '/static/index.html');
 });
 
@@ -58,11 +71,3 @@ fs.readdirSync('./routers').forEach(e => {
   let router = require(`./routers/${e}`);
   router({ app, db });
 });
-
-// socket.io
-const http = require('http').createServer(app);
-http.listen(port, () => {
-  console.log(`liseten on *:${port}`);
-});
-const io = require('socket.io')(http);
-require('./chat')({ app, db, io, http });
