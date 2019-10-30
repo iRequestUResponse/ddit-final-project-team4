@@ -3,11 +3,11 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="9" md="6" id="cole">
-            <v-card class="elevation-12 bor" tile color="#FFFDE7">
+            <v-card class="elevation-12 bor" tile color="white">
               <v-container fluid class="pa-0">
                 <v-row class="ma-0 pa-0">
                   <v-col cols="6" class="ma-0 pa-0">
-                    <v-toolbar id="toolbar" color="#D84315" dark flat>
+                    <v-toolbar id="toolbar" color="primary" dark flat>
                       <router-link class="logo" to="/">
                       <v-row>
                       <v-icon size="50" icon color="#FFFDE7" id="aparticon">apartment</v-icon><p id="loginp">회원 로그인</p>
@@ -32,7 +32,7 @@
                     </v-card-text>
                     <v-row>
                       <v-col>
-                        <v-btn id="loginbtn" @click="login">로그인</v-btn>
+                        <v-btn id="loginbtn" color="primary" @click="login">로그인</v-btn>
                       </v-col>
                     </v-row>
                     <v-card-actions>

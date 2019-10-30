@@ -32,7 +32,9 @@
                         <v-col cols="12" lg="1">
                             <v-btn color="primary"
                                     dark
-                                    class="hs_btn" @click="checkId">중복검사</v-btn>
+                                    class="hs_btn mt-2"
+                                    height="40px"
+                                    @click="checkId"><h3>중복검사</h3></v-btn>
                         </v-col>
                     </v-row>
             
@@ -118,10 +120,11 @@
                                 <v-btn
                                     color="primary"
                                     dark
-                                    class="hs_btn"
+                                    class="hs_btn mt-2"
+                                    height="40px"
                                     @click.stop="dialog = true"
                                 >
-                                    주소검색
+                                    <h3>주소검색</h3>
                                 </v-btn>
                                 
                                 <v-dialog
@@ -173,21 +176,25 @@
                     </div>
                     </v-row>
 
-                    <v-row justify="center">
+                    <v-row justify="center" id="joinrow">
                         <v-col cols="12" lg="2">
                             <v-btn  
-                                color="primary"
-                                class="hs_btn"
-                                @click="join" 
-                                :disabled="btndis">가입하기
+                                color="rgb(28,157,115)"
+                                width="300px"
+                                height="50px"
+                                class="hs_btn white--text"
+                                @click="join"
+                                :disabled="btndis"><h2>가입하기</h2>
                             </v-btn>
                         </v-col>
                         <v-col cols="12" lg="2">
                             <v-btn 
-                                color="primary"
+                                color="red"
+                                width="300px"
+                                height="50px"
                                 dark
                                 @click="cancel" 
-                                class="hs_btn">취소하기
+                                class="hs_btn"><h2>취소하기</h2>
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -320,8 +327,10 @@ export default {
         opacity: 0.9;
     }
     #captchaRow {
-        margin-right: 380px; 
         margin-bottom: 20px;
+    }
+    #joinrow {
+      margin-bottom: 150px; 
     }
    
 </style>

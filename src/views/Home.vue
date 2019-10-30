@@ -385,6 +385,7 @@ export default {
     margin-bottom: 35px;
   }
   .carousel {
-    margin-left: -30px
+    margin-top: 48px;
+    margin-left: -30px;
   }
 </style>
