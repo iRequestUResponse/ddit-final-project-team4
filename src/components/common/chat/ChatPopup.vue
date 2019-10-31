@@ -1,26 +1,81 @@
 <template>
-  <v-container
-    class="container"
-    fluid
-    @click.stop="close"
-  >
-    <div class="box">
-      <div class="messageList">
-        <p v-for="msg in msgList" :key="msg.seq">
-          <span>{{ msg.msg }}</span>
-          / time: 
-          <span>{{ msg.sent }}</span>
-        </p>
-      </div>
-      <div class="inputbox">
-        <input
-          type="text"
-          v-model="message"
-          @keydown="sendMessage"
-        />
-      </div>
-    </div>
-  </v-container>
+  <v-app>
+    <v-container
+      class="fill-height container"
+      fluid
+      @click.stop="close"
+    >
+      <!-- <v-row align="center" justify="center" @click.stop="close">
+        <v-col cols="12" sm="9" md="6" @click.stop="close"> -->
+          <v-card
+            width="400"
+            height="700"
+            class="mx-auto"
+          >
+            <v-system-bar
+              color="indigo darken-2"
+              dark
+            >
+              <v-spacer></v-spacer>
+    
+              <v-icon>mdi-window-minimize</v-icon>
+        
+              <v-icon>mdi-window-maximize</v-icon>
+        
+              <v-icon>mdi-close</v-icon>
+            </v-system-bar>
+            <v-toolbar
+              color="indigo"
+              dark
+            >
+              <v-toolbar-title>채팅방</v-toolbar-title>
+            </v-toolbar>
+            <v-content class="overflow-y-auto overflow-x-hidden messagecont">
+              <v-row v-for="msg in msgList" :key="msg.seq">
+                <v-col>
+                  <div class="ml-2">
+                    {{ msg.msg }}
+                  </div>
+                  <div class="ml-4 caption">
+                    {{ msg.sent | regdate }}
+                  </div>
+                </v-col>
+              </v-row>
+            </v-content>
+            <v-footer
+              absolute
+              class="ma-0 pa-0 px-4"
+            >
+              <v-col cols="12" class="ma-0 pa-0">
+                <v-text-field
+                  type="text"
+                  v-model="message"
+                  label="입력하세요"
+                  @keyup.enter.exact="sendMessage"
+                />
+              </v-col>
+            </v-footer>
+          </v-card>
+        <!-- </v-col>
+      </v-row> -->
+      <!-- <div class="box">
+        <div class="messageList">
+          <p v-for="msg in msgList" :key="msg.seq">
+            <span>{{ msg.msg }}</span>
+            / time: 
+            <span>{{ msg.sent }}</span>
+          </p>
+        </div>
+        <div class="inputbox">
+          <input
+            type="text"
+            v-model="message"
+            @keydown="sendMessage"
+          />
+        </div>
+      </div> -->
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -33,6 +88,13 @@ export default {
   computed: {
     msgList() {
       return this.$store.state.chatMsgList.slice(0).sort((a, b) => a.sent - b.sent);
+    }
+  },
+  filters: {
+    regdate(value) {
+      let dt = new Date(value);
+
+      return `${dt.getHours()}:${dt.getMinutes()}`
     }
   },
   methods: {
@@ -90,5 +152,13 @@ header {
   cursor: move;
   width: 100%;
   height: 32px;
+}
+
+.messagecont {
+  height: 80%;
+}
+
+.bor {
+  border: 2px solid red;
 }
 </style>

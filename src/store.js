@@ -55,8 +55,8 @@ export default new Vuex.Store({
         commit('setMsgList', msgList);
       }
       
-      let seq = this.state.chatMsgList.sort((a, b) => a.sent - b.sent).slice(-1)[0].seq;
-      let patch = await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+      // let seq = this.state.chatMsgList.sort((a, b) => a.sent - b.sent).slice(-1)[0].seq;
+      // let patch = await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
       
       commit('setChatVisible', true);
     },
