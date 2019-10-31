@@ -37,17 +37,18 @@ export default {
   },
   methods: {
     async sendMessage(event) {
-      if (event.code !== 'Enter') return;
+      if (event.code !== 'Enter' || !this.message.trim()) return;
+
+      let msg = this.message;
+      this.message = '';
 
       let result = await axios({
         url: `${this.serverLocation}/chat/room/${this.agentid}`,
         method: 'POST',
         data: {
-          msg: this.message,
+          msg,
         }
       });
-
-      this.message = '';
     },
     close(event) {
       if (event.target.classList.contains('container'))

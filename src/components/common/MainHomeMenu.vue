@@ -13,8 +13,7 @@
           <v-icon size="50" icon color="yellow">apartment</v-icon>&nbsp;&nbsp;
           <router-link class="logo mr-10" to="/">죽방</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
           <router-link to="/map/apart" class="juk-mainmenu mx-12">아파트</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
-          <router-link to="/map/oneRoom" class="juk-mainmenu mx-12">원룸</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
-          <router-link to="/map/village" class="juk-mainmenu mx-12">투룸</router-link>
+          <router-link to="/map/village" class="juk-mainmenu mx-12">원룸/투룸</router-link>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
           <router-link v-if="!loginUser" to="/login/user" class="juk-mainmenu mx-4">로그인 / 회원가입</router-link>

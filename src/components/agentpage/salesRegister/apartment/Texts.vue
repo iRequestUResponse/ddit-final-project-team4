@@ -83,15 +83,6 @@
             v-model="relevant_floor"
           />
         </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col cols="3">
-          <v-text-field
-            label="해당 층"
-            v-model="relevant_floor"
-          />
-        </v-col>
         <v-col cols="3">
           <v-text-field
             label="전체 층"

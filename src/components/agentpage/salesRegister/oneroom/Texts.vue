@@ -47,6 +47,27 @@
             <v-date-picker v-model="availability_date" @input="menu2 = false"></v-date-picker>
           </v-menu>
         </v-col>
+        <v-col cols="4">
+          <v-menu
+            v-model="menu3"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="completion_date"
+                label="완공일"
+                prepend-icon="event"
+                readonly
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="completion_date" @input="menu3 = false"></v-date-picker>
+          </v-menu>
+        </v-col>
       </v-row>
 
       <v-row>
@@ -133,11 +154,6 @@
             :value="option.value"
           />
         </v-col>
-        <v-responsive
-            v-if="n === 2"
-            :key="`width-${n}`"
-            width="100%"
-          ></v-responsive>
       </v-row>
     </v-container>
   </div>
@@ -149,10 +165,12 @@ export default {
     return {
       title: '',
       menu2: false,
+      menu3: false,
       // info
       build_type: '',
       sales_type: '',
       price: '',
+      completion_date: '',
       deposit: '',
       area: '',
       whole_floor: '',
@@ -190,6 +208,9 @@ export default {
     },
     price(n) {
       this.$emit('price-changed', n);
+    },
+    completion_date(n) {
+      this.$emit('completion_date-changed', n);
     },
     deposit(n) {
       this.$emit('deposit-changed', n);

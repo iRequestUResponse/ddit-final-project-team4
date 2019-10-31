@@ -25,14 +25,17 @@
         <div class="display-2 white--text text-center">어떤 아파트, 어떤 동네에서</div><br>
         <div class="display-2 white--text text-center">살고 싶으신가요?<br><br></div>
         <!-- <div class="title white--text text-center mt-2 mb-4">이제 죽방과 시작해보세요</div> -->
-        <div>
-          <v-text-field
+        <div @keydown="getSearchList">
+          <v-combobox
             dark
             outlined
             label="지도 검색"
             prepend-inner-icon="place"
             class="juk-mapsearch"
-          ></v-text-field>
+            v-model="searchKeyword"
+            :items="searchList.keywordList"
+            @change="search"
+          />
         </div>
       </div>
     </div>
@@ -285,6 +288,11 @@ export default {
           src: require('../assets/img/slider_01.png'),
         },
       ],
+      searchKeyword: '',
+      searchList: {
+        keywordList: [],
+        list: [],
+      },
     }
   },
   methods:{
@@ -313,6 +321,32 @@ export default {
       if (event.target === document.querySelector('#modal')) {
         this.isModalVisible = false;
       }
+    },
+    getSearchList(event) {
+      if (event.code !== 'Enter') return;
+
+      navigator.geolocation.getCurrentPosition(async position => {
+        let result = (await axios({
+          url: `${this.serverLocation}/searchAptList?lat=${position.coords.latitude}&lng=${position.coords.longitude}&query=${this.searchKeyword}`
+        })).data;
+  
+        this.searchList.list = result.list;
+        this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
+      }, async failure => {
+        let center = this.$parent.$children.find(e => e.$el.classList.contains('map_wrap')).map.getCenter();
+  
+        let result = (await axios({
+          url: `${this.serverLocation}/searchAptList?lat=${center.Ha}&lng=${center.Ga}&query=${this.searchKeyword}`
+        })).data;
+  
+        this.searchList.list = result.list;
+        this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
+      });
+    },
+    async search(keyword) {
+      if (!this.searchList.keywordList.includes(keyword) || !keyword) return;
+
+      this.$router.push(`/map/apt/${keyword}`);
     },
   }
 };

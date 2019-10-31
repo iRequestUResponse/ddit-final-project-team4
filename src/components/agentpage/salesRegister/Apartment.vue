@@ -152,7 +152,7 @@ export default {
         this.step = this.step + 1;
       } else {
         // 미입력 후 다음버튼 누를 때
-        alert('내용을 입력해주세요');
+        this.$swal('내용을 입력해주세요');
       }
     },
     prev() {
@@ -165,10 +165,11 @@ export default {
         let result = await axios.post(`${this.serverLocation}/apt/register`, { ...this.info, photoList: this.photoList });
         let [done, all] = result.data.split('/');
         if (done === all) {
-          alert('등록이 완료되었습니다!');
-          this.$router.push('/agentpage/AgentSalesManage');
+          this.$swal('등록이 완료되었습니다!');
+          this.$router.push('/agentpage');
+          location.reload();
         } else {
-          alert('등록하지 못했습니다. 입력되지 않은 사항이 있는지 확인해주세요.');
+          this.$swal('등록하지 못했습니다. 입력되지 않은 사항이 있는지 확인해주세요.');
         }
       }
     },

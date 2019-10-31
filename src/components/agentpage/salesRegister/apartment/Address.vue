@@ -85,14 +85,11 @@ export default {
     async selectKeyword(keyword) {
       if (!this.itemList.includes(keyword)) return;
 
-      navigator.geolocation.getCurrentPosition(async res => {
+      let result = (await axios({
+        url: `${this.serverLocation}/searchApt/${this.query}`
+      })).data;
 
-        let result = (await axios({
-          url: `${this.serverLocation}/searchApt/${this.query}`
-        })).data;
-
-        this.refresh(result);
-      });
+      this.refresh(result);
     },
     refresh(aptList) {
       this.cluster.clear();
