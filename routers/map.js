@@ -17,7 +17,8 @@ module.exports = function({ app, db }) {
       } = address.data.documents[0].address;
 
       let sql = db.readSQL(process.cwd() + '/sql/map/getAptList.sql');
-      let result = await db.getData(sql, [req.query.type || null, sido, req.query.y, req.query.x]);
+      let result = await db.getData(sql, [sido, req.query.y, req.query.x, req.query.type || null]);
+      console.log(result);
 
       res.send(result);
     } catch (err) {

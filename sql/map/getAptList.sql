@@ -32,7 +32,7 @@ from
 		(
 		select max(apt_price) maxprice, min(apt_price) minprice, apt_seq
 		from aptpurchase
-		where  build_type = '매매'
+		where  build_type = nvl(:build_type, '매매')
 		and (sysdate - apt_contractdate) <= 180
 		group by apt_seq
 		) b
