@@ -26,7 +26,7 @@ app.use(require('body-parser').json());
 
 // cors
 app.use(cors({
-    origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:80', 'http://localhost', 'http://192.168.0.91:8081'],
+    origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:80', 'http://localhost', 'http://192.168.0.91:8081', 'http://192.168.0.121:8081'],
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'CONNECT', 'TRACE'],
     credentials: true
 }));

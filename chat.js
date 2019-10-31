@@ -146,6 +146,19 @@ module.exports = function({ app, db, io, http }) {
 
     res.send(result);
   });
+
+  app.get('/api/chat/list', async (req, res, next) => {
+    if (!req.session.user) {
+      res.send('login required');
+      return;
+    }
+
+    let me = req.session.user.USERID || req.session.user.AGENTID;
+
+    let sql = db.readSQL(process.cwd() + '/sql/chat/chatList.sql');
+    let result = db.getData(sql, [me]);
+    res.send(result);
+  });
 };
 
 /**

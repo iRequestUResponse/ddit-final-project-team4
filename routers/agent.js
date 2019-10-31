@@ -195,8 +195,6 @@ module.exports = function({ app, db }) {
     app.post('/api/normal/register', async (req, res, next) => {
         let info = req.body;
 
-        // console.log(info);
-        
         // 검증하기(일부만 구현됨. 추후 나머지 모두 구현하기)
         let agentid = (req.session.user || {}).AGENTID;
         if (!agentid) {
@@ -207,11 +205,12 @@ module.exports = function({ app, db }) {
         let seq = (await db.getData('select norsales_num.nextval from dual', []))[0].NEXTVAL;
         let insertNorSales = db.readSQL(process.cwd() + '/sql/agent/insertNorSales.sql');
         let insertNorSalesPhoto = db.readSQL(process.cwd() + '/sql/agent/insertNorSalesPhoto.sql');
-
+        
         let result = await db.exec(insertNorSales, [seq, agentid, info.build_type, info.sales_type, info.price, info.deposit,
+          info.completion_date,
           info.area, info.structure, info.whole_floor, info.relevant_floor, info.utility_cost, info.address, info.availability_date,
           info.sales_title, info.sales_cont, info.sales_lng, info.sales_lat]);
-        
+          
         /* 
         console.log([seq, agentid, info.build_type, info.sales_type, info.price, info.deposit,
           info.area, info.structure, info.whole_floor, info.relevant_floor, info.utility_cost, info.address, info.availability_date,
