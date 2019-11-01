@@ -35,17 +35,6 @@ export default {
       this.aptSalesNum = convertPage.aptSalesNum;
       this.mapPage = convertPage.page;
     },
-    // back() {
-    //   let backList = {
-    //     AptInfo: 'AptInfo',
-    //     AptSalesList: 'AptInfo',
-    //     AptSalesDetail: 'AptSalesList',
-    //     ReviewMain: 'AptInfo',
-    //   };
-
-    //   this.mapPage = backList[this.mapPage];
-    //   this.aptSalesNum = this.beforeSalesNum;
-    // }
   }
 }
 </script>

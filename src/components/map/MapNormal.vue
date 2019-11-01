@@ -234,7 +234,7 @@ export default {
           }
 
           kakao.maps.event.addListener(marker, 'click', () => {
-            this.$parent.$emit('selectApt', e);
+            this.$root.$emit('selectApt', e);
           });
 
           kakao.maps.event.addListener(marker, 'mouseover', () => {
