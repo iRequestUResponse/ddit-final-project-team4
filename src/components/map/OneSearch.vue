@@ -88,7 +88,7 @@ export default {
     (async () => {
       if (this.$route.params.id) {
         let result = (await axios({
-          url: `${this.serverLocation}/searchAptCenter/${this.$route.params.id}`
+          url: `${this.serverLocation}/searchNorCenter/${this.$route.params.id}`
         })).data;
   
         this.searchList.keywordList = [];
@@ -115,6 +115,7 @@ export default {
       },
       searchList: {
         keywordList: [],
+        data: [],
         list: [],
         type: '',
       }
@@ -183,27 +184,26 @@ export default {
       this.searchKeyword = event.target.value;
       if (event.code !== 'Enter') return;
 
-      let center = this.$parent.$children.find(e => e.$el.classList.contains('map_wrap')).map.getCenter();
-
       let result = (await axios({
-        url: `${this.serverLocation}/searchAptList?lat=${center.Ha}&lng=${center.Ga}&query=${this.searchKeyword}`
+        url: `${this.serverLocation}/searchNorList?query=${this.searchKeyword}`
       })).data;
 
-      this.searchList.list = result.list;
-      this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
+      this.searchList = {
+        ...this.searchList,
+        keywordList: result.map(e => e.CENTER_ADDR),
+        data: result,
+      };
     },
     async selectKeyword(keyword) {
       if (!this.searchList.keywordList.includes(keyword) || !keyword) return;
 
-      let result = (await axios({
-        url: `${this.serverLocation}/searchAptCenter/${this.searchKeyword}`
-      })).data;
+      let info = this.searchList.data.find(e => e.CENTER_ADDR === keyword);
 
       this.searchList.keywordList = [];
-      this.$parent.$emit('refresh', { arr: result, filter: { method: this.filterMethod, price: this.filterPrice, area: this.filterArea, deposit: this.filterDeposit } });
+      this.$parent.$emit('refreshNor', { arr: { LAT: info.CENTER_LAT, LNG: info.CENTER_LNG }, filter: { method: this.filterMethod, price: this.filterPrice, area: this.filterArea, deposit: this.filterDeposit } });
     },
     changedFilter() {
-      this.$parent.$emit('changedFilter', { method: this.filterMethod, price: this.filterPrice, area: this.filterArea, deposit: this.filterDeposit });
+      this.$parent.$emit('changedEtcFilter', { method: this.filterMethod, price: this.filterPrice, area: this.filterArea, deposit: this.filterDeposit });
     },
   }
 }

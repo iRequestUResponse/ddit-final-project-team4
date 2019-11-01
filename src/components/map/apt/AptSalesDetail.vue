@@ -140,7 +140,7 @@
   export default {
     props: ['aptNum'],
     beforeMount() {
-      this.$parent.$parent.$on('selectApt', event => {
+      this.$root.$on('selectApt', event => {
         if (event != null) {
           this.trans.aptSalesNum = 0;
           this.trans.page = 'AptInfo';

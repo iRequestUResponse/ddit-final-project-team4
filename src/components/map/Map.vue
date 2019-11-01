@@ -95,7 +95,7 @@ export default {
 
           console.log('ranklist', rankList);
 
-          this.$parent.$emit('rankList', rankList);
+          this.$root.$emit('rankList', rankList);
 
         });
         categoryMap(this.map);
@@ -136,7 +136,7 @@ export default {
               method: 'GET',
             })).data;
 
-            this.$parent.$emit('rankList', rankList);
+            this.$root.$emit('rankList', rankList);
           });
         });
         kakao.maps.event.addListener(this.map, 'zoom_changed', this.refresh);
@@ -175,6 +175,8 @@ export default {
       });
     })();
 
+
+    // 아파트 순위 클릭시 센터이동 이미지 변환
     this.$root.$on('centerApt', aptSeq => {
       let target = this.markerList.find(e => e.data.APT_SEQ === aptSeq);
 
@@ -229,10 +231,6 @@ export default {
         let addressList = (await axios({
           url: `${this.serverLocation}/c2a?x=${position.lng}&y=${position.lat}&type=${filter.method || ''}`,
           method: 'GET',
-          headers: {
-            Authorization: 'KakaoAK 3b0fdc6196cbd2de9db95c5bbf5e3969',
-            'Content-Type': 'x-www-form-urlencoded',
-          }
         })).data.map(e => ({
           ...e,
           MAXPRICE: (e.MAXPRICE / 10000).toFixed(1),
@@ -276,8 +274,9 @@ export default {
             marker.setImage(this.markerImage.normal);
           }
 
+          // 마커 클릭시
           kakao.maps.event.addListener(marker, 'click', () => {
-            this.$parent.$emit('selectApt', e);
+            this.$root.$emit('selectApt', e);
           });
 
           kakao.maps.event.addListener(marker, 'mouseover', () => {
