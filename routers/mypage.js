@@ -71,6 +71,12 @@ module.exports = function({ app, db }) {
             photolist: await db.getData(sql2, [result.NORSALES_NUM])
         };
 
+        let sql3 = db.readSQL(process.cwd() + '/sql/mypage/getNorSalesOption.sql');
+        result = {
+            ...result,
+            optionlist: await db.getData(sql3, [result.NORSALES_NUM])
+        };
+
         res.send(result);
     })
 
