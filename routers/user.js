@@ -69,6 +69,13 @@ module.exports = function({ app, db }) {
     
     res.send(result[0]);
   });
+
+  app.get('/api/getUserTotal', async (req, res, next) => { 
+    let sql = db.readSQL(process.cwd() + '/sql/user/getUserTotal.sql');
+    let result = await db.getData(sql);
+    
+    res.send(result[0].USERCNT + '');
+  });
   
   // 비밀번호 찾기
   app.get('/api/findPass', async (req, res, next) => {
