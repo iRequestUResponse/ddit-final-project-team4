@@ -21,7 +21,7 @@
     <v-content>
       <section class="juk-devide-content">
         <v-layout column wrap class="my-12" align-center>
-          <v-flex xs12 style="width: 80%;" class="my-8">
+          <v-flex xs12 style="width: 90%;" class="my-8">
             <v-container grid-list-xl>
               <v-layout row wrap align-start>
                 <v-flex xs12 md4>
@@ -107,83 +107,89 @@
       </section>
 
       <section class="juk-deepback">
-        <v-parallax src="@/assets/img/aggregation_back.jpg" height="380">
+        <v-parallax src="@/assets/img/homeback.jpg" height="500">
           <v-layout column align-center justify-center>
-            <div class="headline white--text mb-4 text-center">
-              
+            <div class="headline white--text mb-12 text-center">
               <!-- 카운트 나오는 부분 -->
               <!-- 회원수 -->
-              <v-row>
-                <v-col cols="3">
-                  <v-container>
-                      일반회원<v-icon size="50" icon color="teal accent-3" id="face">face</v-icon>
-                    <div class="iCountUp">
+              <v-row class="pa-10 mr-5 mb-12">
+                <v-col cols="3" class="mb-12">
+                  <v-container class="mx-12">
+                    <v-row justify="center" align="center">
+                      <v-icon class="mr-2" size="50" icon color="rgb(241,253,89)" id="face">face </v-icon>일반 회원
+                    </v-row>
+                    <v-row justify="center" class="mt-10">
                       <ICountUp
                         :delay="delay"
                         :endVal="endVal"
                         :options="options"
                         @ready="onReady"
+                        class="iCountUp"
                       />
-                    </div>
+                      <span class="iCountUp"> 명</span>
+                      <br><br><br><br><br>
+                    </v-row>
                   </v-container>
                 </v-col>
               
               <!-- 공인중개사회원수 -->
-              <v-col cols="3">
-                <v-container>
-                  공인중개사회원수
-                  <div class="iCountUp">
-                    <ICountUp
-                      :delay="delay1"
-                      :endVal="endVal1"
-                      :options="options"
-                      @ready="onReady1"
-                    />
-                  </div>
-                </v-container>
-              </v-col>
+               <v-col cols="3">
+                  <v-container class="mx-12">
+                    <v-row justify="center" align="center">
+                      <v-icon class="mr-2" size="50" icon color="rgb(241,253,89)" id="face">contacts </v-icon>공인중개사 회원
+                    </v-row>
+                    <v-row justify="center" class="mt-10">
+                      <ICountUp
+                        :delay="delay1"
+                        :endVal="endVal1"
+                        :options="options"
+                        @ready="onReady1"
+                        class="iCountUp"
+                      />
+                      <span class="iCountUp"> 명</span>
+                    </v-row>
+                  </v-container>
+                </v-col>
 
               <!-- 아파트 매물 개수 -->
-              <v-col cols="3">
-                <v-container>
-                  아파트 매물 개수
-                  <div class="iCountUp">
-                    <ICountUp
-                      :delay="delay2"
-                      :endVal="endVal2"
-                      :options="options"
-                      @ready="onReady2"
-                    />
-                  </div>
-                </v-container>
-              </v-col>
+               <v-col cols="3">
+                  <v-container class="mx-12">
+                    <v-row justify="center" align="center">
+                      <v-icon class="mr-2" size="50" icon color="rgb(241,253,89)" id="face">apartment </v-icon>매물 수
+                    </v-row>
+                    <v-row justify="center" class="mt-10">
+                      <ICountUp
+                        :delay="delay2"
+                        :endVal="endVal2"
+                        :options="options"
+                        @ready="onReady2"
+                        class="iCountUp"
+                      />
+                      <span class="iCountUp"> 개</span>
+                    </v-row>
+                  </v-container>
+                </v-col>
 
               <!-- 방문자수 -->
-              <v-col cols="3">
-                <v-container>
-                  방문자수
-                  <div class="iCountUp">
-                    <ICountUp
-                      :delay="delay3"
-                      :endVal="endVal3"
-                      :options="options"
-                      @ready="onReady3"
-                    />
-                  </div>
-                </v-container>
-              </v-col>
+               <v-col cols="3">
+                  <v-container class="mx-12">
+                    <v-row justify="center" align="center">
+                      <v-icon class="mr-2" size="50" icon color="rgb(241,253,89)" id="face">meeting_room </v-icon>방문자 수
+                    </v-row>
+                    <v-row justify="center" class="mt-10">
+                      <ICountUp
+                        :delay="delay3"
+                        :endVal="endVal3"
+                        :options="options"
+                        @ready="onReady3"
+                        class="iCountUp"
+                      />
+                      <span class="iCountUp"> 명</span>
+                    </v-row>
+                  </v-container>
+                </v-col>
             </v-row>
-
-
-
-
-
-
             </div>
-            <em>Kick-start your application today</em>
-            <v-btn class="mt-12" color="blue lighten-2" dark large href="/pre-made-themes">
-              Get Started
-            </v-btn>
           </v-layout>
         </v-parallax>
       </section>
@@ -204,6 +210,8 @@
         </v-container>
       </section>
     </v-content>
+
+
     <v-footer color="grey darken-4" height="50">
       <v-layout row wrap align-center style="margin: 0 10%;">
         <a href="#" class="footer-icons nonAtag">
@@ -284,9 +292,9 @@ export default {
 
     (async () => {
       this.userCnt = (await axios({
-          url: `${this.serverLocation}/getUserTotal`
-      })).data * 10000;
-      console.log("asdasdd", this.userCnt)
+          url: `${this.serverLocation}/getUserTotals`
+      })).data * 1000;
+      
       this.endVal = this.userCnt;
 
       this.noticeList = (await axios({
@@ -332,10 +340,10 @@ export default {
       ],
       delay: 2000,
       endVal: 0,
-      delay1: 1500,
-      endVal1: 120500,
+      delay1: 0,
+      endVal1: 1205,
       delat2: 2000,
-      endVal2: 10153,
+      endVal2: 1024,
       delat3: 2000,
       endVal3: 511231,
 
@@ -445,7 +453,7 @@ export default {
   .iCountUp {
     font-size: 3.0em;
     margin: 0;
-    color: #4d63bc;
+    color: rgb(250,194,0);
   }
   .slider-position {
     position: relative;
