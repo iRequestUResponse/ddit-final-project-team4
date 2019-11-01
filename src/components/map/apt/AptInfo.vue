@@ -14,7 +14,7 @@
     <v-row class="mx-0 px-2" align="center">
       <v-col cols="4">
         <div>
-          {{ info.COMPLETION_DATE.substring(0,4) }}년 완공
+          {{ this.comdate.substring(0,4) }}년 완공
         </div>
       </v-col>
       <v-spacer />
@@ -110,11 +110,11 @@ import BarChart from './BarChart.js'
     props: ['data', 'options'],
     beforeMount() {
       this.$parent.$parent.$on('selectApt', event => {
-        
         // 시작
         this.info = event;
         this.aptNo = this.info.APT_SEQ;
         this.addr = this.info.APT_ADDR;
+        this.comdate = this.info.COMPLETION_DATE;
 
         // 아파트에 대한 3개월 평균값 가져오기
         (async () => {
@@ -311,6 +311,7 @@ import BarChart from './BarChart.js'
         chartY: [],
         BarchartPrice: [],
         datacollection1: null,
+        comdate: '',
       }
     },
     filters: {

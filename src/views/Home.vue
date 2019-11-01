@@ -146,9 +146,79 @@
 
       <section class="juk-deepback">
        
-        <v-parallax src="@/assets/img/aggregation_back.jpg" height="380">
+        <v-parallax src="@/assets/img/homeback.jpg" id="backimg" height="500">
           <v-layout column align-center justify-center>
-            <div class="headline white--text mb-4 text-center">Web development has never been easier</div>
+            <div class="headline white--text mb-4 text-center">
+              
+              <!-- 카운트 나오는 부분 -->
+              <!-- 회원수 -->
+              <v-row>
+                <v-col cols="3">
+                  <v-container>
+                      일반회원<v-icon size="50" icon color="teal accent-3" id="face">face</v-icon>
+                    <div class="iCountUp">
+                      <ICountUp
+                        :delay="delay"
+                        :endVal="endVal"
+                        :options="options"
+                        @ready="onReady"
+                      />
+                    </div>
+                  </v-container>
+                </v-col>
+              
+              <!-- 공인중개사회원수 -->
+              <v-col cols="3">
+                <v-container>
+                  공인중개사회원수
+                  <div class="iCountUp">
+                    <ICountUp
+                      :delay="delay1"
+                      :endVal="endVal1"
+                      :options="options"
+                      @ready="onReady1"
+                    />
+                  </div>
+                </v-container>
+              </v-col>
+
+              <!-- 아파트 매물 개수 -->
+              <v-col cols="3">
+                <v-container>
+                  아파트 매물 개수
+                  <div class="iCountUp">
+                    <ICountUp
+                      :delay="delay2"
+                      :endVal="endVal2"
+                      :options="options"
+                      @ready="onReady2"
+                    />
+                  </div>
+                </v-container>
+              </v-col>
+
+              <!-- 방문자수 -->
+              <v-col cols="3">
+                <v-container>
+                  방문자수
+                  <div class="iCountUp">
+                    <ICountUp
+                      :delay="delay3"
+                      :endVal="endVal3"
+                      :options="options"
+                      @ready="onReady3"
+                    />
+                  </div>
+                </v-container>
+              </v-col>
+            </v-row>
+
+
+
+
+
+
+            </div>
             <em>Kick-start your application today</em>
             <v-btn
               class="mt-12"
@@ -162,6 +232,8 @@
           </v-layout>
         </v-parallax>
       </section>
+
+     
 
       <section class="my-12">
         <v-container class="my-12">
@@ -241,10 +313,30 @@
 import modal from '@/components/user/OfferHouseModal.vue';
 import HomeMenu from '@/components/common/MainHomeMenu.vue';
 import axios from 'axios';
+import ICountUp from 'vue-countup-v2';
 
 export default {
+  name: 'demo',
   beforeMount() {
+    let isFired = false;
+
+    document.onscroll = () => {
+      if (document.scrollingElement.scrollHeight - document.scrollingElement.scrollTop < 1400 && !isFired) {
+        isFired = true;
+        this.countupList.forEach(e => {
+          e.reset();
+          e.start();
+        })
+      }
+    };
+
     (async () => {
+      this.userCnt = (await axios({
+          url: `${this.serverLocation}/getUserTotal`
+      })).data * 10000;
+      console.log("asdasdd", this.userCnt)
+      this.endVal = this.userCnt;
+
       this.noticeList = (await axios({
         url: `${this.serverLocation}/noticeList`
       })).data;
@@ -265,6 +357,7 @@ export default {
   components: {
     HomeMenu,
     modal,
+    ICountUp,
   },
   data() {
     return {
@@ -285,6 +378,27 @@ export default {
           src: require('../assets/img/slider_01.png'),
         },
       ],
+      delay: 2000,
+      endVal: 0,
+      delay1: 1500,
+      endVal1: 120500,
+      delat2: 2000,
+      endVal2: 10153,
+      delat3: 2000,
+      endVal3: 511231,
+
+      // endVal: 120500,
+      options: {
+        useEasing: true,
+        useGrouping: true,
+        separator: ',',
+        decimal: '.',
+        prefix: '',
+        suffix: ''
+      },
+
+      countupList: [],
+
     }
   },
   methods:{
@@ -314,11 +428,38 @@ export default {
         this.isModalVisible = false;
       }
     },
+    onReady(instance, CountUp){
+      const that = this;
+      this.countupList = [...this.countupList, instance];
+      instance.update(that.endVal);
+    },
+    onReady1(instance, CountUp){
+      const that = this;
+      this.countupList = [...this.countupList, instance];
+      instance.update(that.endVal1);
+    },
+    onReady2(instance, CountUp){
+      const that = this;
+      this.countupList = [...this.countupList, instance];
+      instance.update(that.endVal2);
+    },
+    onReady3(instance, CountUp){
+      const that = this;
+      this.countupList = [...this.countupList, instance];
+      instance.update(that.endVal3);
+    },
+
   }
 };
 </script>
 
 <style scoped>
+
+  .iCountUp {
+    font-size: 3.0em;
+    margin: 0;
+    color: #4d63bc;
+  }
   .slider-position {
     position: relative;
   }
@@ -388,4 +529,5 @@ export default {
     margin-top: 48px;
     margin-left: -30px;
   }
+
 </style>

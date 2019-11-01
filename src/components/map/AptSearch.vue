@@ -178,10 +178,21 @@ export default {
 
         this.searchList.list = result.list;
         this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
+
       });
     },
     async selectKeyword(keyword) {
       if (!this.searchList.keywordList.includes(keyword) || !keyword) return;
+
+      // console.log("asdasdasd", keyword.split(':')[0].trim())
+
+      // let rankList = (await axios({
+      //   url: `${this.serverLocation}/getPopulAptRank?key=${keyword.split(':')[0].trim()}`,
+      //   method: 'GET',
+      // })).data;
+
+      // // 보내주기(data)
+      // this.$parent.$emit('rankList', rankList);
 
       navigator.geolocation.getCurrentPosition(async res => {
 
