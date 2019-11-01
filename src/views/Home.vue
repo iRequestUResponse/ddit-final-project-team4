@@ -494,7 +494,7 @@ export default {
     async search(keyword) {
       if (!this.searchList.keywordList.includes(keyword) || !keyword) return;
 
-      this.$router.push(`/map/apt/${keyword}`);
+      this.$router.push(`/map/apart/${keyword}`);
     },
   },
 

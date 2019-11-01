@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <component :is="map" />
-    <Specification/>
+    <Specification :is="spec"/>
     <component :is="search" />
     <v-btn
       absolute
@@ -24,6 +24,7 @@
 import Map from '@/components/map/Map.vue';
 import MapNormal from '@/components/map/MapNormal.vue';
 import Specification from '@/components/map/Specification.vue';
+import SpecificationNormal from '@/components/map/SpecificationNormal.vue';
 import AptSearch from '@/components/map/AptSearch.vue';
 import OneSearch from '@/components/map/OneSearch.vue';
 
@@ -43,11 +44,19 @@ export default {
         return 'MapNormal';
       }
     },
+    spec() {
+      if (this.$route.params.func === 'apart') {
+        return 'Specification';
+      } else {
+        return 'SpecificationNormal';
+      }
+    }
   },
   components: {
     Map,
     MapNormal,
     Specification,
+    SpecificationNormal,
     AptSearch,
     OneSearch,
   }
