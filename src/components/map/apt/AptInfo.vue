@@ -57,7 +57,8 @@
         </v-row>
         <v-row>
           <v-col>
-            <h3 class="text-right">{{ this.salesPrice | comma }}</h3>
+            <h3 v-if="this.salesPrice < 100" class="text-right">최근 1개월간 거래기록이 없습니다.</h3>
+            <h3 v-else class="text-right">{{ this.salesPrice | comma }}</h3>
           </v-col>
         </v-row>
       </v-col>

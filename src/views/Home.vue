@@ -3,21 +3,9 @@
     <div class="slider-position">
       <HomeMenu />
 
-      <v-carousel 
-        cycle
-        hide-delimiter-background
-        height="800"
-      >
-        <v-carousel-item
-          v-for="(slide,i) in slides"
-          :key="i"
-          :src="slide.src"
-        >
-          <v-sheet
-            color="#00000090"
-            height="100%"
-            tile
-          >
+      <v-carousel cycle hide-delimiter-background height="800">
+        <v-carousel-item v-for="(slide,i) in slides" :key="i" :src="slide.src">
+          <v-sheet color="#00000090" height="100%" tile>
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
@@ -26,47 +14,23 @@
         <div class="display-2 white--text text-center">살고 싶으신가요?<br><br></div>
         <!-- <div class="title white--text text-center mt-2 mb-4">이제 죽방과 시작해보세요</div> -->
         <div>
-          <v-text-field
-            dark
-            outlined
-            label="지도 검색"
-            prepend-inner-icon="place"
-            class="juk-mapsearch"
-          ></v-text-field>
+          <v-text-field dark outlined label="지도 검색" prepend-inner-icon="place" class="juk-mapsearch"></v-text-field>
         </div>
       </div>
     </div>
     <v-content>
       <section class="juk-devide-content">
-        <v-layout
-          column
-          wrap
-          class="my-12"
-          align-center
-        > 
+        <v-layout column wrap class="my-12" align-center>
           <v-flex xs12 style="width: 80%;" class="my-8">
             <v-container grid-list-xl>
               <v-layout row wrap align-start>
                 <v-flex xs12 md4>
                   <v-card flat class="transparent">
-                    <v-carousel class="carousel"
-                      cycle
-                      hide-delimiter-background
-                      :show-arrows="false"
-                      width="500"
-                      height="500"
-                    >
-                      <v-carousel-item
-                        v-for="(slide,i) in bannerList"
-                        :key="i"
-                        :src="`//192.168.0.121:9000/api/file/${slide.BANNER_PATH}`"
-                        :href="slide.BANNER_LINK"
-                      >
-                        <v-sheet
-                          color="#00000011"
-                          height="100%"
-                          tile
-                        >
+                    <v-carousel class="carousel" cycle hide-delimiter-background :show-arrows="false" width="500"
+                      height="500">
+                      <v-carousel-item v-for="(slide,i) in bannerList" :key="i"
+                        :src="`//192.168.0.121:9000/api/file/${slide.BANNER_PATH}`" :href="slide.BANNER_LINK">
+                        <v-sheet color="#00000011" height="100%" tile>
                         </v-sheet>
                       </v-carousel-item>
                     </v-carousel>
@@ -83,7 +47,8 @@
                       </v-card-title>
                     </div>
                     <div v-for="news in newsList" :key="news.originallink" class="board" id="newsboard">
-                      <a :href="news.originallink" class="listfont subtitle-1 blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
+                      <a :href="news.originallink"
+                        class="listfont subtitle-1 blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
                     </div>
                   </v-card>
                 </v-flex>
@@ -98,7 +63,8 @@
                       </v-card-title>
                     </div>
                     <div class="content">
-                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ" class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
+                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ"
+                        class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
                     </div>
                   </v-card>
                 </v-flex>
@@ -120,21 +86,17 @@
             <v-flex xs12 sm4 offset-sm1 align-self-center>
               <v-card flat class="transparent">
                 <v-card-title primary-title class="layout justify-center">
-                  <div class="juk-title"><v-icon size="50" icon color="teal accent-3" id="offertitle">home_work</v-icon> 우리집은 얼마나 할까?</div>
+                  <div class="juk-title">
+                    <v-icon size="50" icon color="teal accent-3" id="offertitle">home_work</v-icon> 우리집은 얼마나 할까?
+                  </div>
                 </v-card-title>
                 <v-row class="mt-4 mb-12">
-                  <div class="juk-subtitle text-center" id="offercont">▶ 별도의 비용 없이 손 쉬운 우리집 내놓기를 이용하여<br>시세를 알아보고 공인중개사와 정보를 공유할 수 있습니다.</div>
+                  <div class="juk-subtitle text-center" id="offercont">▶ 별도의 비용 없이 손 쉬운 우리집 내놓기를 이용하여<br>시세를 알아보고 공인중개사와
+                    정보를 공유할 수 있습니다.</div>
                 </v-row>
                 <v-row justify="center">
-                  <v-btn 
-                    id="offerbtn"
-                    width="200"
-                    height="60"
-                    class="headline"
-                    color="teal"
-                    outlined
-                    @click="showModal"
-                  >
+                  <v-btn id="offerbtn" width="200" height="60" class="headline" color="teal" outlined
+                    @click="showModal">
                     우리집 내놓기
                   </v-btn>
                 </v-row>
@@ -145,8 +107,7 @@
       </section>
 
       <section class="juk-deepback">
-       
-        <v-parallax src="@/assets/img/homeback.jpg" id="backimg" height="500">
+        <v-parallax src="@/assets/img/aggregation_back.jpg" height="380">
           <v-layout column align-center justify-center>
             <div class="headline white--text mb-4 text-center">
               
@@ -220,39 +181,24 @@
 
             </div>
             <em>Kick-start your application today</em>
-            <v-btn
-              class="mt-12"
-              color="blue lighten-2"
-              dark
-              large
-              href="/pre-made-themes"
-            >
+            <v-btn class="mt-12" color="blue lighten-2" dark large href="/pre-made-themes">
               Get Started
             </v-btn>
           </v-layout>
         </v-parallax>
       </section>
 
-     
 
       <section class="my-12">
         <v-container class="my-12">
           <v-row no-gutters>
             <template v-for="n in 8">
               <v-col :key="n">
-                <v-card
-                  class="pa-2"
-                  outlined
-                  tile
-                >
+                <v-card class="pa-2" outlined tile>
                   Column {{n}}
                 </v-card>
               </v-col>
-              <v-responsive
-                v-if="n === 2"
-                :key="`width-${n}`"
-                width="100%"
-              ></v-responsive>
+              <v-responsive v-if="n === 2" :key="`width-${n}`" width="100%"></v-responsive>
             </template>
           </v-row>
         </v-container>
@@ -260,12 +206,22 @@
     </v-content>
     <v-footer color="grey darken-4" height="50">
       <v-layout row wrap align-center style="margin: 0 10%;">
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-facebook</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-twitter</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-instagram</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-youtube</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-google-plus</v-icon></a>
-        <v-spacer/>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-facebook</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-twitter</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-instagram</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-youtube</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-google-plus</v-icon>
+        </a>
+        <v-spacer />
         <a href="#" class="grey--text nonAtag">대덕인재개발원</a>
       </v-layout>
     </v-footer>
@@ -301,11 +257,7 @@
         </v-container>
       </section>
     </div> -->
-     <modal
-      id="modal"
-      v-show="isModalVisible"
-      @close="closeModal"
-    />
+    <modal id="modal" v-show="isModalVisible" @close="closeModal" />
   </v-app>
 </template>
 
@@ -420,12 +372,46 @@ export default {
         this.$swal('일반 회원만 가능한 서비스입니다.', ' ', 'info');
       }
     },
-    closeModal() {
-      this.isModalVisible = false;
+    components: {
+      HomeMenu,
+      modal,
+      // IOdometer,
+      ICountUp,
     },
-    hideModal(event) {
-      if (event.target === document.querySelector('#modal')) {
-        this.isModalVisible = false;
+    data() {
+      return {
+        userType: undefined,
+        modalVisibility: false,
+        isModalVisible: false,
+        noticeList: [],
+        newsList: [],
+        bannerList: [],
+        num: 3000,
+        slides: [{
+            src: require('../assets/img/slider_02.jpg'),
+          },
+          {
+            src: require('../assets/img/slider_03.jpg'),
+          },
+          {
+            src: require('../assets/img/slider_01.png'),
+          },
+        ],
+        delay: 1000,
+        endVal: 0,
+        delay1: 1000,
+        endVal1: 120500,
+
+        // endVal: 120500,
+        options: {
+          useEasing: true,
+          useGrouping: true,
+          separator: ',',
+          decimal: '.',
+          prefix: '',
+          suffix: ''
+        }
+
       }
     },
     onReady(instance, CountUp){
@@ -453,6 +439,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 
   .iCountUp {
@@ -465,11 +452,11 @@ export default {
   }
 
   .slider-text-position {
-    width:40%;
+    width: 40%;
     position: absolute;
-    left:50%;
+    left: 50%;
     top: 50%;
-    transform:translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 
   .nonAtag {
@@ -503,11 +490,12 @@ export default {
   .juk-deepback {
     background-color: #E0E0E0 !important;
   }
+
   #offertitle {
     margin-left: -10px;
   }
 
-  #offercont{
+  #offercont {
     margin-left: 30px;
   }
 
@@ -515,16 +503,20 @@ export default {
     margin-top: 7px;
     margin-left: 140px;
   }
+
   .caption {
     font-size: 1.2em;
   }
-  #newsboard{
+
+  #newsboard {
     margin-left: 80px;
   }
+
   .d1 {
     margin-left: 50px;
     margin-bottom: 35px;
   }
+
   .carousel {
     margin-top: 48px;
     margin-left: -30px;

@@ -30,9 +30,6 @@ export default {
   },
   
   methods: {
-    joinTest() {
-      this.$store.dispatch('chatJoin', prompt(''));
-    },
     switchScreen(convertPage) {
       this.beforeSalesNum = this.aptSalesNum;
       this.aptSalesNum = convertPage.aptSalesNum;
