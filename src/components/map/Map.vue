@@ -35,10 +35,6 @@
     <input type="checkbox" id="chkTraffic" @click="setOverlayMapTypeId" /> 교통정보
     <input type="checkbox" id="chkBicycle" @click="setOverlayMapTypeId" /> 자전거도로
   </p>
- 
-  <router-link class="home pa-4" to="/">
-    <v-icon size="44" icon color="rgb(21,101,250)" id="offertitle" style="margin-top:700px;">house</v-icon>
-  </router-link>
 </div>
 
 </template>
@@ -342,8 +338,8 @@ export default {
 
 .home {
   position:absolute;
-  margin-left: 1200px;
-  padding-left: 10px;
+  right:500px;
+  bottom: 0px;
 }
 </style>
 
