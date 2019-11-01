@@ -1,10 +1,16 @@
 <template>
     <v-container fluid class="pa-0 ma-0" style="height: 100vh">
-        <v-row class="pa-0 ma-0">
-            {{ reviewList }}
+        <v-row class="pa-0 mx-0 pa-4 pt-6 titleRow">
+            <v-col cols=12 class="text-center pa-0 ma-0">
+                <div class="display-1 white--text">리 뷰</div>
+            </v-col>
+        </v-row>
+        <v-row class="mx-0">
+            {{ this.onUser }}
+            {{ this.onUser != '' }}
         </v-row>
         <v-row class="grey lighten-1 ma-0 py-8">
-            <v-card class="grey darken-3 mx-auto" dark="" width="280">
+            <v-card class="grey darken-3 mx-auto" dark width="280">
                 <div class="title mt-4 text-center grey--text">
                     추천점수
                 </div>
@@ -16,8 +22,8 @@
                         empty-icon="$ratingFull" size="40" dense readonly half-increments hover></v-rating>
                 </div>
                 <v-dialog v-model="rvdialog" persistent max-width="600px">
-                    <template v-slot:activator="{ on }">
-                        <v-btn v-if="this.onUser != undefined" block color="juk-btncolor" v-on="on">
+                    <template v-show="this.onUser != ''" v-slot:activator="{ on }">
+                        <v-btn block color="juk-btncolor" v-on="on">
                             리뷰작성
                         </v-btn>
                     </template>
@@ -91,12 +97,12 @@
                             <div class="title">{{cont.USER_ADDR.substring(0,2)}}거주자</div>
                         </v-col>
                         <v-spacer></v-spacer>
-                        <v-col v-if="this.onUser == cont.USERID" cols="2">
+                        <v-col v-show="onUser == cont.USERID" cols="2">
                             <v-btn icon color="grey" @click="updateReview(cont)">
                                 <v-icon>edit</v-icon>
                             </v-btn>
                         </v-col>
-                        <v-col v-if="this.onUser == cont.USERID" cols="2">
+                        <v-col v-show="onUser == cont.USERID" cols="2">
                             <v-btn icon color="grey" @click="delteReview(cont.REVIEW_SEQ)">
                                 <v-icon>clear</v-icon>
                             </v-btn>
@@ -142,22 +148,12 @@
                 }
             });
 
-            // (async () => {
-            //     let result = await axios({
-            //         url: `${this.serverLocation}/check`
-            //     })
-            //     .then(res => {
-            //         console.log(res);
-            //     });
-
-            //     this.loginUser = result.data.user || undefined;
-            // })();
             axios
                 .get(`${this.serverLocation}/check`)
                 .then(res => {
-                    if(res.data.user == undefined){
-                        this.onUser = undefined
-                    }else{
+                    if (res.data.user == undefined) {
+                        this.onUser = ''
+                    } else {
                         this.onUser = res.data.user.USERID
                     }
                 })
@@ -177,9 +173,9 @@
                 residenceRating: 0,
                 reviewCont: '',
                 reviewSeq: 0,
-                onUser: undefined,
                 mode: 'insert',
                 trans: {},
+                onUser: '',
             }
         },
         methods: {
@@ -272,6 +268,11 @@
 </script>
 
 <style>
+    .titleRow {
+        background: rgb(21, 101, 250);
+        color: white;
+    }
+
     .juk-btncolor {
         background-color: #1564f9 !important;
     }

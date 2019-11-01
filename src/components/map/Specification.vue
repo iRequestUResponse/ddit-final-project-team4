@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       beforeSalesNum: 0,
-      mapPage: 'AptInfo',
+      mapPage: 'PopulSalesList',
       aptSalesNum: 0,
     }
   },
@@ -26,6 +26,7 @@ export default {
     AptInfo: () => import('@/components/map/apt/AptInfo'),
     AptSalesList: () => import('@/components/map/apt/AptSalesList'),
     AptSalesDetail: () => import('@/components/map/apt/AptSalesDetail'),
+    PopulSalesList: () => import('@/components/map/apt/PopulSalesList'),
   },
   
   methods: {

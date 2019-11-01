@@ -169,6 +169,7 @@ export default {
             })
             .then((result) => {
               this.$router.push('/');
+              location.reload();
             })
           } else {
             this.$swal({

@@ -111,7 +111,6 @@ import BarChart from './BarChart.js'
     props: ['data', 'options'],
     beforeMount() {
       this.$parent.$parent.$on('selectApt', event => {
-        
         // 시작
         this.info = event;
         this.aptNo = this.info.APT_SEQ;

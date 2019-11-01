@@ -6,8 +6,8 @@
                     <v-row justify="center">
                         <v-col cols="12" sm="8" md="4">
                             <v-row class="headline modifyuser-content mt-12">
-                                <v-col cols="8" class="mx-auto">
-                                    <div class="text-center mt-12">변경할 항목을 입력하여 개인정보를 변경해주세요</div>
+                                <v-col cols="9" class="mx-auto">
+                                    <div class="text-center mt-12">변경할 항목을 입력하여 <br>개인정보를 수정해주세요</div>
                                 </v-col>
                             </v-row>
 
@@ -74,22 +74,6 @@
                                 />
                             </v-row>
 
-                            <v-row>
-                                <v-text-field
-                                    type="tel"
-                                    ref="phone"
-                                    v-model="phone"
-                                    label="휴대폰번호(예시:010-1234-5678)"
-                                    :rules="[
-                                                () => !!phone || '핸드폰번호를 입력해주세요!!!',
-                                            ]"
-                                    outlined
-                                    required
-                                    class="juk-mu_text-field"
-                                    @update:error="error"
-                                />
-                            </v-row>
-
                             <v-row justify="center">
                                 <v-col cols="10" class="ma-0 pa-0">
                                     <v-text-field
@@ -128,7 +112,8 @@
                             <v-row>
                                  <div class="body2 grey--text">제출서류:   {{ this.originname }}</div>
                             </v-row>
-                            <v-row justify="center">
+                            
+                            <v-row class="mt-3">
                                 <img id="subimg" :src="uploadImg" alt="noimage">
                             </v-row>
                             <v-row>
@@ -333,26 +318,41 @@ export default {
             this.isError = event;
         },
         leaveAgent(){
-            axios({
-                url: `${this.serverLocation}/leaveAgent`,
-                method: 'POST',
-                data: {
-                    id: this.id,
-                    withdrawal: this.withdrawal,
-                },
-            })
-            .then(res => {
-                if (res.data === 1) {
-                    alert("회원탈퇴가 완료되었습니다.");
+          this.$swal({
 
-                    axios({
-                        url: `${this.serverLocation}/logout`
-                    });
+            title: '탈퇴하시겠습니까?',
+            text: '죽방의 다양한 서비스를 이용할 수 없습니다.',
+            type: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            confirmButtonText: '탈퇴',
+            cancelButtonText: '취소',
 
-                    this.isLogin = false;
-                    this.$router.push('/');
-                 }
-            })
+          }).then((result) => {
+            if (result.value) {
+              axios({
+                  url: `${this.serverLocation}/leaveAgent`,
+                  method: 'POST',
+                  data: {
+                      id: this.id,
+                      withdrawal: this.withdrawal,
+                  },
+              })
+              .then(res => {
+                  if (res.data === 1) {
+                      this.$swal('탈퇴가 완료되었습니다.', '', 'success')
+
+                      axios({
+                          url: `${this.serverLocation}/logout`
+                      });
+
+                      this.isLogin = false;
+                      this.$router.push('/');
+                  }
+              })
+            }
+          })
         },
         cancel () {
             // 파일 삭제하는거
@@ -407,19 +407,18 @@ export default {
     }
     @media (min-width: 50em) {
         .filepond--item {
-            width: calc(30% - .5em);
-            margin-left: 50px;
+            width: calc(100% - .5em);
+            text-align: center;
         }
     }
     #subimg{
-        width: 48%;
+        width: 100%;
         height: auto;
     }
 
     .fileinput{
-
         width: 100%;
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     .jukBtnColor {

@@ -1,15 +1,15 @@
 <template>
-  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 90vh">
-    <v-row class="pa-0 mx-0 titleRow">
+  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
+    <v-row class="pa-0 py-4 mx-0 titleRow">
       <v-btn icon dark @click="backview" class="ml-4">
         <v-icon large>arrow_back</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn icon dark @click="insertInterest" class="mr-4">
+      <v-btn v-show="this.onUser != undefined" icon dark @click="insertInterest" class="mr-4">
         <v-icon large>notifications</v-icon>
       </v-btn>
     </v-row>
-    <v-row class="pa-0 mx-0 pb-4 titleRow">
+    <v-row class="pa-0 mx-0 pb-6 titleRow">
       <v-col cols=12 class="text-center pa-0 mb-2">
         <div class="display-1 white--text">{{ aptsale.APT_NAME }}</div>
       </v-col>
@@ -62,7 +62,8 @@
             <h3 class="text-right">최근 1개월 매물 평균</h3>
           </v-col>
           <v-col cols="12" class="pa-0 pr-3">
-            <h3 class="text-right">{{ salesPrice | comm }}</h3>
+            <h3 v-if="this.salesPrice < 100" class="grey--text text-right">최근 1개월간 거래기록이 없습니다.</h3>
+            <h3 v-else class="text-right">{{ salesPrice | comm }}</h3>
           </v-col>
         </v-row>
         <v-row class="mt-4 mb-0">
@@ -102,8 +103,8 @@
 
     <hr id="hrstyle">
 
-    <v-btn class="mt-5" id="btn" color="juk-blue">문의하기</v-btn>
-    <v-btn class="mt-0 mb-5" id="btn" color="juk-red" @click="showReport">신고하기</v-btn>
+    <v-btn class="mt-5" id="btn" color="juk-blue" @click="joinTest">문의하기</v-btn>
+    <v-btn v-show="this.onUser != undefined" class="mt-0 mb-5" id="btn" color="juk-red" @click="showReport">신고하기</v-btn>
 
     <!-- 신고하기 다이얼로그 및 버튼 -->
     <v-dialog v-model="rpdialog" persistent max-width="600px">
@@ -175,6 +176,19 @@
           url: `${this.serverLocation}/checkAptInterest?num=${this.aptNum}`
         })).data;
       })();
+
+      axios
+        .get(`${this.serverLocation}/check`)
+        .then(res => {
+          if (res.data.user == undefined) {
+            this.onUser = undefined
+          } else {
+            this.onUser = res.data.user.USERID
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
     },
     filters: {
       comma(sales) {
@@ -261,34 +275,35 @@
         ],
         interestCheck: 0,
         reportCheck: 0,
+        onUser: undefined,
       }
     },
     methods: {
       async insertInterest() {
-        if(this.interestCheck == 0){
+        if (this.interestCheck == 0) {
           await axios({
-            url: `${this.serverLocation}/insertAptInterest`,
-            method: 'POST',
-            data: {
-              num: this.aptsale.APTSALES_NUM,
-            },
-          })
-          .then(res => {
-            if (res.data === 1) {
-              alert("등록이 완료되었습니다.");
-              this.interestChecking();
-            } else {
-              console.log('데이터를 삭제하지 못함');
-            }
-          })
-        }else{
+              url: `${this.serverLocation}/insertAptInterest`,
+              method: 'POST',
+              data: {
+                num: this.aptsale.APTSALES_NUM,
+              },
+            })
+            .then(res => {
+              if (res.data === 1) {
+                alert("등록이 완료되었습니다.");
+                this.interestChecking();
+              } else {
+                console.log('데이터를 삭제하지 못함');
+              }
+            })
+        } else {
           alert("이미 등록하셨습니다.");
         }
       },
       backview() {
         this.trans.aptSalesNum = this.aptsale.APT_SEQ;
         this.trans.page = 'AptSalesList';
-        
+
         this.$emit('receivedPage', this.trans);
       },
       async insertReport() {
@@ -311,10 +326,10 @@
           })
       },
       showReport() {
-        if(this.reportCheck == 0) {
-          
+        if (this.reportCheck == 0) {
+
           this.rpdialog = true;
-        }else{
+        } else {
           alert('이미 작성하셨습니다.');
         }
       },
@@ -327,6 +342,9 @@
         this.reportCheck = (await axios({
           url: `${this.serverLocation}/checkAptInterest?num=${this.aptNum}`
         })).data;
+      },
+      joinTest() {
+        this.$store.dispatch('chatJoin', this.aptsale.AGENTID);
       },
     }
   }
