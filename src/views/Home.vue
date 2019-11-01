@@ -3,21 +3,9 @@
     <div class="slider-position">
       <HomeMenu />
 
-      <v-carousel 
-        cycle
-        hide-delimiter-background
-        height="800"
-      >
-        <v-carousel-item
-          v-for="(slide,i) in slides"
-          :key="i"
-          :src="slide.src"
-        >
-          <v-sheet
-            color="#00000090"
-            height="100%"
-            tile
-          >
+      <v-carousel cycle hide-delimiter-background height="800">
+        <v-carousel-item v-for="(slide,i) in slides" :key="i" :src="slide.src">
+          <v-sheet color="#00000090" height="100%" tile>
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
@@ -41,35 +29,17 @@
     </div>
     <v-content>
       <section class="juk-devide-content">
-        <v-layout
-          column
-          wrap
-          class="my-12"
-          align-center
-        > 
+        <v-layout column wrap class="my-12" align-center>
           <v-flex xs12 style="width: 80%;" class="my-8">
             <v-container grid-list-xl>
               <v-layout row wrap align-start>
                 <v-flex xs12 md4>
                   <v-card flat class="transparent">
-                    <v-carousel class="carousel"
-                      cycle
-                      hide-delimiter-background
-                      :show-arrows="false"
-                      width="500"
-                      height="500"
-                    >
-                      <v-carousel-item
-                        v-for="(slide,i) in bannerList"
-                        :key="i"
-                        :src="`//192.168.0.121:9000/api/file/${slide.BANNER_PATH}`"
-                        :href="slide.BANNER_LINK"
-                      >
-                        <v-sheet
-                          color="#00000011"
-                          height="100%"
-                          tile
-                        >
+                    <v-carousel class="carousel" cycle hide-delimiter-background :show-arrows="false" width="500"
+                      height="500">
+                      <v-carousel-item v-for="(slide,i) in bannerList" :key="i"
+                        :src="`//192.168.0.121:9000/api/file/${slide.BANNER_PATH}`" :href="slide.BANNER_LINK">
+                        <v-sheet color="#00000011" height="100%" tile>
                         </v-sheet>
                       </v-carousel-item>
                     </v-carousel>
@@ -86,7 +56,8 @@
                       </v-card-title>
                     </div>
                     <div v-for="news in newsList" :key="news.originallink" class="board" id="newsboard">
-                      <a :href="news.originallink" class="listfont subtitle-1 blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
+                      <a :href="news.originallink"
+                        class="listfont subtitle-1 blue-grey--text nonAtag">{{ news.title.substring(0,30) }}...</a>
                     </div>
                   </v-card>
                 </v-flex>
@@ -101,7 +72,8 @@
                       </v-card-title>
                     </div>
                     <div class="content">
-                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ" class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
+                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ"
+                        class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
                     </div>
                   </v-card>
                 </v-flex>
@@ -123,21 +95,17 @@
             <v-flex xs12 sm4 offset-sm1 align-self-center>
               <v-card flat class="transparent">
                 <v-card-title primary-title class="layout justify-center">
-                  <div class="juk-title"><v-icon size="50" icon color="teal accent-3" id="offertitle">home_work</v-icon> 우리집은 얼마나 할까?</div>
+                  <div class="juk-title">
+                    <v-icon size="50" icon color="teal accent-3" id="offertitle">home_work</v-icon> 우리집은 얼마나 할까?
+                  </div>
                 </v-card-title>
                 <v-row class="mt-4 mb-12">
-                  <div class="juk-subtitle text-center" id="offercont">▶ 별도의 비용 없이 손 쉬운 우리집 내놓기를 이용하여<br>시세를 알아보고 공인중개사와 정보를 공유할 수 있습니다.</div>
+                  <div class="juk-subtitle text-center" id="offercont">▶ 별도의 비용 없이 손 쉬운 우리집 내놓기를 이용하여<br>시세를 알아보고 공인중개사와
+                    정보를 공유할 수 있습니다.</div>
                 </v-row>
                 <v-row justify="center">
-                  <v-btn 
-                    id="offerbtn"
-                    width="200"
-                    height="60"
-                    class="headline"
-                    color="teal"
-                    outlined
-                    @click="showModal"
-                  >
+                  <v-btn id="offerbtn" width="200" height="60" class="headline" color="teal" outlined
+                    @click="showModal">
                     우리집 내놓기
                   </v-btn>
                 </v-row>
@@ -148,22 +116,52 @@
       </section>
 
       <section class="juk-deepback">
-       
+
         <v-parallax src="@/assets/img/aggregation_back.jpg" height="380">
           <v-layout column align-center justify-center>
             <div class="headline white--text mb-4 text-center">Web development has never been easier</div>
             <em>Kick-start your application today</em>
-            <v-btn
-              class="mt-12"
-              color="blue lighten-2"
-              dark
-              large
-              href="/pre-made-themes"
-            >
+            <v-btn class="mt-12" color="blue lighten-2" dark large href="/pre-made-themes">
               Get Started
             </v-btn>
           </v-layout>
         </v-parallax>
+      </section>
+
+      <!-- <section>
+        <v-container>
+          <div>카운트 영역</div>
+          <v-row>
+            <IOdometer class="iOdometer" :value="num" duration="0"/>
+          </v-row>
+        </v-container>
+      </section> -->
+
+      <!-- 카운트 나오는 부분 -->
+      <section>
+        <v-container>
+          <div class="iCountUp">
+            <ICountUp
+              :delay="delay"
+              :endVal="endVal"
+              :options="options"
+              @ready="onReady"
+            />
+          </div>
+        </v-container>
+      </section>
+
+      <section>
+        <v-container>
+          <div class="iCountUp">
+            <ICountUp
+              :delay="delay1"
+              :endVal="endVal1"
+              :options="options"
+              @ready="onReady1"
+            />
+          </div>
+        </v-container>
       </section>
 
       <section class="my-12">
@@ -171,19 +169,11 @@
           <v-row no-gutters>
             <template v-for="n in 8">
               <v-col :key="n">
-                <v-card
-                  class="pa-2"
-                  outlined
-                  tile
-                >
+                <v-card class="pa-2" outlined tile>
                   Column {{n}}
                 </v-card>
               </v-col>
-              <v-responsive
-                v-if="n === 2"
-                :key="`width-${n}`"
-                width="100%"
-              ></v-responsive>
+              <v-responsive v-if="n === 2" :key="`width-${n}`" width="100%"></v-responsive>
             </template>
           </v-row>
         </v-container>
@@ -191,12 +181,22 @@
     </v-content>
     <v-footer color="grey darken-4" height="50">
       <v-layout row wrap align-center style="margin: 0 10%;">
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-facebook</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-twitter</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-instagram</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-youtube</v-icon></a>
-        <a href="#" class="footer-icons nonAtag"><v-icon class="grey--text">mdi-google-plus</v-icon></a>
-        <v-spacer/>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-facebook</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-twitter</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-instagram</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-youtube</v-icon>
+        </a>
+        <a href="#" class="footer-icons nonAtag">
+          <v-icon class="grey--text">mdi-google-plus</v-icon>
+        </a>
+        <v-spacer />
         <a href="#" class="grey--text nonAtag">대덕인재개발원</a>
       </v-layout>
     </v-footer>
@@ -232,11 +232,7 @@
         </v-container>
       </section>
     </div> -->
-     <modal
-      id="modal"
-      v-show="isModalVisible"
-      @close="closeModal"
-    />
+    <modal id="modal" v-show="isModalVisible" @close="closeModal" />
   </v-app>
 </template>
 
@@ -244,10 +240,21 @@
 import modal from '@/components/user/OfferHouseModal.vue';
 import HomeMenu from '@/components/common/MainHomeMenu.vue';
 import axios from 'axios';
+import ICountUp from 'vue-countup-v2';
+
+import IOdometer from 'vue-odometer';
+import 'odometer/themes/odometer-theme-default.css';
 
 export default {
+  name: 'home',
   beforeMount() {
     (async () => {
+      this.userCnt = (await axios({
+          url: `${this.serverLocation}/getUserTotal`
+      })).data * 10000;
+      console.log("asdasdd", this.userCnt)
+      this.endVal = this.userCnt;
+
       this.noticeList = (await axios({
         url: `${this.serverLocation}/noticeList`
       })).data;
@@ -263,12 +270,10 @@ export default {
       this.userType = (await axios({
         url: `${this.serverLocation}/check`
       })).data.user.type;
+      
     })();
   },
-  components: {
-    HomeMenu,
-    modal,
-  },
+
   data() {
     return {
       userType: undefined,
@@ -277,8 +282,8 @@ export default {
       noticeList: [],
       newsList: [],
       bannerList: [],
-      slides: [
-        {
+      num: 3000,
+      slides: [{
           src: require('../assets/img/slider_02.jpg'),
         },
         {
@@ -293,13 +298,29 @@ export default {
         keywordList: [],
         list: [],
       },
+      delay: 1000,
+      endVal: 0,
+      delay1: 1000,
+      endVal1: 120500,
+
+      // endVal: 120500,
+      options: {
+        useEasing: true,
+        useGrouping: true,
+        separator: ',',
+        decimal: '.',
+        prefix: '',
+        suffix: ''
+      }
+
     }
   },
+
   methods:{
     showModal() {
-      if(this.userType === 'user'){
+      if (this.userType === 'user') {
         this.isModalVisible = true;
-      }else if(this.userType == undefined){
+      } else if (this.userType == undefined) {
         this.$swal({
           type: 'info',
           title: '로그인이 필요합니다',
@@ -310,7 +331,7 @@ export default {
           this.$router.replace('/login/user');
         })
 
-      }else if(this.userType === 'agent'){
+      } else if (this.userType === 'agent') {
         this.$swal('일반 회원만 가능한 서비스입니다.', ' ', 'info');
       }
     },
@@ -321,6 +342,14 @@ export default {
       if (event.target === document.querySelector('#modal')) {
         this.isModalVisible = false;
       }
+    },
+    onReady(instance, CountUp){
+      const that = this;
+      instance.update(that.endVal);
+    },
+    onReady1(instance, CountUp){
+      const that = this;
+      instance.update(that.endVal1);
     },
     getSearchList(event) {
       if (event.code !== 'Enter') return;
@@ -348,78 +377,100 @@ export default {
 
       this.$router.push(`/map/apt/${keyword}`);
     },
-  }
+  },
+
+  components: {
+    HomeMenu,
+    modal,
+    // IOdometer,
+    ICountUp,
+  },
 };
 </script>
 
 <style scoped>
-  .slider-position {
-    position: relative;
-  }
+.iCountUp {
+  font-size: 12em;
+  margin: 0;
+  color: #4d63bc;
+}
+.slider-position {
+  position: relative;
+}
 
-  .slider-text-position {
-    width:40%;
-    position: absolute;
-    left:50%;
-    top: 50%;
-    transform:translate(-50%, -50%);
-  }
+.slider-text-position {
+  width: 40%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 
-  .nonAtag {
-    text-decoration: none;
-  }
+.nonAtag {
+  text-decoration: none;
+}
 
-  .footer-icons {
-    margin: 0 12px;
-  }
+.footer-icons {
+  margin: 0 12px;
+}
 
-  .juk-mapsearch {
-    font-size: 20pt;
-  }
+.juk-mapsearch {
+  font-size: 20pt;
+}
 
-  .juk-devide-content {
-    border-bottom: 1px solid #AEAEAE;
-  }
+.juk-devide-content {
+  border-bottom: 1px solid #AEAEAE;
+}
 
-  .juk-title {
-    font-size: 28pt;
-  }
+.juk-title {
+  font-size: 28pt;
+}
 
-  .juk-subtitle {
-    font-size: 16pt;
-  }
+.juk-subtitle {
+  font-size: 16pt;
+}
 
-  .jukbor {
-    border: 1px solid red;
-  }
+.jukbor {
+  border: 1px solid red;
+}
 
-  .juk-deepback {
-    background-color: #E0E0E0 !important;
-  }
-  #offertitle {
-    margin-left: -10px;
-  }
+.juk-deepback {
+  background-color: #E0E0E0 !important;
+}
 
-  #offercont{
-    margin-left: 30px;
-  }
+#offertitle {
+  margin-left: -10px;
+}
 
-  .board {
-    margin-top: 7px;
-    margin-left: 140px;
-  }
-  .caption {
-    font-size: 1.2em;
-  }
-  #newsboard{
-    margin-left: 80px;
-  }
-  .d1 {
-    margin-left: 50px;
-    margin-bottom: 35px;
-  }
-  .carousel {
-    margin-top: 48px;
-    margin-left: -30px;
-  }
+#offercont {
+  margin-left: 30px;
+}
+
+.board {
+  margin-top: 7px;
+  margin-left: 140px;
+}
+
+.caption {
+  font-size: 1.2em;
+}
+
+#newsboard {
+  margin-left: 80px;
+}
+
+.d1 {
+  margin-left: 50px;
+  margin-bottom: 35px;
+}
+
+.carousel {
+  margin-top: 48px;
+  margin-left: -30px;
+}
+
+.iOdometer {
+  font-size: 2em;
+  margin: 0;
+}
 </style>

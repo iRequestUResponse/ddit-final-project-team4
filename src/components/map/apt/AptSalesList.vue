@@ -1,5 +1,10 @@
 <template>
-  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 90vh">
+  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
+    <v-row class="pa-0 mx-0 pa-4 pt-6 titleRow">
+      <v-col cols=12 class="text-center pa-0 ma-0">
+        <div class="display-1 white--text">매물리스트</div>
+      </v-col>
+    </v-row>
     <v-row v-if="this.salesList.length === 0">
       <v-col class="mt-12 pt-12">
         <div class="title text-center">매물이 없습니다.</div>
@@ -62,5 +67,8 @@
 </script>
 
 <style>
-
+  .titleRow {
+    background: rgb(21, 101, 250);
+    color: white;
+  }
 </style>
