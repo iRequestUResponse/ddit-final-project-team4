@@ -61,7 +61,6 @@ module.exports = function({ app, db }) {
     res.send(result[0].CNT + '');
   });
   
-  
   // 아이디 찾기
   app.get('/api/findId', async (req, res, next) => { 
     let sql = db.readSQL(process.cwd() + '/sql/user/findUserId.sql');
@@ -70,10 +69,12 @@ module.exports = function({ app, db }) {
     res.send(result[0]);
   });
 
-  app.get('/api/getUserTotal', async (req, res, next) => { 
+  // 총 회원수 가져오기
+  app.get('/api/getUserTotals', async (req, res, next) => { 
+
     let sql = db.readSQL(process.cwd() + '/sql/user/getUserTotal.sql');
     let result = await db.getData(sql);
-    
+
     res.send(result[0].USERCNT + '');
   });
   
