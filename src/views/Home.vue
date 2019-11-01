@@ -13,8 +13,17 @@
         <div class="display-2 white--text text-center">어떤 아파트, 어떤 동네에서</div><br>
         <div class="display-2 white--text text-center">살고 싶으신가요?<br><br></div>
         <!-- <div class="title white--text text-center mt-2 mb-4">이제 죽방과 시작해보세요</div> -->
-        <div>
-          <v-text-field dark outlined label="지도 검색" prepend-inner-icon="place" class="juk-mapsearch"></v-text-field>
+        <div @keydown="getSearchList">
+          <v-combobox
+            dark
+            outlined
+            label="지도 검색"
+            prepend-inner-icon="place"
+            class="juk-mapsearch"
+            v-model="searchKeyword"
+            :items="searchList.keywordList"
+            @change="search"
+          />
         </div>
       </div>
     </div>
@@ -276,7 +285,7 @@ import axios from 'axios';
 import ICountUp from 'vue-countup-v2';
 
 export default {
-  name: 'demo',
+  name: 'home',
   beforeMount() {
     let isFired = false;
 
@@ -312,13 +321,10 @@ export default {
       this.userType = (await axios({
         url: `${this.serverLocation}/check`
       })).data.user.type;
+      
     })();
   },
-  components: {
-    HomeMenu,
-    modal,
-    ICountUp,
-  },
+
   data() {
     return {
       userType: undefined,
@@ -327,8 +333,8 @@ export default {
       noticeList: [],
       newsList: [],
       bannerList: [],
-      slides: [
-        {
+      num: 3000,
+      slides: [{
           src: require('../assets/img/slider_02.jpg'),
         },
         {
@@ -338,6 +344,11 @@ export default {
           src: require('../assets/img/slider_01.png'),
         },
       ],
+      searchKeyword: '',
+      searchList: {
+        keywordList: [],
+        list: [],
+      },
       delay: 2000,
       endVal: 0,
       delay1: 0,
@@ -358,14 +369,14 @@ export default {
       },
 
       countupList: [],
-
     }
   },
+
   methods:{
     showModal() {
-      if(this.userType === 'user'){
+      if (this.userType === 'user') {
         this.isModalVisible = true;
-      }else if(this.userType == undefined){
+      } else if (this.userType == undefined) {
         this.$swal({
           type: 'info',
           title: '로그인이 필요합니다',
@@ -376,50 +387,16 @@ export default {
           this.$router.replace('/login/user');
         })
 
-      }else if(this.userType === 'agent'){
+      } else if (this.userType === 'agent') {
         this.$swal('일반 회원만 가능한 서비스입니다.', ' ', 'info');
       }
     },
-    components: {
-      HomeMenu,
-      modal,
-      // IOdometer,
-      ICountUp,
+    closeModal() {
+      this.isModalVisible = false;
     },
-    data() {
-      return {
-        userType: undefined,
-        modalVisibility: false,
-        isModalVisible: false,
-        noticeList: [],
-        newsList: [],
-        bannerList: [],
-        num: 3000,
-        slides: [{
-            src: require('../assets/img/slider_02.jpg'),
-          },
-          {
-            src: require('../assets/img/slider_03.jpg'),
-          },
-          {
-            src: require('../assets/img/slider_01.png'),
-          },
-        ],
-        delay: 1000,
-        endVal: 0,
-        delay1: 1000,
-        endVal1: 120500,
-
-        // endVal: 120500,
-        options: {
-          useEasing: true,
-          useGrouping: true,
-          separator: ',',
-          decimal: '.',
-          prefix: '',
-          suffix: ''
-        }
-
+    hideModal(event) {
+      if (event.target === document.querySelector('#modal')) {
+        this.isModalVisible = false;
       }
     },
     onReady(instance, CountUp){
@@ -442,8 +419,39 @@ export default {
       this.countupList = [...this.countupList, instance];
       instance.update(that.endVal3);
     },
+    getSearchList(event) {
+      if (event.code !== 'Enter') return;
 
-  }
+      navigator.geolocation.getCurrentPosition(async position => {
+        let result = (await axios({
+          url: `${this.serverLocation}/searchAptList?lat=${position.coords.latitude}&lng=${position.coords.longitude}&query=${this.searchKeyword}`
+        })).data;
+  
+        this.searchList.list = result.list;
+        this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
+      }, async failure => {
+        let center = this.$parent.$children.find(e => e.$el.classList.contains('map_wrap')).map.getCenter();
+  
+        let result = (await axios({
+          url: `${this.serverLocation}/searchAptList?lat=${center.Ha}&lng=${center.Ga}&query=${this.searchKeyword}`
+        })).data;
+  
+        this.searchList.list = result.list;
+        this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
+      });
+    },
+    async search(keyword) {
+      if (!this.searchList.keywordList.includes(keyword) || !keyword) return;
+
+      this.$router.push(`/map/apt/${keyword}`);
+    },
+  },
+
+  components: {
+    HomeMenu,
+    modal,
+    ICountUp,
+  },
 };
 </script>
 

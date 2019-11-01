@@ -8,6 +8,7 @@
       @build_type-changed="info.build_type = $event"
       @sales_type-changed="info.sales_type = $event"
       @price-changed="info.price = $event"
+      @completion_date-changed="info.completion_date = $event"
       @deposit-changed="info.deposit = $event"
       @area-changed="info.area = $event"
       @whole_floor-changed="info.whole_floor = $event"
@@ -109,6 +110,7 @@ export default {
         build_type: '원룸',
         sales_type: '매매',
         price: '',
+        completion_date: '',
         deposit: '',
         area: '',
         structure: '',
@@ -139,14 +141,20 @@ export default {
       }
     },
     async submit() {
+      console.log(1);
+
       if (this.views[this.views.length - 1].condition()) {
+        console.log(2);
         let result = await axios.post(`${this.serverLocation}/normal/register`, { ...this.info, photoList: this.photoList, selectedOptions: this.selectedOptions });
+        console.log(3);
         let [done, all] = result.data.split('/');
+        console.log(4);
         if (done === all) {
-          alert('등록이 완료되었습니다!');
-          this.$router.push('/agentpage/AgentSalesManage');
+          this.$swal('등록이 완료되었습니다!');
+          this.$router.push('/agentpage');
+          location.reload();
         } else {
-          alert('등록하지 못했습니다. 입력되지 않은 사항이 있는지 확인해주세요.');
+          this.$swal('등록하지 못했습니다. 입력되지 않은 사항이 있는지 확인해주세요.');
         }
       }
     },

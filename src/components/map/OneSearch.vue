@@ -98,7 +98,7 @@ export default {
   },
   data() {
     return {
-      filterType: '아파트',
+      filterType: '원룸/투룸',
       // ........
       openFilter: false,
       searchKeyword: '',
