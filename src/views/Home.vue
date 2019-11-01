@@ -203,18 +203,19 @@
         </v-parallax>
       </section>
 
-
+      <!-- 엠블럼 -->
       <section class="my-12">
         <v-container class="my-12">
-          <v-row no-gutters>
-            <template v-for="n in 8">
-              <v-col :key="n">
-                <v-card class="pa-2" outlined tile>
-                  Column {{n}}
-                </v-card>
-              </v-col>
-              <v-responsive v-if="n === 2" :key="`width-${n}`" width="100%"></v-responsive>
-            </template>
+          <v-row>
+            <v-col v-for="(emblem, i) in emblemList" :key="i" cols="2">
+              <v-card class="pa-4" elevation="7" :href="emblem.link">
+                <v-img
+                  :src="emblem.src"
+                  height="140"
+                  contain
+                />
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
       </section>
@@ -342,6 +343,56 @@ export default {
         },
         {
           src: require('../assets/img/slider_01.png'),
+        },
+      ],
+      emblemList: [
+        {
+          src: require('../assets/logo.png'),
+          link: 'https://kr.vuejs.org/',
+        },
+        {
+          src: require('../assets/img/vuetify.png'),
+          link: 'https://vuetifyjs.com/ko/',
+        },
+        {
+          src: require('../assets/img/nodejs.png'),
+          link: 'https://nodejs.org/ko/',
+        },
+        {
+          src: require('../assets/img/vscode.png'),
+          link: 'https://code.visualstudio.com/',
+        },
+        {
+          src: require('../assets/img/photoshop.png'),
+          link: 'https://www.adobe.com/kr/products/photoshop.html',
+        },
+        {
+          src: require('../assets/img/illustrator.png'),
+          link: 'https://www.adobe.com/kr/products/illustrator.html',
+        },
+        {
+          src: require('../assets/img/sqldeveloper.png'),
+          link: 'https://www.oracle.com/kr/database/technologies/appdev/sql-developer.html',
+        },
+        {
+          src: require('../assets/img/oracledb.png'),
+          link: 'https://www.oracle.com/kr/index.html',
+        },
+        {
+          src: require('../assets/img/chartjs.png'),
+          link: 'https://www.chartjs.org/',
+        },
+        {
+          src: require('../assets/img/socketio.jpg'),
+          link: 'https://socket.io/',
+        },
+        {
+          src: require('../assets/img/kakaomap.png'),
+          link: 'http://apis.map.kakao.com/',
+        },
+        {
+          src: require('../assets/img/naverapi.png'),
+          link: 'https://developers.naver.com/main/',
         },
       ],
       searchKeyword: '',

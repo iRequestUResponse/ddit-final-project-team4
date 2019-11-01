@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-container
       class="fill-height container"
       fluid
@@ -10,7 +9,7 @@
           <v-card
             width="400"
             height="700"
-            class="mx-auto"
+            class="juk-chattingflame"
           >
             <v-system-bar
               color="indigo darken-2"
@@ -33,10 +32,10 @@
             <v-content class="overflow-y-auto overflow-x-hidden messagecont">
               <v-row v-for="msg in msgList" :key="msg.seq">
                 <v-col>
-                  <div class="ml-2">
+                  <div class="juk-msg">
                     {{ msg.msg }}
                   </div>
-                  <div class="ml-4 caption">
+                  <div class="juk-msgsub">
                     {{ msg.sent | regdate }}
                   </div>
                 </v-col>
@@ -75,7 +74,6 @@
         </div>
       </div> -->
     </v-container>
-  </v-app>
 </template>
 
 <script>
@@ -157,6 +155,21 @@ header {
 
 .messagecont {
   height: 80%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.juk-chattingflame {
+  margin: auto;
+}
+
+.juk-msg {
+  margin-left: 6px;
+}
+
+.juk-msgsub {
+  font-size: 9pt;
+  margin-left: 12px;
 }
 
 .bor {
