@@ -63,6 +63,7 @@ module.exports = function({ app, db }) {
 
   })
   
+  // 지도에 아파트정보
   app.get('/api/getMapApt', async (req, res, next) => {
     let sql = db.readSQL(process.cwd() + '/sql/mypage/getApt.sql');
     let result = (await db.getData(sql, [req.query.aptNo]))[0];

@@ -18,7 +18,8 @@ module.exports = function({ app, db }) {
 
       let sql = db.readSQL(process.cwd() + '/sql/map/getAptList.sql');
       let result = await db.getData(sql, [sido, req.query.y, req.query.x, req.query.type || null]);
-
+      
+      
       res.send(result);
     } catch (err) {
       res.send(err.toString());
