@@ -1,1 +1,1 @@
-select count(*) totalcnt from users
+select count(*) userCnt from users

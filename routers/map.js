@@ -18,7 +18,6 @@ module.exports = function({ app, db }) {
 
       let sql = db.readSQL(process.cwd() + '/sql/map/getAptList.sql');
       let result = await db.getData(sql, [sido, req.query.y, req.query.x, req.query.type || null]);
-      console.log(result);
 
       res.send(result);
     } catch (err) {
@@ -47,8 +46,6 @@ module.exports = function({ app, db }) {
       factor = [query, null];
     }
 
-    console.log(factor);
-
     let result = await db.getData(sql, factor);
 
     res.send(result);
@@ -64,8 +61,6 @@ module.exports = function({ app, db }) {
     } else {
       factor = [query, null];
     }
-
-    console.log(factor);
 
     let result = await db.getData(sql, factor);
 
@@ -99,7 +94,6 @@ module.exports = function({ app, db }) {
   app.get('/api/checkAptInterest', async (req, res, next) => {
     let sql = db.readSQL(process.cwd() + '/sql/map/checkAptInterest.sql');
     let result = (await db.getData(sql, [req.session.user.USERID, req.query.num]))[0].CNT;
-    console.log('관심목록내역체크 : ', result);
     res.send(result + '');
   });
 
