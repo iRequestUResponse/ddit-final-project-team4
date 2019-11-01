@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
+  <v-container fluid class="pa-0 ma-0 overflow-y-auto overflow-x-hidden" style="height: 100vh">
     <v-row class="pa-0 py-4 mx-0 titleRow">
       <v-btn icon dark @click="backview" class="ml-4">
         <v-icon large>arrow_back</v-icon>

@@ -29,13 +29,8 @@
         <v-card outlined>
           <v-img
             :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`"
-            class="text-right pa-2"
             height="200px"
-          >
-            <v-btn icon color="blue" @click="cancelInterest(sales.INTEREST_SEQ)">
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-          </v-img>
+          />
 
             <div @click="viewAptSales(sales.APTSALES_NUM)">
               <v-card-title>
@@ -71,13 +66,8 @@
         <v-card outlined>
           <v-img
             :src="`//192.168.0.121:9000/api/file/${norSales.PHOTO_PATH}`"
-            class="text-right pa-2"
             height="200px"
-          >
-            <v-btn icon color="blue" @click="cancelNorInterest(norSales.INTEREST_SEQ)">
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-          </v-img>
+          />
 
           <div @click="viewNorSales(norSales.NORSALES_NUM)">
             <v-card-title>
