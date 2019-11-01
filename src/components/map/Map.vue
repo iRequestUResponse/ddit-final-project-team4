@@ -231,10 +231,6 @@ export default {
         let addressList = (await axios({
           url: `${this.serverLocation}/c2a?x=${position.lng}&y=${position.lat}&type=${filter.method || ''}`,
           method: 'GET',
-          headers: {
-            Authorization: 'KakaoAK 3b0fdc6196cbd2de9db95c5bbf5e3969',
-            'Content-Type': 'x-www-form-urlencoded',
-          }
         })).data.map(e => ({
           ...e,
           MAXPRICE: (e.MAXPRICE / 10000).toFixed(1),
