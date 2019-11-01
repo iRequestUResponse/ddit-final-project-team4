@@ -69,7 +69,6 @@ export default {
       });
 
       this.loginUser = result.data.user;
-      console.log(this.$route);
     })();
   },
   data() {

@@ -45,12 +45,6 @@ import categoryMap from "@/assets/js/map.js";
 export default {
 
   mounted() {
-    (async () => {
-      this.salesPrice = (await axios({
-        url: `${this.serverLocation}/getAptMaxMinPrice?aptNo=${ this.aptNo }`
-      })).data;
-    })();
-
     let container = this.$refs.map;
 
     this.$parent.$on('refresh', (e) => {
@@ -64,6 +58,7 @@ export default {
         return +value >= arr[0] && +value <= arr[1];
       }
       console.log(filter);
+
       for (let marker of this.markerList) {
         let e = marker.data;
         if (e.BUILD_TYPE == filter.method && (e.BUILD_TYPE !== '월세' || between(e.APT_DEPOSIT, filter.deposit)) && between(e.APT_AREA, filter.area) && between(e.APT_PRICE, filter.price)) {
@@ -84,8 +79,27 @@ export default {
         this.map = new kakao.maps.Map(container, options);
         
         // 추가
-        categoryMap(this.map);
+        var centerXY = this.map.getCenter(); 
         
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new kakao.maps.services.Geocoder();
+        
+        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+          if (status !== kakao.maps.services.Status.OK) return;
+
+          let rankList = (await axios({
+            url: `${this.serverLocation}/getPopulAptRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
+            method: 'GET',
+          })).data;
+
+          console.log('ranklist', rankList);
+
+          this.$parent.$emit('rankList', rankList);
+
+        });
+        categoryMap(this.map);
+
         // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
         var mapTypeControl = new kakao.maps.MapTypeControl();
 
@@ -105,6 +119,26 @@ export default {
 
         this.refresh();
         kakao.maps.event.addListener(this.map, 'dragend', this.refresh);
+        
+        // 움직일때마다 실행 이벤트
+        kakao.maps.event.addListener(this.map, 'dragend', () => {
+          var centerXY = this.map.getCenter(); 
+        
+          // 주소-좌표 변환 객체를 생성합니다
+          var geocoder = new kakao.maps.services.Geocoder();
+          
+          // 좌표로 법정동 상세 주소 정보를 요청합니다
+          this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+            if (status !== kakao.maps.services.Status.OK) return;
+
+            let rankList = (await axios({
+              url: `${this.serverLocation}/getPopulAptRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
+              method: 'GET',
+            })).data;
+
+            this.$parent.$emit('rankList', rankList);
+          });
+        });
         kakao.maps.event.addListener(this.map, 'zoom_changed', this.refresh);
       }, failur => {
         console.log('only secure origins are alllowed!');
@@ -140,7 +174,19 @@ export default {
         kakao.maps.event.addListener(this.map, 'zoom_changed', this.refresh);
       });
     })();
+
+    this.$root.$on('centerApt', aptSeq => {
+      let target = this.markerList.find(e => e.data.APT_SEQ === aptSeq);
+
+      if (target) {
+        this.markerList.forEach(e => {
+          e.setImage(this.markerImage.normal);
+        });
+        target.setImage(this.markerImage.booking);
+      }
+    });
   },
+
   data() {
     return {
       map: null,
@@ -153,6 +199,7 @@ export default {
       filter: {},
       markerList: [],
       overlayList: [],
+      geocoderAddr: [],
     };
   },
   methods: {
