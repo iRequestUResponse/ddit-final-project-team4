@@ -200,6 +200,7 @@ export default {
       })).data;
 
       this.searchList.keywordList = [];
+      console.log(result);
       this.$parent.$emit('refresh', { arr: result, filter: { method: this.filterMethod, price: this.filterPrice, area: this.filterArea, deposit: this.filterDeposit } });
     },
     changedFilter() {

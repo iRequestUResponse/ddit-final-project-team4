@@ -18,10 +18,6 @@ export default {
   beforeMount() {
     socket.on('msg', msg => {
       this.$store.dispatch('addChatMsg', msg);
-
-      if (!this.$store.state.chatVisible) {
-        
-      }
     });
   },
   data: () => ({

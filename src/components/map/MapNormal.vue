@@ -35,10 +35,6 @@
     <input type="checkbox" id="chkTraffic" @click="setOverlayMapTypeId" /><label for="chkTraffic"> 교통정보</label>
     <input type="checkbox" id="chkBicycle" @click="setOverlayMapTypeId" /><label for="chkBicycle"> 자전거도로</label>
   </p>
- 
-  <router-link class="home pa-4" to="/">
-    <v-icon size="44" icon color="rgb(21,101,250)" id="offertitle" style="margin-top:700px;">house</v-icon>
-  </router-link>
 </div>
 
 </template>
@@ -49,20 +45,13 @@ import categoryMap from "@/assets/js/map.js";
 export default {
 
   mounted() {
-    (async () => {
-      this.salesPrice = (await axios({
-        url: `${this.serverLocation}/getAptMaxMinPrice?aptNo=${ this.aptNo }`
-      })).data;
-    })();
-
     let container = this.$refs.map;
 
-    this.$parent.$on('refresh', (e) => {
-      console.log(e);
+    this.$parent.$on('refreshNor', (e) => {
       this.refresh(e);
     });
 
-    this.$parent.$on('changedFilter', (filter) => {
+    this.$parent.$on('changedEtcFilter', (filter) => {
       this.filter = filter;
       function between(value, arr) {
         return +value >= arr[0] && +value <= arr[1];
@@ -70,7 +59,7 @@ export default {
       console.log(filter);
       for (let marker of this.markerList) {
         let e = marker.data;
-        if (e.BUILD_TYPE == filter.method && (e.BUILD_TYPE !== '월세' || between(e.APT_DEPOSIT, filter.deposit)) && between(e.APT_AREA, filter.area) && between(e.APT_PRICE, filter.price)) {
+        if (e.BUILD_TYPE == filter.method && (e.BUILD_TYPE !== '월세' || between(e.DEPOSIT, filter.deposit)) && between(e.AREA, filter.area) && between(e.PRICE, filter.price)) {
           marker.setImage(this.markerImage.booking);
         } else {
           marker.setImage(this.markerImage.normal);
@@ -184,12 +173,8 @@ export default {
 
       (async () => {
         let addressList = (await axios({
-          url: `${this.serverLocation}/c2a?x=${position.lng}&y=${position.lat}&type=${filter.method || ''}`,
+          url: `${this.serverLocation}/c2n`,
           method: 'GET',
-          headers: {
-            Authorization: 'KakaoAK 3b0fdc6196cbd2de9db95c5bbf5e3969',
-            'Content-Type': 'x-www-form-urlencoded',
-          }
         })).data.map(e => ({
           ...e,
           MAXPRICE: (e.MAXPRICE / 10000).toFixed(1),
@@ -198,8 +183,9 @@ export default {
 
         let markers = [];
 
-        function between(value, arr) {
-          return +value >= arr[0] && +value <= arr[1];
+        function between(value, _arr) {
+          _arr = _arr || [0, 999999999999];
+          return +value >= _arr[0] && +value <= _arr[1];
         }
 
         this.overlayList.forEach(e => {
@@ -208,7 +194,7 @@ export default {
         this.overlayList = [];
 
         for (let e of addressList) {
-          let position = new kakao.maps.LatLng(e.APT_LAT, e.APT_LNG);
+          let position = new kakao.maps.LatLng(e.SALES_LAT, e.SALES_LNG);
           const marker = new kakao.maps.Marker({ position });
           const overlay = new kakao.maps.CustomOverlay({
             position,
@@ -220,11 +206,11 @@ export default {
 
         
           let bookingCondition = e.BUILD_TYPE;
-          if (bookingCondition && between(e.APT_AREA, filter.area)) {
+          if (bookingCondition && between(e.AREA, filter.area)) {
             if (e.BUILD_TYPE === '월세') {
-              bookingCondition = between(e.APT_DEPOSIT, filter.price) && between(e.APT_PRICE, filter.deposit);
+              bookingCondition = between(e.DEPOSIT, filter.price) && between(e.PRICE, filter.deposit);
             } else {
-              bookingCondition = between(e.APT_PRICE, filter.price);
+              bookingCondition = between(e.PRICE, filter.price);
             }
           }
           if (bookingCondition) {
@@ -234,7 +220,7 @@ export default {
           }
 
           kakao.maps.event.addListener(marker, 'click', () => {
-            this.$parent.$emit('selectApt', e);
+            this.$parent.$emit('selectNor', e);
           });
 
           kakao.maps.event.addListener(marker, 'mouseover', () => {
