@@ -99,6 +99,13 @@ module.exports = function({ app, db }) {
   });
 
   //------------------
+  app.get('/api/searchNorList', async (req, res, next) => {
+    let areaSql = db.readSQL(process.cwd() + '/sql/map/getNorListAreaQuery.sql');
+    areaList = await db.getData(areaSql, [req.query.query]);
+    
+    res.json(areaList);
+  });
+
   app.get('/api/searchEtcCenter/:query', async (req, res, next) => {
     let query = req.params.query;
     let sql = db.readSQL(process.cwd() + '/sql/map/getAgvLatLngEtcQuery.sql');
@@ -106,6 +113,13 @@ module.exports = function({ app, db }) {
     let result = await db.getData(sql, query);
 
     res.send(result[0]);
+  });
+
+  app.get('/api/c2n', async (req, res, next) => {
+    let sql = `select * from NORSALES`;
+    let result = await db.getData(sql, []);
+
+    res.send(result);
   });
 };
 

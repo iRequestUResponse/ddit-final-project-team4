@@ -1,4 +1,3 @@
-select  avg(apt_lat) as lat, avg(apt_lng) as lng
-from    APT
-where   apt_addr like '%' || :area || '%'
-and     apt_name like '%' || nvl(:name, '') || '%'
+select  center_lat as lat, center_lng as lng
+from    areaCenter
+where   center_addr like '%' || :area || '%'
