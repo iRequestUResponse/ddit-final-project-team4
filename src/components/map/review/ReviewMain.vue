@@ -5,10 +5,6 @@
                 <div class="display-1 white--text">리 뷰</div>
             </v-col>
         </v-row>
-        <v-row class="mx-0">
-            {{ this.onUser }}
-            {{ this.onUser != '' }}
-        </v-row>
         <v-row class="grey lighten-1 ma-0 py-8">
             <v-card class="grey darken-3 mx-auto" dark width="280">
                 <div class="title mt-4 text-center grey--text">
@@ -21,12 +17,10 @@
                     <v-rating v-model="rating" color="yellow darken-3" background-color="grey lighten-1"
                         empty-icon="$ratingFull" size="40" dense readonly half-increments hover></v-rating>
                 </div>
+                <v-btn v-show="this.onUser != ''" block color="juk-btncolor" @click="showinsert">
+                    리뷰작성
+                </v-btn>
                 <v-dialog v-model="rvdialog" persistent max-width="600px">
-                    <template v-show="this.onUser != ''" v-slot:activator="{ on }">
-                        <v-btn block color="juk-btncolor" v-on="on">
-                            리뷰작성
-                        </v-btn>
-                    </template>
                     <v-card>
                         <v-card-title>
                             <span class="headline">리뷰작성</span>
@@ -148,20 +142,22 @@
                 }
             });
 
-            axios
-                .get(`${this.serverLocation}/check`)
-                .then(res => {
-                    if (res.data.user == undefined) {
-                        this.onUser = ''
-                    } else {
-                        this.onUser = res.data.user.USERID
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            (async () => {
+                axios
+                    .get(`${this.serverLocation}/check`)
+                    .then(res => {
+                        if (res.data.user == undefined) {
+                            this.onUser = ''
+                        } else {
+                            this.onUser = res.data.user.USERID
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
 
-            this.getReviewList();
+                this.getReviewList();
+            })();
         },
         data() {
             return {
@@ -187,6 +183,14 @@
                 this.rating = (await axios({
                     url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptNum}`
                 })).data.SCORE;
+            },
+            showinsert() {
+                this.mode = 'insert';
+                this.trafficRating = 0;
+                this.surroundingsRating = 0;
+                this.residenceRating = 0;
+                this.reviewCont = '';
+                this.rvdialog = true;
             },
             async insertReview() {
                 await axios({
@@ -225,7 +229,7 @@
                         }
                     })
             },
-            updateReview(cont) {
+            async updateReview(cont) {
                 this.trafficRating = cont.TRAFFIC_SCORE;
                 this.surroundingsRating = cont.SURROUNDINGS_SCORE;
                 this.residenceRating = cont.RESIDENCE_SCORE;

@@ -54,6 +54,23 @@ Vue.mixin({
         13: '침대',
         14: '신발장',
         15: '싱크대',
+      },
+      optionIconMapping: {
+        1: 'mdi-car',
+        2: 'mdi-elevator',
+        3: 'mdi-dog-side',
+        4: 'mdi-cash-multiple',
+        5: 'ac_unit',
+        6: 'mdi-fridge',
+        7: 'mdi-washing-machine',
+        8: 'mdi-fire',
+        9: 'mdi-microwave',
+        10: 'mdi-cupboard',
+        11: 'mdi-window-shutter-open',
+        12: 'mdi-wardrobe',
+        13: 'mdi-bed-empty',
+        14: 'mdi-shoe-heel',
+        15: 'mdi-betamax',
       }
     }
   }
