@@ -4,6 +4,7 @@ const fs = require('fs');
 module.exports = function({ app, db, io, http }) { 
   io.on('connection', socket => {
     console.log('a user connected:', socket.id);
+    socket.emit('hello', 'hello');
     // console.log('==============================');
     // // console.log('khs user: ', getUserSocket(io, 'khs'));
     // console.log('my id :', socket.id);
@@ -156,8 +157,9 @@ module.exports = function({ app, db, io, http }) {
     let me = req.session.user.USERID || req.session.user.AGENTID;
 
     let sql = db.readSQL(process.cwd() + '/sql/chat/chatList.sql');
-    let result = db.getData(sql, [me]);
-    res.send(result);
+    let chatList = await db.getData(sql, [me]);
+    
+    res.send({ chatList, me: req.session.user.type });
   });
 };
 
