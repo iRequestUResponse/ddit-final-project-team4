@@ -52,6 +52,9 @@ export default {
         url: `${this.serverLocation}/logout`
       });
       
+      this.$store.dispatch('refreshChatList');
+      this.$store.dispatch('clear');
+      
       this.loginUser = undefined;
 
       this.$swal({
@@ -60,7 +63,8 @@ export default {
         text: '로그아웃이 정상적으로 되었습니다.',
       })
       .then((result) => {
-          this.$router.push('/');
+        this.$router.push('/');
+        location.reload();
       })
     },
   },

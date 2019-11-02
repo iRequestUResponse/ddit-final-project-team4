@@ -85,7 +85,7 @@ export default {
           pw: this.pw,
         },
       })
-      .then(res => {
+      .then(async res => {
         if (res.data.AGENT_WITHDRAWAL === 'Y') {
           this.$swal( this.id , '아이디는 탈퇴한 회원입니다.', 'info');
           return;
@@ -95,6 +95,7 @@ export default {
           return;
         }
         if (res.data.AGENTID) {
+          this.$store.dispatch('refreshChatList');
           // if(this.checked === true){
 
           // }
