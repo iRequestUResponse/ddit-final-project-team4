@@ -12,6 +12,9 @@
       :rating="rating"
       :onUser="onUser"
       :maptype="maptype"
+      :rankList="rankList"
+      :ranklength="ranklength"
+      :cnt="cnt"
       @receivedPage="switchScreen"
     />
   </v-container>
@@ -20,8 +23,22 @@
 <script>
 import { async } from 'q';
 export default {
+
   beforeMount() {
+
+    // 지도위치에 따른 원룸,투룸 인기리스트(카운트를 통한)
+    this.$root.$on('oneRankList', rankList => {
+      if(rankList != null){
+        
+        this.rankList = rankList;
+        this.ranklength = this.rankList.length;
+
+      }
+    });
+
+
     this.$root.$on('selectNor', event => {
+
       // 일반매물 정보 가져오기
       (async () => {
         let result = (await axios({
@@ -86,6 +103,9 @@ export default {
       rating: 0,
       onUser: undefined,
       maptype: 'room',
+      rankList: [],
+      ranklength: 0,
+      cnt:0,
     }
   },
   

@@ -77,6 +77,24 @@ export default {
         this.map = new kakao.maps.Map(container, options);
         
         // 추가
+        var centerXY = this.map.getCenter(); 
+
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+        
+          if (status !== kakao.maps.services.Status.OK) return;
+
+          let rankList = (await axios({
+            url: `${this.serverLocation}/getPopulOneRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
+            method: 'GET',
+          })).data;
+
+          this.$root.$emit('oneRankList', rankList);
+        });
+
         categoryMap(this.map);
         
         // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
@@ -98,6 +116,28 @@ export default {
 
         this.refresh();
         kakao.maps.event.addListener(this.map, 'dragend', this.refresh);
+
+        // 움직일때마다 실행 이벤트
+        kakao.maps.event.addListener(this.map, 'dragend', () => {
+
+          var centerXY = this.map.getCenter(); 
+          // 주소-좌표 변환 객체를 생성합니다
+          var geocoder = new kakao.maps.services.Geocoder();
+
+          // 좌표로 법정동 상세 주소 정보를 요청합니다
+          this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+
+            if (status !== kakao.maps.services.Status.OK) return;
+
+            let rankList = (await axios({
+              url: `${this.serverLocation}/getPopulOneRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
+              method: 'GET',
+            })).data;
+
+            this.$root.$emit('oneRankList', rankList);
+
+          });
+        });
         kakao.maps.event.addListener(this.map, 'zoom_changed', this.refresh);
       }, failur => {
         console.log('only secure origins are alllowed!');
