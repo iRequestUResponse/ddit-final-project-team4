@@ -11,6 +11,7 @@
       :reportCheck="reportCheck"
       :rating="rating"
       :onUser="onUser"
+      :maptype="maptype"
       @receivedPage="switchScreen"
     />
   </v-container>
@@ -84,6 +85,7 @@ export default {
       reportCheck: 0,
       rating: 0,
       onUser: undefined,
+      maptype: 'room',
     }
   },
   

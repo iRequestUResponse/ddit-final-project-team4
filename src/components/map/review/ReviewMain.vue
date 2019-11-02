@@ -132,7 +132,7 @@
 
 <script>
     export default {
-        props: ['aptNum'],
+        props: ['aptNum', 'norNum', 'maptype'],
         beforeMount() {
             this.$root.$on('selectApt', event => {
                 if (event != null) {
@@ -175,14 +175,35 @@
             }
         },
         methods: {
-            async getReviewList() {
-                this.reviewList = (await axios({
-                    url: `${this.serverLocation}/getAptReivewList?seq=${this.aptNum}`
-                })).data;
+            getReviewList() {
+                if(this.maptype == 'apt'){
+                    (async () => {
+                        this.reviewList = (await axios({
+                            url: `${this.serverLocation}/getAptReivewList?seq=${this.aptNum}`
+                        })).data;
+                    })();
 
-                this.rating = (await axios({
-                    url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptNum}`
-                })).data.SCORE;
+                    (async () => {
+                        this.rating = (await axios({
+                            url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptNum}`
+                        })).data.SCORE;
+                    })();
+                }else if(this.maptype == 'room') {
+                    (async () => {
+                        this.reviewList = (await axios({
+                            url: `${this.serverLocation}/getNorReivewList?num=${this.norNum}`
+                        })).data;
+                    })();
+
+                    (async () => {
+                        this.rating = (await axios({
+                            url: `${this.serverLocation}/getNorAvgScore?num=${this.norNum}`
+                        })).data.SCORE;
+                    })();
+                }else{
+                    this.reviewList = [];
+                    this.rating = 0;
+                }
             },
             showinsert() {
                 this.mode = 'insert';
@@ -193,7 +214,8 @@
                 this.rvdialog = true;
             },
             async insertReview() {
-                await axios({
+                if(this.maptype == 'apt'){
+                    await axios({
                         url: `${this.serverLocation}/insertAptReview`,
                         method: 'POST',
                         data: {
@@ -212,6 +234,29 @@
                             console.log('데이터를 삽입하지 못함');
                         }
                     })
+                }else if(this.maptype == 'room') {
+                    await axios({
+                        url: `${this.serverLocation}/insertNorReview`,
+                        method: 'POST',
+                        data: {
+                            num: this.norNum,
+                            trarat: this.trafficRating,
+                            surrat: this.surroundingsRating,
+                            resrat: this.residenceRating,
+                            cont: this.reviewCont,
+                        },
+                    })
+                    .then(res => {
+                        if (res.data === 1) {
+                            this.rvdialog = false;
+                            this.getReviewList();
+                        } else {
+                            console.log('데이터를 삽입하지 못함');
+                        }
+                    })
+                }else{
+                    alert("작성 중 문제가 발생하였습니다. : maptype is null");
+                }
             },
             async delteReview(revSeq) {
                 await axios({
@@ -260,12 +305,10 @@
                     })
             },
             showInfo() {
-                console.log("ReviewMain.vue - showInfo");
                 this.trans.aptSalesNum = 0;
                 this.trans.page = 'AptInfo';
 
                 this.$emit('receivedPage', this.trans);
-                console.log("ReviewMain.vue - ", this.trans);
             }
         }
     }
