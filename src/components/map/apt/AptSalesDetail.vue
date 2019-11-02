@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
+  <v-container fluid class="pa-0 ma-0 overflow-y-auto overflow-x-hidden" style="height: 100vh">
     <v-row class="pa-0 py-4 mx-0 titleRow">
       <v-btn icon dark @click="backview" class="ml-4">
         <v-icon large>arrow_back</v-icon>
@@ -20,7 +20,7 @@
     <v-row class="mx-0 px-4 py-2" align="center">
       <v-col cols="12" class="pa-0 ma-0">
         <div>
-          {{ aptsale.COMPLETION_DATE.substring(0,4) }}년 완공
+          {{ aptsale.COMPLETION_DATE }}년 완공
         </div>
       </v-col>
       <v-col cols="12" class="pa-0 ma-0">
@@ -140,7 +140,7 @@
   export default {
     props: ['aptNum'],
     beforeMount() {
-      this.$parent.$parent.$on('selectApt', event => {
+      this.$root.$on('selectApt', event => {
         if (event != null) {
           this.trans.aptSalesNum = 0;
           this.trans.page = 'AptInfo';
@@ -162,7 +162,7 @@
         let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e =>
           new Date(e));
         result.COMPLETION_DATE =
-          `${completeionDate.getFullYear()}.${completeionDate.getMonth() + 1}.${completeionDate.getDate()}`;
+          `${completeionDate.getFullYear()}`;
         result.AVAILABILITY_DATE =
           `${availability_date.getFullYear()}.${availability_date.getMonth() + 1}.${availability_date.getDate()}`;
 
@@ -177,18 +177,20 @@
         })).data;
       })();
 
-      axios
-        .get(`${this.serverLocation}/check`)
-        .then(res => {
-          if (res.data.user == undefined) {
-            this.onUser = undefined
-          } else {
-            this.onUser = res.data.user.USERID
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
+      (async () => {
+        await axios
+          .get(`${this.serverLocation}/check`)
+          .then(res => {
+            if (res.data.user == undefined) {
+              this.onUser = undefined
+            } else {
+              this.onUser = res.data.user.USERID
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      })();
     },
     filters: {
       comma(sales) {
@@ -253,7 +255,7 @@
           str = '0';
         }
         return str;
-      }
+      },
     },
     data() {
       return {

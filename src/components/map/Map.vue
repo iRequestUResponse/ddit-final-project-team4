@@ -95,9 +95,10 @@ export default {
 
           console.log('ranklist', rankList);
 
-          this.$parent.$emit('rankList', rankList);
+          this.$root.$emit('rankList', rankList);
 
         });
+        
         categoryMap(this.map);
 
         // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
@@ -122,6 +123,7 @@ export default {
         
         // 움직일때마다 실행 이벤트
         kakao.maps.event.addListener(this.map, 'dragend', () => {
+          
           var centerXY = this.map.getCenter(); 
         
           // 주소-좌표 변환 객체를 생성합니다
@@ -136,7 +138,7 @@ export default {
               method: 'GET',
             })).data;
 
-            this.$parent.$emit('rankList', rankList);
+            this.$root.$emit('rankList', rankList);
           });
         });
         kakao.maps.event.addListener(this.map, 'zoom_changed', this.refresh);
@@ -175,6 +177,8 @@ export default {
       });
     })();
 
+
+    // 아파트 순위 클릭시 센터이동 이미지 변환
     this.$root.$on('centerApt', aptSeq => {
       let target = this.markerList.find(e => e.data.APT_SEQ === aptSeq);
 
@@ -272,8 +276,9 @@ export default {
             marker.setImage(this.markerImage.normal);
           }
 
+          // 마커 클릭시
           kakao.maps.event.addListener(marker, 'click', () => {
-            this.$parent.$emit('selectApt', e);
+            this.$root.$emit('selectApt', e);
           });
 
           kakao.maps.event.addListener(marker, 'mouseover', () => {

@@ -6,6 +6,7 @@
     <component
       :is="mapPage"
       :aptNum="aptSalesNum"
+      :maptype="maptype"
       @receivedPage="switchScreen"
     />
   </v-container>
@@ -18,6 +19,7 @@ export default {
       beforeSalesNum: 0,
       mapPage: 'PopulSalesList',
       aptSalesNum: 0,
+      maptype: 'apt',
     }
   },
   
@@ -35,17 +37,6 @@ export default {
       this.aptSalesNum = convertPage.aptSalesNum;
       this.mapPage = convertPage.page;
     },
-    // back() {
-    //   let backList = {
-    //     AptInfo: 'AptInfo',
-    //     AptSalesList: 'AptInfo',
-    //     AptSalesDetail: 'AptSalesList',
-    //     ReviewMain: 'AptInfo',
-    //   };
-
-    //   this.mapPage = backList[this.mapPage];
-    //   this.aptSalesNum = this.beforeSalesNum;
-    // }
   }
 }
 </script>

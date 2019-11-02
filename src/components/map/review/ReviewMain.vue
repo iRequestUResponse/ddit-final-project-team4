@@ -5,10 +5,6 @@
                 <div class="display-1 white--text">리 뷰</div>
             </v-col>
         </v-row>
-        <v-row class="mx-0">
-            {{ this.onUser }}
-            {{ this.onUser != '' }}
-        </v-row>
         <v-row class="grey lighten-1 ma-0 py-8">
             <v-card class="grey darken-3 mx-auto" dark width="280">
                 <div class="title mt-4 text-center grey--text">
@@ -21,12 +17,10 @@
                     <v-rating v-model="rating" color="yellow darken-3" background-color="grey lighten-1"
                         empty-icon="$ratingFull" size="40" dense readonly half-increments hover></v-rating>
                 </div>
+                <v-btn v-show="this.onUser != ''" block color="juk-btncolor" @click="showinsert">
+                    리뷰작성
+                </v-btn>
                 <v-dialog v-model="rvdialog" persistent max-width="600px">
-                    <template v-show="this.onUser != ''" v-slot:activator="{ on }">
-                        <v-btn block color="juk-btncolor" v-on="on">
-                            리뷰작성
-                        </v-btn>
-                    </template>
                     <v-card>
                         <v-card-title>
                             <span class="headline">리뷰작성</span>
@@ -138,9 +132,9 @@
 
 <script>
     export default {
-        props: ['aptNum'],
+        props: ['aptNum', 'norNum', 'maptype'],
         beforeMount() {
-            this.$parent.$parent.$on('selectApt', event => {
+            this.$root.$on('selectApt', event => {
                 if (event != null) {
                     this.trans.aptSalesNum = 0;
                     this.trans.page = 'AptInfo';
@@ -148,20 +142,22 @@
                 }
             });
 
-            axios
-                .get(`${this.serverLocation}/check`)
-                .then(res => {
-                    if (res.data.user == undefined) {
-                        this.onUser = ''
-                    } else {
-                        this.onUser = res.data.user.USERID
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            (async () => {
+                axios
+                    .get(`${this.serverLocation}/check`)
+                    .then(res => {
+                        if (res.data.user == undefined) {
+                            this.onUser = ''
+                        } else {
+                            this.onUser = res.data.user.USERID
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
 
-            this.getReviewList();
+                this.getReviewList();
+            })();
         },
         data() {
             return {
@@ -179,17 +175,47 @@
             }
         },
         methods: {
-            async getReviewList() {
-                this.reviewList = (await axios({
-                    url: `${this.serverLocation}/getAptReivewList?seq=${this.aptNum}`
-                })).data;
+            getReviewList() {
+                if(this.maptype == 'apt'){
+                    (async () => {
+                        this.reviewList = (await axios({
+                            url: `${this.serverLocation}/getAptReivewList?seq=${this.aptNum}`
+                        })).data;
+                    })();
 
-                this.rating = (await axios({
-                    url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptNum}`
-                })).data.SCORE;
+                    (async () => {
+                        this.rating = (await axios({
+                            url: `${this.serverLocation}/getAptAvgScore?seq=${this.aptNum}`
+                        })).data.SCORE;
+                    })();
+                }else if(this.maptype == 'room') {
+                    (async () => {
+                        this.reviewList = (await axios({
+                            url: `${this.serverLocation}/getNorReivewList?num=${this.norNum}`
+                        })).data;
+                    })();
+
+                    (async () => {
+                        this.rating = (await axios({
+                            url: `${this.serverLocation}/getNorAvgScore?num=${this.norNum}`
+                        })).data.SCORE;
+                    })();
+                }else{
+                    this.reviewList = [];
+                    this.rating = 0;
+                }
+            },
+            showinsert() {
+                this.mode = 'insert';
+                this.trafficRating = 0;
+                this.surroundingsRating = 0;
+                this.residenceRating = 0;
+                this.reviewCont = '';
+                this.rvdialog = true;
             },
             async insertReview() {
-                await axios({
+                if(this.maptype == 'apt'){
+                    await axios({
                         url: `${this.serverLocation}/insertAptReview`,
                         method: 'POST',
                         data: {
@@ -208,6 +234,29 @@
                             console.log('데이터를 삽입하지 못함');
                         }
                     })
+                }else if(this.maptype == 'room') {
+                    await axios({
+                        url: `${this.serverLocation}/insertNorReview`,
+                        method: 'POST',
+                        data: {
+                            num: this.norNum,
+                            trarat: this.trafficRating,
+                            surrat: this.surroundingsRating,
+                            resrat: this.residenceRating,
+                            cont: this.reviewCont,
+                        },
+                    })
+                    .then(res => {
+                        if (res.data === 1) {
+                            this.rvdialog = false;
+                            this.getReviewList();
+                        } else {
+                            console.log('데이터를 삽입하지 못함');
+                        }
+                    })
+                }else{
+                    alert("작성 중 문제가 발생하였습니다. : maptype is null");
+                }
             },
             async delteReview(revSeq) {
                 await axios({
@@ -225,7 +274,7 @@
                         }
                     })
             },
-            updateReview(cont) {
+            async updateReview(cont) {
                 this.trafficRating = cont.TRAFFIC_SCORE;
                 this.surroundingsRating = cont.SURROUNDINGS_SCORE;
                 this.residenceRating = cont.RESIDENCE_SCORE;
@@ -256,12 +305,10 @@
                     })
             },
             showInfo() {
-                console.log("ReviewMain.vue - showInfo");
                 this.trans.aptSalesNum = 0;
                 this.trans.page = 'AptInfo';
 
                 this.$emit('receivedPage', this.trans);
-                console.log("ReviewMain.vue - ", this.trans);
             }
         }
     }

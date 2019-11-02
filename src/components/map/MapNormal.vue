@@ -77,6 +77,24 @@ export default {
         this.map = new kakao.maps.Map(container, options);
         
         // 추가
+        var centerXY = this.map.getCenter(); 
+
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+        
+          if (status !== kakao.maps.services.Status.OK) return;
+
+          let rankList = (await axios({
+            url: `${this.serverLocation}/getPopulOneRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
+            method: 'GET',
+          })).data;
+
+          this.$root.$emit('oneRankList', rankList);
+        });
+
         categoryMap(this.map);
         
         // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
@@ -98,6 +116,28 @@ export default {
 
         this.refresh();
         kakao.maps.event.addListener(this.map, 'dragend', this.refresh);
+
+        // 움직일때마다 실행 이벤트
+        kakao.maps.event.addListener(this.map, 'dragend', () => {
+
+          var centerXY = this.map.getCenter(); 
+          // 주소-좌표 변환 객체를 생성합니다
+          var geocoder = new kakao.maps.services.Geocoder();
+
+          // 좌표로 법정동 상세 주소 정보를 요청합니다
+          this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+
+            if (status !== kakao.maps.services.Status.OK) return;
+
+            let rankList = (await axios({
+              url: `${this.serverLocation}/getPopulOneRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
+              method: 'GET',
+            })).data;
+
+            this.$root.$emit('oneRankList', rankList);
+
+          });
+        });
         kakao.maps.event.addListener(this.map, 'zoom_changed', this.refresh);
       }, failur => {
         console.log('only secure origins are alllowed!');
@@ -170,17 +210,18 @@ export default {
         position.lng = arr.LNG;
         this.map.setCenter(new kakao.maps.LatLng(arr.LAT, arr.LNG));
       }
-
+      
       (async () => {
         let addressList = (await axios({
           url: `${this.serverLocation}/c2n`,
           method: 'GET',
         })).data.map(e => ({
           ...e,
-          MAXPRICE: (e.MAXPRICE / 10000).toFixed(1),
-          MINPRICE: (e.MINPRICE / 10000).toFixed(1),
+          DEPOSIT: (e.DEPOSIT / 10000).toFixed(0),
+          PRICE: (e.PRICE / 10000).toFixed(0),
         }));
 
+        
         let markers = [];
 
         function between(value, _arr) {
@@ -198,7 +239,7 @@ export default {
           const marker = new kakao.maps.Marker({ position });
           const overlay = new kakao.maps.CustomOverlay({
             position,
-            content: `<div class="juk-priceBox">${e.MINPRICE}억 <br> ~${e.MAXPRICE}억</div>`,
+            content: `<div class="juk-priceBox">${e.DEPOSIT} <br> /${e.PRICE}</div>`,
           });
           overlay.setMap(this.map);
           this.overlayList = [...this.overlayList, overlay];
@@ -220,7 +261,7 @@ export default {
           }
 
           kakao.maps.event.addListener(marker, 'click', () => {
-            this.$parent.$emit('selectNor', e);
+            this.$root.$emit('selectNor', e);
           });
 
           kakao.maps.event.addListener(marker, 'mouseover', () => {
@@ -341,9 +382,9 @@ export default {
 
 /* 가격박스 */
 .juk-priceBox {
-  width: 47px;
+  width: 40px;
   height: 41px;
-  background-color: rgba(21, 101, 250, 0.7);
+  background-color: rgba(247, 183, 6, 0.8);
   color: #FFF;
   border-radius: 10px;
   position: absolute;
@@ -362,7 +403,7 @@ export default {
   position: absolute;
   top: 35px;
   left: 10px;
-  background-color: rgba(21, 101, 250, 0.6);
+  background-color: rgba(247, 183, 6, 0.6);
   box-shadow: 1px 1px 2px #888;
 }
 

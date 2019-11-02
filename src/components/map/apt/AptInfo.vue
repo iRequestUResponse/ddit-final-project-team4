@@ -39,7 +39,7 @@
       <v-col cols="12">
         <v-row>
           <v-col>
-            <h3 class="text-right" style="color:rgb(21,101,250)">최근 실거래 기준 1개월 평균</h3>
+            <h3 class="text-right" style="color:rgb(21,101,250)">최근 실거래 기준 3개월 평균</h3>
           </v-col>
         </v-row>
         <v-row>
@@ -84,17 +84,17 @@
       <br>
       <v-row class="mt-5">
       <div class="small">
-        <h3 class="ml-1">실거래가 변동</h3>(기간 : 2018년1월1일 - 2019년9월31일)
+        <h3 class="ml-1">실거래가 변동</h3>(기간 : 2019년1월1일 - 2019년9월31일)
         <line-chart :chart-data="datacollection"></line-chart>
       </div>
       </v-row>
       <v-row>
       <div class="small">
-        <h3 class="ml-1">거래건수</h3>(기간 : 2018년1월1일 - 2019년9월31일)
-        <bar-chart height='200px' :chart-data="datacollection1"></bar-chart>
+        <h3 class="ml-1">거래건수</h3>(기간 : 2019년1월1일 - 2019년9월31일)
+        <bar-chart :chart-data="datacollection1"></bar-chart>
       </div>
       </v-row>
-      
+      {{ info }}
     </v-row>
   </v-container>
 </template>
@@ -106,11 +106,12 @@ import BarChart from './BarChart.js'
   export default {
     components: {
       LineChart,
-      BarChart
+      BarChart,
+      
     },
     props: ['data', 'options'],
     beforeMount() {
-      this.$parent.$parent.$on('selectApt', event => {
+      this.$root.$on('selectApt', event => {
         // 시작
         this.info = event;
         this.aptNo = this.info.APT_SEQ;
@@ -204,7 +205,7 @@ import BarChart from './BarChart.js'
             datasets: [
               {
                 // 제목
-                label: '실거래가',
+                label: '실거래가(만원)',
                 // color
                 borderColor: '#f87979',
                 backgroundColor: 'rgba(255,255,255,0.1)',
@@ -306,12 +307,12 @@ import BarChart from './BarChart.js'
         rankDong: 0,
         gu: '',
         dong: '',
-        datacollection: null,
+        datacollection: {},
         chartPrice: [],
         chartX: [],
         chartY: [],
         BarchartPrice: [],
-        datacollection1: null,
+        datacollection1: {},
         comdate: '',
       }
     },

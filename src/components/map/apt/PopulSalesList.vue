@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
 
-    <div class="mt-4 ml-4"><h2>주변 인기 아파트 순위</h2></div>
+    <div class="mt-7 ml-4"><h2>주변 인기 아파트 순위  <span style="color:rgb(21,101,250); font-size:1.5em;"> [{{ this.dong }}]</span> </h2></div>
 
     <v-row class="pa-0 mx-0">
       <v-row class="mx-0">
@@ -36,14 +36,15 @@ export default {
   props: ['aptNum'], 
   // 여기서 아파트 검색에 대한 값 가져오기 해서 List에 담아서 오기 sql
   beforeMount() {
-    this.$parent.$parent.$on('rankList', rankList => {
+    this.$root.$on('rankList', rankList => {
       if(rankList != null){
         this.rankList = rankList;
-        this.ranklength = this.rankList.length
+        this.ranklength = this.rankList.length;
+        this.dong = this.rankList[0].APT_ADDR.split(' ')[2];
       }
     });
 
-    this.$parent.$parent.$on('selectApt', event => {
+    this.$root.$on('selectApt', event => {
       if (event != null) {
         this.trans.aptSalesNum = 0;
         this.trans.page = 'AptInfo';
@@ -58,6 +59,7 @@ export default {
        rankList: [],
        ranklength: 0,
        aptSalesNum: 0,
+       dong: '',
     }
   },
   methods: {
@@ -66,6 +68,7 @@ export default {
       this.trans.aptSalesNum = aptSalesNum;
       this.trans.page = 'AptInfo';
 
+      this.$parent.$parent.$children.find(e => e.$el.classList.contains('map_wrap')).map.setLevel(3);
       this.$parent.$parent.$children.find(e => e.$el.classList.contains('map_wrap')).map.setCenter(new kakao.maps.LatLng(aptRank.APT_LAT, aptRank.APT_LNG));
 
       this.$root.$emit('centerApt', aptRank.APT_SEQ);
