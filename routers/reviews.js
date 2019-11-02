@@ -5,6 +5,12 @@ module.exports = function({ app, db }) {
         res.send(result);
     })
 
+    app.get('/api/getNorAvgScore', async (req, res, next) => {
+        let sql = db.readSQL(process.cwd() + '/sql/reviews/getNorAvgScore.sql');
+        let result = (await db.getData(sql, [req.query.num]))[0];
+        res.send(result);
+    })
+
     app.get('/api/getAptReivewList', async (req, res, next) => {
         let sql = db.readSQL(process.cwd() + '/sql/reviews/getAptReviewList.sql');
         let result = await db.getData(sql, [req.query.seq]);

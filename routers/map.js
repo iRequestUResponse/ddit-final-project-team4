@@ -122,5 +122,39 @@ module.exports = function({ app, db }) {
 
     res.send(result);
   });
+
+  app.post('/api/insertNorInterest', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/insertNorInterest.sql');
+    let result = await db.exec(sql, [req.session.user.USERID, req.body.num]);
+    res.send(result + '');
+  });
+
+  app.post('/api/insertNorReport', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/insertNorReport.sql');
+    let result = await db.exec(sql, [req.body.num, req.session.user.USERID, req.body.rea, req.body.cont]);
+    res.send(result + '');
+  });
+
+  app.get('/api/checkNorReport', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/checkNorReport.sql');
+    let result = 0;
+    if(req.session.user === undefined){
+      res.send(99+'');
+    }else{
+      result = (await db.getData(sql, [req.session.user.USERID, req.query.num]))[0].CNT;
+      res.send(result + '');
+    }
+  });
+
+  app.get('/api/checkNorInterest', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/map/checkNorInterest.sql');
+    let result = 0;
+    if(req.session.user === undefined){
+      res.send(99+'');
+    }else{
+      result = (await db.getData(sql, [req.session.user.USERID, req.query.num]))[0].CNT;
+      res.send(result + '');
+    }
+  });
 };
 
