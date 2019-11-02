@@ -4,9 +4,9 @@ module.exports = function({ app, db }) {
   app.get('/api/getPopulOneRank', async (req, res, next) => {
 
     let sql = db.readSQL(process.cwd() + '/sql/one/getPopulOneRank.sql');
+    console.log('asdf', [req.query.si, req.query.gu, req.query.dong]);
     let result = await db.getData(sql, [req.query.si, req.query.gu, req.query.dong]);
 
-    console.log("원룸랭크",result)
     res.send(result);
 
   })
