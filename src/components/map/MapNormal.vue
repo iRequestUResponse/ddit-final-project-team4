@@ -170,17 +170,18 @@ export default {
         position.lng = arr.LNG;
         this.map.setCenter(new kakao.maps.LatLng(arr.LAT, arr.LNG));
       }
-
+      
       (async () => {
         let addressList = (await axios({
           url: `${this.serverLocation}/c2n`,
           method: 'GET',
         })).data.map(e => ({
           ...e,
-          MAXPRICE: (e.MAXPRICE / 10000).toFixed(1),
-          MINPRICE: (e.MINPRICE / 10000).toFixed(1),
+          DEPOSIT: (e.DEPOSIT / 10000).toFixed(0),
+          PRICE: (e.PRICE / 10000).toFixed(0),
         }));
 
+        
         let markers = [];
 
         function between(value, _arr) {
@@ -198,7 +199,7 @@ export default {
           const marker = new kakao.maps.Marker({ position });
           const overlay = new kakao.maps.CustomOverlay({
             position,
-            content: `<div class="juk-priceBox">${e.MINPRICE}억 <br> ~${e.MAXPRICE}억</div>`,
+            content: `<div class="juk-priceBox">${e.DEPOSIT} <br> /${e.PRICE}</div>`,
           });
           overlay.setMap(this.map);
           this.overlayList = [...this.overlayList, overlay];
@@ -342,9 +343,9 @@ export default {
 
 /* 가격박스 */
 .juk-priceBox {
-  width: 47px;
+  width: 40px;
   height: 41px;
-  background-color: rgba(21, 101, 250, 0.7);
+  background-color: rgba(247, 183, 6, 0.8);
   color: #FFF;
   border-radius: 10px;
   position: absolute;
@@ -363,7 +364,7 @@ export default {
   position: absolute;
   top: 35px;
   left: 10px;
-  background-color: rgba(21, 101, 250, 0.6);
+  background-color: rgba(247, 183, 6, 0.6);
   box-shadow: 1px 1px 2px #888;
 }
 
