@@ -111,7 +111,10 @@ module.exports = function({ app, db, io, http }) {
       msg: req.body.msg,
       sent: Date.now(),
     });
-    res.send(result + '');
+    res.send({
+      state: 'success',
+      seq: result[0].SEQ,
+    });
   });
 
   // leave chat room
