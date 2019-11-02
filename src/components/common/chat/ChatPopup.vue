@@ -29,7 +29,7 @@
             >
               <v-toolbar-title>채팅방</v-toolbar-title>
             </v-toolbar>
-            <v-content class="overflow-y-auto overflow-x-hidden messagecont">
+            <v-content class="messagecont">
               <v-row v-for="msg in msgList" :key="msg.seq">
                 <v-col>
                   <div class="juk-msg">
@@ -109,6 +109,12 @@ export default {
           msg,
         }
       });
+
+      if (typeof result.data === 'object') {
+        let seq = result.data.seq;
+        await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+        await this.$store.dispatch('refreshChatList');
+      }
     },
     close(event) {
       if (event.target.classList.contains('container'))
@@ -154,7 +160,7 @@ header {
 }
 
 .messagecont {
-  height: 80%;
+  height: 73%;
   overflow-y: auto;
   overflow-x: hidden;
 }

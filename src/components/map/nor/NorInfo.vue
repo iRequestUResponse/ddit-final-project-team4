@@ -1,6 +1,9 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto overflow-x-hidden" style="height: 100vh">
     <v-row class="pa-0 py-4 mx-0 titleRow">
+      <v-btn icon dark class="ml-4" @click="showPopularList">
+        <v-icon large>arrow_back</v-icon>
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn v-show="this.onUser != 'noUser'" icon dark class="mr-4" @click="insertInterest">
         <v-icon large>notifications</v-icon>
@@ -336,6 +339,11 @@ export default {
       this.trans.norSalesNum = this.norData.NORSALES_NUM;
       this.trans.page = 'ReviewMain';
       
+      this.$emit('receivedPage', this.trans);
+    },
+    showPopularList() {
+      this.trans.norSalesNum = 0;
+      this.trans.page = 'NorPopulSalesList';
       this.$emit('receivedPage', this.trans);
     },
     joinTest() {

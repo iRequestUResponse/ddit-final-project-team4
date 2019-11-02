@@ -38,58 +38,7 @@ export default {
 
 
     this.$root.$on('selectNor', event => {
-
-      // 일반매물 정보 가져오기
-      (async () => {
-        let result = (await axios({
-            url: `${this.serverLocation}/mpGetNorSalesDetail?num=${event.NORSALES_NUM}`
-        })).data;
-
-        let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));
-        result.COMPLETION_DATE = `${completeionDate.getFullYear()}`;
-        result.AVAILABILITY_DATE = `${availability_date.getFullYear()}.${availability_date.getMonth() + 1}.${availability_date.getDate()}`;
-
-        this.norSalesData = result;
-      })();
-
-      // 별점 가져오기
-      (async () => {
-        this.rating = (await axios({
-          url: `${this.serverLocation}/getNorAvgScore?num=${event.NORSALES_NUM}`
-        })).data.SCORE || 0;
-      })();
-
-      // 신고내역 체크
-      (async () => {
-        this.reportCheck = (await axios({
-          url: `${this.serverLocation}/checkNorReport?num=${event.NORSALES_NUM}`
-        })).data;
-      })();
-
-      // 관심목록 추가 체크
-      (async () => {
-        this.interestCheck = (await axios({
-          url: `${this.serverLocation}/checkNorInterest?num=${event.NORSALES_NUM}`
-        })).data;
-      })();
-
-      // 로그인 체크
-      (async () => {
-        await axios
-          .get(`${this.serverLocation}/check`)
-          .then(res => {
-            if (res.data.user == undefined) {
-              this.onUser = 'noUser';
-            } else {
-              this.onUser = res.data.user.USERID;
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      })();
-
-      this.mapPage = 'NorInfo';
+      this.showNorInfo(event.NORSALES_NUM);
     });
   },
   data() {
@@ -118,9 +67,66 @@ export default {
   methods: {
     switchScreen(convertPage) {
       console.log("NorSpecification : ", convertPage);
-      this.beforeSalesNum = this.norSalesNum;
-      this.norSalesNum = convertPage.norSalesNum;
-      this.mapPage = convertPage.page;
+      if(convertPage.page == 'info'){
+        this.showNorInfo(convertPage.norSalesNum);
+      }else{
+        this.beforeSalesNum = this.norSalesNum;
+        this.norSalesNum = convertPage.norSalesNum;
+        this.mapPage = convertPage.page;
+      }
+    },
+    showNorInfo(num) {
+      // 일반매물 정보 가져오기
+      (async () => {
+        let result = (await axios({
+            url: `${this.serverLocation}/mpGetNorSalesDetail?num=${num}`
+        })).data;
+
+        let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));
+        result.COMPLETION_DATE = `${completeionDate.getFullYear()}`;
+        result.AVAILABILITY_DATE = `${availability_date.getFullYear()}.${availability_date.getMonth() + 1}.${availability_date.getDate()}`;
+
+        this.norSalesData = result;
+      })();
+
+      // 별점 가져오기
+      (async () => {
+        this.rating = (await axios({
+          url: `${this.serverLocation}/getNorAvgScore?num=${num}`
+        })).data.SCORE || 0;
+      })();
+
+      // 신고내역 체크
+      (async () => {
+        this.reportCheck = (await axios({
+          url: `${this.serverLocation}/checkNorReport?num=${num}`
+        })).data;
+      })();
+
+      // 관심목록 추가 체크
+      (async () => {
+        this.interestCheck = (await axios({
+          url: `${this.serverLocation}/checkNorInterest?num=${num}`
+        })).data;
+      })();
+
+      // 로그인 체크
+      (async () => {
+        await axios
+          .get(`${this.serverLocation}/check`)
+          .then(res => {
+            if (res.data.user == undefined) {
+              this.onUser = 'noUser';
+            } else {
+              this.onUser = res.data.user.USERID;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      })();
+
+      this.mapPage = 'NorInfo';
     },
   }
 }

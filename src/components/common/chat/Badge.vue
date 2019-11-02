@@ -1,6 +1,6 @@
 <template>
-  <div @click="openChatList">
-    {{ unreadCnt }}
+  <div @click="openChatList" style="color: white; font-size: 20pt; margin-right: 20px;">
+    채팅({{ unreadCnt }})
   </div>
 </template>
 

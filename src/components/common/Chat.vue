@@ -2,7 +2,6 @@
   <div
     class="chat"
   >
-    <Badge />
     <ChatPopup
       v-show="visible"
       :agentid="agentid"

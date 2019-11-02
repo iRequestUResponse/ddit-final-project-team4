@@ -17,7 +17,7 @@
           <v-btn v-if="!loginUser" to="/login/user">로그인 / 회원가입</v-btn>
           <v-btn v-if="!loginUser" to="/login/agent">공인중개사 회원전용</v-btn>
   
-          <v-btn 
+          <!-- <v-btn 
             v-if="(loginUser || {}).type === 'user'" 
             to="/mypage"
             color="grey darken-3"
@@ -25,7 +25,7 @@
             tile
           >
             마이페이지
-          </v-btn>
+          </v-btn> -->
           <v-btn 
             v-if="(loginUser || {}).type === 'agent'" 
             to="/agentpage"

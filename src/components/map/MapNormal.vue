@@ -180,8 +180,8 @@ export default {
       cluster: null,
       currentTypeId: '',
       markerImage: {
-        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
-        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_off.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
+        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_on.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],

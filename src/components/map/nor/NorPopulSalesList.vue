@@ -7,12 +7,16 @@
       <v-row class="mx-0 mt-2">
         <!-- v-if문으로 리스트 SALES_STATUS 여부 써줘야함 -->
         <v-col cols="12" v-for="aptRank in rankList" :key="aptRank.NORSALES_NUM">
-            <v-card outlined @click="viewOneInfo(aptRank)">
+            <v-card outlined>
             <div class="mt-3 ml-3"><h3> <v-icon size="35" icon color="#FFD600" id="offertitle">emoji_events</v-icon> {{ aptRank.RANK }}
               
             <span class="mr-4" style="float:right;">조회수 {{ aptRank.VIEW_CNT }}</span>
-            </h3></div>
-            <div id="title">
+            </h3>
+            </div>
+            <div>
+              <v-btn outlined tile @click="viewDetail(aptRank.NORSALES_NUM)">상세보기</v-btn>
+            </div>
+            <div id="title" @click="viewOneInfo(aptRank)">
               <v-card-title>
                 <v-row justify="center">
                   <v-col cols="1">
@@ -78,6 +82,11 @@ export default {
       this.$root.$emit('centerOne', aptRank.NORSALES_NUM);
 
     },
+    viewDetail(salesNum) {
+      this.trans.norSalesNum = salesNum;
+      this.trans.page = 'info';
+      this.$emit('receivedPage', this.trans);
+    }
   }
 
 
