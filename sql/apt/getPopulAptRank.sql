@@ -5,6 +5,7 @@ from		apt a, 	(select	a.apt_seq, count(b.apt_seq) cnt
 						and SUBSTR(apt_addr, INSTR(apt_addr, ' ', 1, 1) + 1, INSTR(apt_addr, ' ', 1, 2) - INSTR(apt_addr, ' ', 1, 1) - 1) like :gu || '%'
 						and SUBSTR(apt_addr, INSTR(apt_addr, ' ', 1, 2) + 1, INSTR(apt_addr, ' ', 1, 3) - INSTR(apt_addr, ' ', 1, 2) - 1) like :dong || '%'
 						and		a.apt_seq = b.apt_seq
+            and   b.build_type = '매매'
 						group by a.apt_seq
 						order by cnt desc) b
 where	a.apt_seq = b.apt_seq

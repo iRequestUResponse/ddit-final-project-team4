@@ -56,13 +56,13 @@ module.exports = function({ app, db }) {
   // 검색시 아파트 인기순위 가져오기
   app.get('/api/getPopulAptRank', async (req, res, next) => {
 
-    
     let sql = db.readSQL(process.cwd() + '/sql/apt/getPopulAptRank.sql');
     let result = await db.getData(sql, [req.query.si, req.query.gu, req.query.dong]);
     res.send(result);
 
   })
   
+  // 지도에 아파트정보
   app.get('/api/getMapApt', async (req, res, next) => {
     let sql = db.readSQL(process.cwd() + '/sql/mypage/getApt.sql');
     let result = (await db.getData(sql, [req.query.aptNo]))[0];
