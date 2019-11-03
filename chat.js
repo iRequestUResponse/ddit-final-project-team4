@@ -54,6 +54,7 @@ module.exports = function({ app, db, io, http }) {
     res.send(result.map(e => ({
       seq: e.CHAT_SEQ,
       msg: e.CHAT_CONT,
+      me,
       writer: e.WRITERID,
       writer_type: e.USER_TYPE,
       sent: +new Date(e.CHATTING_DATE),
@@ -102,10 +103,14 @@ module.exports = function({ app, db, io, http }) {
 
     let sql = db.readSQL(process.cwd() + '/sql/chat/newMsg.sql');
     let result = await db.getData(sql, [chattingRoomNumber, req.body.msg, me, type]);
+    let seq = result[0].SEQ;
+
+    let readMsgSql = db.readSQL(process.cwd() + '/sql/chat/readMsg.sql');
+    let readResult = await db.exec(readMsgSql, [me, seq]);
 
     let socketList = getUserSocketList(io, me, partner);
     emitToList(socketList, 'msg', {
-      seq: result[0].SEQ,
+      seq,
       writer: me,
       writer_type: type,
       msg: req.body.msg,
@@ -113,7 +118,7 @@ module.exports = function({ app, db, io, http }) {
     });
     res.send({
       state: 'success',
-      seq: result[0].SEQ,
+      seq,
     });
   });
 
@@ -194,6 +199,10 @@ function getUserSocketList(io, ...ids) {
  */
 function emitToList(socketList, event, data) {
   for (let socket of socketList) {
-    socket.emit(event, data);
+    let _data = {
+      ...data,
+      me: socket.request.session.user.USERID || socket.request.session.user.AGENTID,
+    }
+    socket.emit(event, _data);
   }
 }

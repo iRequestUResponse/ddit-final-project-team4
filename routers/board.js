@@ -26,4 +26,10 @@ module.exports = function({ app, db }) {
       return e;
     }));
   });
+
+  app.get('/api/notice/:seq', async (req, res, next) => {
+    let sql = `select * from NOTICE where notice_seq = :seq`;
+    let result = await db.getData(sql, [req.params.seq]);
+    res.send(result[0]);
+  });
 };
