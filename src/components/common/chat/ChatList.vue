@@ -17,8 +17,9 @@
       <v-content class="messagecont">
         <v-row v-for="chat in chatList" :key="chat.CHATTING_SEQ" class="messagerow" @click="openChat(chat)">
           <!-- <div class="wrap chatlist container"> -->
-          <div>
-            {{ chat | partnerId }}와의 채팅 / (안 읽은 메시지: {{ chat.CNT }} 개)
+          <div class="list">
+            <div class="title">{{ chat | partnerId }}와의 채팅</div>
+            <div class="unreadCount" v-show="chat.CNT > 0">{{ chat.CNT }}</div>
           </div>
         </v-row>
       </v-content>
@@ -37,7 +38,7 @@
     filters: {
       partnerId(v) {
         return v.USERID === v.ID ? v.AGENTID : v.USERID;
-      }
+      },
     },
     computed: {
       ...mapState({
@@ -58,7 +59,7 @@
 </script>
 
 <style scoped>
-  .container {
+.container {
   position: fixed;
   z-index: 98;
   background: rgba(0, 0, 0, 0.5);
@@ -90,6 +91,12 @@ header {
 .messagerow {
   margin: 0;
   padding: 4px 12px;
+  background: #c9d1ce;
+  cursor: pointer;
+}
+
+.messagerow:hover {
+  background: #d7e9e1;
 }
 
 .juk-chattingflame {
@@ -107,5 +114,25 @@ header {
 
 .bor {
   border: 2px solid red;
+}
+
+.list {
+  position: relative;
+  width: 100%;
+}
+
+.list .unreadCount {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #ce5e75;
+  color: #FFF;
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 2em;
 }
 </style>
