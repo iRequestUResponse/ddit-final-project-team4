@@ -5,7 +5,7 @@ const db = require('easy-oracledb');
 const cors = require('cors');
 const fs = require('fs');
 
-const port = 80;
+const port = process.env.PORT || 80;
 
 // session
 let mSession = session({
