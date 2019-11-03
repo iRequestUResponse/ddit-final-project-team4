@@ -1,20 +1,20 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto overflow-x-hidden" style="height: 100vh">
-    <v-row class="pa-0 py-4 mx-0 titleRow">
-      <v-btn icon dark class="ml-4" @click="showPopularList">
+    <v-row class="pa-0 py-4 mx-0 amber">
+      <v-btn icon class="ml-4" @click="showPopularList">
         <v-icon large>arrow_back</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-show="this.onUser != 'noUser'" icon dark class="mr-4" @click="insertInterest">
+      <v-btn v-show="this.onUser != 'noUser'" icon class="mr-4" @click="insertInterest">
         <v-icon large>notifications</v-icon>
       </v-btn>
     </v-row>
-    <v-row class="pa-0 mx-0 pb-6 titleRow">
+    <v-row class="pa-0 mx-0 pb-6 amber">
       <v-col cols=12 class="text-center pa-0 mb-2">
-        <div class="headline white--text">{{ norData.SALES_TITLE }}</div>
+        <div class="headline">{{ norData.SALES_TITLE }}</div>
       </v-col>
       <v-col cols=12 class="text-center pa-0">
-        <div class="subtitle white--text">{{ norData.ADDRESS }}</div>
+        <div class="subtitle">{{ norData.ADDRESS }}</div>
       </v-col>
     </v-row>
     <v-row class="mx-0 px-4 py-2" align="center">
@@ -29,7 +29,7 @@
       <v-spacer/>
       <v-col cols="2">
         <div class="text-right">
-          <v-btn icon color="yellow darken-3" @click="showReview">
+          <v-btn icon color="deep-orange" @click="showReview">
             <v-icon large>star</v-icon>
           </v-btn>
         </div>
@@ -55,28 +55,27 @@
       <v-col cols="12" class="pb-0">
         <v-row>
           <v-col class="pa-0 pr-3">
-            <div class="headline text-right" style="color:rgb(21,101,250)">{{ norData.SALES_TYPE }}</div>
+            <div class="headline text-right deep-orange--text">{{ norData.SALES_TYPE }}</div>
           </v-col>
         </v-row>
         <v-row class="pl-4 pr-2 py-2">
-          <div class="display-2 text-left" style="color:rgb(21,101,250)">
+          <div class="display-2 text-left deep-orange--text">
             ￦
           </div>
           <v-spacer />
-          <div class="display-2 text-right" style="color:rgb(21,101,250)">
+          <div class="display-2 text-right deep-orange--text">
             {{ norData.PRICE | commanor }}
           </div>
         </v-row>
         <hr>
-        <!-- <v-row class="my-6">
+        <v-row v-show="norData.DEPOSIT > 0" class="my-6">
           <v-col cols="12" class="pa-0 pr-3">
-            <h3 class="text-right">최근 1개월 매물 평균</h3>
+            <h3 class="text-right">보증금</h3>
           </v-col>
           <v-col cols="12" class="pa-0 pr-3">
-            <h3 v-if="this.salesPrice < 100" class="grey--text text-right">최근 1개월간 거래기록이 없습니다.</h3>
-            <h3 v-else class="text-right">{{ salesPrice | comm }}</h3>
+            <h3 class="text-right">{{ norData.DEPOSIT | commanor }}원</h3>
           </v-col>
-        </v-row> -->
+        </v-row>
         <v-row class="mt-4 mb-0">
           <v-col cols="3" class="juk-divide_right py-1">
             <div class="caption">면적(평)</div>
@@ -107,7 +106,7 @@
     <h3 class="ma-4">관리비</h3>
     <v-row class="pa-0 ma-3 mb-6">
       <v-col cols="12" class="pa-0 pl-6">
-        <div class="display-1" style="color:rgb(21,101,250)">{{ norData.UTILITY_COST | commanor }}원<span
+        <div class="display-1 deep-orange--text">{{ norData.UTILITY_COST | commanor }}원<span
             class="title grey--text">(난방비 제외)</span></div>
       </v-col>
     </v-row>
@@ -154,7 +153,7 @@
       <div>{{ onUser }}</div>
     </v-row> -->
 
-    <v-btn class="mt-5" id="btn" color="juk-blue" @click="joinTest">문의하기</v-btn>
+    <v-btn class="mt-5" id="btn" color="amber" @click="joinTest">문의하기</v-btn>
     <v-btn v-show="this.onUser != 'noUser'" class="mt-0 mb-5" id="btn" color="juk-red" @click="showReport">신고하기</v-btn>
 
     <!-- 신고하기 다이얼로그 및 버튼 -->
@@ -373,12 +372,15 @@ export default {
     margin-top: 10px;
     font-weight: bold;
     font-size: 1.4em;
-    color: white;
     border-radius: 10px;
   }
 
   .juk-blue {
     background-color: rgb(21, 101, 250) !important;
+  }
+
+  .juk-blue--text {
+    color: rgb(21, 101, 250) !important;
   }
 
   .juk-red {
