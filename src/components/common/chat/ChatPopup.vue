@@ -29,10 +29,10 @@
             >
               <v-toolbar-title>채팅방</v-toolbar-title>
             </v-toolbar>
-            <v-content class="messagecont">
+            <v-content class="messagecont" id="chatMsgContainer">
               <v-row v-for="msg in msgList" :key="msg.seq">
-                <v-col>
-                  <div class="juk-msg">
+                <v-col :class="{ msgCol: true, isMe: isMe(msg) }">
+                  <div :class="{ 'juk-msg': true, isMe: isMe(msg) }">
                     {{ msg.msg }}
                   </div>
                   <div class="juk-msgsub">
@@ -88,14 +88,24 @@ export default {
       return this.$store.state.chatMsgList.slice(0).sort((a, b) => a.sent - b.sent);
     }
   },
+  watch: {
+    msgList(nv) {
+      setTimeout(function() {
+        chatMsgContainer.scrollTo({ top: chatMsgContainer.scrollHeight });
+      }, 10);
+    }
+  },
   filters: {
     regdate(value) {
       let dt = new Date(value);
 
       return `${dt.getHours()}:${dt.getMinutes()}`
-    }
+    },
   },
   methods: {
+    isMe(v) {
+      return v.me === v.writer;
+    },
     async sendMessage(event) {
       if (event.code !== 'Enter' || !this.message.trim()) return;
 
@@ -169,8 +179,28 @@ header {
   margin: auto;
 }
 
+.msgCol.isMe {
+  text-align: right;
+}
+
 .juk-msg {
+  display: inline-block;
+  text-align: left;
   margin-left: 6px;
+}
+
+.juk-msg {
+  background: #727272;
+  color: #FFF;
+  padding: 0.25em 1em;
+  border-radius: 1em 1em 1em 0;
+}
+
+.juk-msg.isMe {
+  background: #4e7063;
+  color: #FFF;
+  padding: 0.25em 1em;
+  border-radius: 1em 1em 0 1em;
 }
 
 .juk-msgsub {

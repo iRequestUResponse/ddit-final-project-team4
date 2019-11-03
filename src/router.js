@@ -22,6 +22,13 @@ export default new Router({
       path: '/board/:name?',
       name: 'board',
       component: () => import('@/views/Board.vue'),
+      children: [
+      ],
+    },
+    {
+      path: '/board/notice/:seq',
+      name: 'post',
+      component: () => import('@/views/Post.vue'),
     },
     {
       path: '/map/:func?/:id?',
