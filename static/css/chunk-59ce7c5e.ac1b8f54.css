@@ -1,0 +1,1 @@
+.chat[data-v-5cf5600e]{font-size:1.2em;color:#fff;-webkit-transition:.4s ease;transition:.4s ease}.chat.unread[data-v-5cf5600e]{font-size:1.5em;color:#ce5e75}.chat.unread[data-v-5cf5600e]:after{content:attr(data-count);font-size:.4em;color:#fff;position:relative;font-weight:700;left:-1.8em;top:-4px}
