@@ -13,9 +13,10 @@
             <span class="mr-4" style="float:right;">조회수 {{ aptRank.VIEW_CNT }}</span>
             </h3>
             </div>
-            <div>
+            <v-row class="mx-0 mr-4">
+              <v-spacer></v-spacer>
               <v-btn outlined tile @click="viewDetail(aptRank.NORSALES_NUM)">상세보기</v-btn>
-            </div>
+            </v-row>
             <div id="title" @click="viewOneInfo(aptRank)">
               <v-card-title>
                 <v-row justify="center">
