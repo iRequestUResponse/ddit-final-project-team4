@@ -22,3 +22,4 @@ where	a.norsales_num = b.norsales_num(+)
 agent b
 where a.agentid = b.agentid
 and b.black_status = 'N'
+order by rank

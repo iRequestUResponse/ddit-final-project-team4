@@ -210,6 +210,8 @@ module.exports = function({ app, db }) {
           info.completion_date,
           info.area, info.structure, info.whole_floor, info.relevant_floor, info.utility_cost, info.address, info.availability_date,
           info.sales_title, info.sales_cont, info.sales_lng, info.sales_lat]);
+
+        console.log()
           
         /* 
         console.log([seq, agentid, info.build_type, info.sales_type, info.price, info.deposit,
@@ -261,6 +263,7 @@ module.exports = function({ app, db }) {
     app.post('/api/insertEstimate', async (req, res, next) => {
         let sql = db.readSQL(process.cwd() + '/sql/agent/insertEstimate.sql');
         let result = (await db.exec(sql, [req.body.offerNum, req.session.user.AGENTID, req.body.price]));
+
         res.send(result + '');
     })
 
@@ -277,4 +280,24 @@ module.exports = function({ app, db }) {
         let result = await db.getData(sql, [req.session.user.AGENTID]);
         res.send(result);
     })
+
+    // 매물관리(아파트) 삭제
+    app.get('/api/deleteSales', async (req, res, next) => {
+
+      let sql = db.readSQL(process.cwd() + '/sql/agent/deleteSales.sql');
+      let result = (await db.exec(sql, [req.query.seq]));
+
+      res.send(result + '');
+    })
+    
+     // 매물관리(원룸) 삭제
+     app.get('/api/deleteone', async (req, res, next) => {
+
+      let sql = db.readSQL(process.cwd() + '/sql/agent/deleteone.sql');
+      let result = (await db.exec(sql, [req.query.seq]));
+
+      res.send(result + '');
+    })
+
+
 };
