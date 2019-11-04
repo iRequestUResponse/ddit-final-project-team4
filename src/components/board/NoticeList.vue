@@ -15,7 +15,11 @@
             </thead>
             <tbody>
                 <tr v-for="notice in noticeList" :key="notice.originallink">
-                    <td class="text-center">{{ notice.NOTICE_TITLE }}</td>
+                    <td class="text-center">
+                      <a :href="'/board/notice/'+notice.NOTICE_SEQ">
+                        {{ notice.NOTICE_TITLE }}
+                      </a>
+                    </td>
                     <td class="text-center">{{ notice.NOTICE_DATE.substring(0,10) }}</td>
                 </tr>
             </tbody>

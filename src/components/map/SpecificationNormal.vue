@@ -11,6 +11,7 @@
       :reportCheck="reportCheck"
       :rating="rating"
       :onUser="onUser"
+      :maptype="maptype"
       :rankList="rankList"
       :ranklength="ranklength"
       :cnt="cnt"
@@ -40,11 +41,48 @@ export default {
     });
 
     this.$root.$on('selectNor', event => {
-
+      this.showNorInfo(event.NORSALES_NUM);
+    });
+  },
+  data() {
+    return {
+      beforeSalesNum: 0,
+      mapPage: 'NorPopulSalesList',
+      norSalesNum: 0,
+      norSalesData: {},
+      interestCheck: 0,
+      reportCheck: 0,
+      rating: 0,
+      onUser: undefined,
+      maptype: 'room',
+      rankList: [],
+      ranklength: 0,
+      cnt:0,
+    }
+  },
+  
+  components: {
+    ReviewMain: () => import('@/components/map/review/ReviewMain'),
+    NorInfo: () => import('@/components/map/nor/NorInfo'),
+    NorPopulSalesList: () => import('@/components/map/nor/NorPopulSalesList'),
+  },
+  
+  methods: {
+    switchScreen(convertPage) {
+      console.log("NorSpecification : ", convertPage);
+      if(convertPage.page == 'info'){
+        this.showNorInfo(convertPage.norSalesNum);
+      }else{
+        this.beforeSalesNum = this.norSalesNum;
+        this.norSalesNum = convertPage.norSalesNum;
+        this.mapPage = convertPage.page;
+      }
+    },
+    showNorInfo(num) {
       // 일반매물 정보 가져오기
       (async () => {
         let result = (await axios({
-            url: `${this.serverLocation}/mpGetNorSalesDetail?num=${event.NORSALES_NUM}`
+            url: `${this.serverLocation}/mpGetNorSalesDetail?num=${num}`
         })).data;
 
         let [completeionDate, availability_date] = [result.COMPLETION_DATE, result.AVAILABILITY_DATE].map(e => new Date(e));
@@ -57,21 +95,38 @@ export default {
       // 별점 가져오기
       (async () => {
         this.rating = (await axios({
-          url: `${this.serverLocation}/getNorAvgScore?num=${event.NORSALES_NUM}`
+          url: `${this.serverLocation}/getNorAvgScore?num=${num}`
         })).data.SCORE || 0;
+      })();
+
+      // 조회수 증가
+      (async () => {
+        await axios({
+            url: `${this.serverLocation}/increaseViewCnt`,
+            method: 'POST',
+            data: {
+              num: num,
+            },
+          })
+          .then(res => {
+            console.log('조회수 추가');
+          })
+          .catch(err => {
+            console.log(err);
+          })
       })();
 
       // 신고내역 체크
       (async () => {
         this.reportCheck = (await axios({
-          url: `${this.serverLocation}/checkNorReport?num=${event.NORSALES_NUM}`
+          url: `${this.serverLocation}/checkNorReport?num=${num}`
         })).data;
       })();
 
       // 관심목록 추가 체크
       (async () => {
         this.interestCheck = (await axios({
-          url: `${this.serverLocation}/checkNorInterest?num=${event.NORSALES_NUM}`
+          url: `${this.serverLocation}/checkNorInterest?num=${num}`
         })).data;
       })();
 
@@ -92,7 +147,7 @@ export default {
       })();
 
       this.mapPage = 'NorInfo';
-    });
+    }
   },
   data() {
     return {
@@ -127,6 +182,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 #specification {

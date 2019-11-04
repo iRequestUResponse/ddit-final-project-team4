@@ -154,13 +154,14 @@ export default {
             pw: this.pw,
           },
         })
-        .then(res => {
+        .then(async res => {
           if (res.data.USER_WITHDRAWAL === 'Y') {
             this.$swal('탈퇴한 회원입니다.', '고객센터로 연락해주세요.(042-222-8202)','warning');
             return;
           }
           console.log(res.data)
           if (res.data.USERID) {
+            this.$store.dispatch('refreshChatList');
             this.$swal({
               type: 'success',
               title: this.id,

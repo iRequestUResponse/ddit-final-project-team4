@@ -6,6 +6,7 @@
     <component
       :is="mapPage"
       :aptNum="aptSalesNum"
+      :maptype="maptype"
       @receivedPage="switchScreen"
     />
   </v-container>
@@ -18,6 +19,7 @@ export default {
       beforeSalesNum: 0,
       mapPage: 'PopulSalesList',
       aptSalesNum: 0,
+      maptype: 'apt',
     }
   },
   

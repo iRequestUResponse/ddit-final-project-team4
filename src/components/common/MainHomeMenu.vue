@@ -15,6 +15,7 @@
           <router-link to="/map/apart" class="juk-mainmenu mx-12">아파트</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
           <router-link to="/map/village" class="juk-mainmenu mx-12">원룸/투룸</router-link>
           <v-spacer />
+          <Badge v-if="loginUser"/>
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
           <router-link v-if="!loginUser" to="/login/user" class="juk-mainmenu mx-4">로그인 / 회원가입</router-link>
           <router-link v-if="!loginUser" to="/login/agent" class="juk-mainmenu mx-4">공인중개사 회원전용</router-link>
@@ -52,6 +53,9 @@ export default {
         url: `${this.serverLocation}/logout`
       });
       
+      this.$store.dispatch('refreshChatList');
+      this.$store.dispatch('clear');
+      
       this.loginUser = undefined;
 
       this.$swal({
@@ -60,12 +64,13 @@ export default {
         text: '로그아웃이 정상적으로 되었습니다.',
       })
       .then((result) => {
-          this.$router.push('/');
+        this.$router.push('/');
+        location.reload();
       })
     },
   },
   components: {
-
+    Badge: () => import('@/components/common/chat/Badge'),
   },
  
 }

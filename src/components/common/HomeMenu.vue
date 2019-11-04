@@ -10,14 +10,13 @@
           <v-icon size="50" icon color="#1564f9" @click="home" id="homeicon">apartment</v-icon>&nbsp;&nbsp;
           <router-link class="logo" to="/">죽방</router-link>
           <router-link to="/map/apart" class="offset-md-1 juk-menu">아파트</router-link>
-          <router-link to="/map/oneRoom" class="offset-md-1 juk-menu">원룸</router-link>
-          <router-link to="/map/village" class="offset-md-1 juk-menu">투룸</router-link>
+          <router-link to="/map/village" class="offset-md-1 juk-menu">투룸/투룸</router-link>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
-          <v-btn v-if="!loginUser" to="/login/user">로그인 / 회원가입</v-btn>
-          <v-btn v-if="!loginUser" to="/login/agent">공인중개사 회원전용</v-btn>
+          <v-btn v-if="!loginUser" outlined tile to="/login/user">로그인 / 회원가입</v-btn>
+          <v-btn v-if="!loginUser" outlined tile to="/login/agent" class="ml-4">공인중개사 회원전용</v-btn>
   
-          <v-btn 
+          <!-- <v-btn 
             v-if="(loginUser || {}).type === 'user'" 
             to="/mypage"
             color="grey darken-3"
@@ -25,7 +24,7 @@
             tile
           >
             마이페이지
-          </v-btn>
+          </v-btn> -->
           <v-btn 
             v-if="(loginUser || {}).type === 'agent'" 
             to="/agentpage"

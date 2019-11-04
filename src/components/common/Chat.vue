@@ -6,10 +6,9 @@
       v-show="visible"
       :agentid="agentid"
     />
-    <!-- <div class="unread">
-      unread : {{ unread }}
-    </div> -->
-    <!-- <v-btn @click="joinRoom">join</v-btn> -->
+    <ChatList
+      v-show="listVisible"
+    />
   </div>
 </template>
 
@@ -18,7 +17,11 @@ export default {
   beforeMount() {
     socket.on('msg', msg => {
       this.$store.dispatch('addChatMsg', msg);
+      this.$store.dispatch('refreshChatList');
     });
+    // socket.on('hello', async msg => {
+    //   this.$store.dispatch('refreshChatList');
+    // });
   },
   data: () => ({
     chatRoomList: [],
@@ -32,6 +35,9 @@ export default {
     },
     unread() {
       return this.$store.state.unread;
+    },
+    listVisible() {
+      return this.$store.state.listVisible;
     }
   },
   methods: {
@@ -47,7 +53,9 @@ export default {
     // },
   },
   components: {
+    Badge: () => import('@/components/common/chat/Badge.vue'),
     ChatPopup: () => import('@/components/common/chat/ChatPopup.vue'),
+    ChatList: () => import('@/components/common/chat/ChatList.vue'),
   }
 }
 </script>

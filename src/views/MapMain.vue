@@ -3,7 +3,7 @@
     <component :is="map" />
     <Specification :is="spec"/>
     <component :is="search" />
-    <v-btn
+    <!-- <v-btn
       absolute
       fab
       bottom
@@ -16,7 +16,7 @@
       to="/"
     >
       <v-icon x-large>home</v-icon>
-    </v-btn>
+    </v-btn> -->
   </v-app>
 </template>
 

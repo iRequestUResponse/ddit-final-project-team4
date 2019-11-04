@@ -29,12 +29,112 @@
       편의점
   </li>      
 </ul>
-  <p id="inputtag">
+  <!-- <p id="inputtag">
     <input type="checkbox" id="chkUseDistrict" @click="setOverlayMapTypeId" /><label for="chkUseDistrict"> 지적편집도</label>
     <input type="checkbox" id="chkTerrain" @click="setOverlayMapTypeId" /><label for="chkTerrain"> 지형정보</label>
     <input type="checkbox" id="chkTraffic" @click="setOverlayMapTypeId" /><label for="chkTraffic"> 교통정보</label>
     <input type="checkbox" id="chkBicycle" @click="setOverlayMapTypeId" /><label for="chkBicycle"> 자전거도로</label>
-  </p>
+  </p> -->
+
+  <v-speed-dial
+    v-model="mapmenu"
+    direction="left"
+    bottom
+    right
+    class="juk-normapmainmenu"
+  >
+    <template v-slot:activator>
+      <v-btn
+        v-model="mapmenu"
+        width="80px"
+        height="80px"
+        color="blue"
+        dark
+        fab
+      >
+        <v-icon x-large v-if="mapmenu">mdi-close</v-icon>
+        <v-icon x-large v-else>mdi-apps</v-icon>
+      </v-btn>
+    </template>
+      <v-btn
+        fab
+        to="/"
+      >
+        <v-icon medium>home</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        to="/map/apart"
+      >
+        <v-icon medium>apartment</v-icon>
+      </v-btn>
+  </v-speed-dial>
+
+  <!-- 지도메뉴(지적편집도, 지형정보, 교통정보, 자전거도로) -->
+  <v-speed-dial
+    v-model="plusmenu"
+    direction="left"
+    bottom
+    right
+    class="juk-normapplusmenu"
+  >
+    <template v-slot:activator>
+      <v-btn
+        v-model="plusmenu"
+        width="80px"
+        height="80px"
+        color="blue"
+        dark
+        fab
+      >
+        <v-icon x-large v-if="plusmenu">mdi-close</v-icon>
+        <v-icon x-large v-else>mdi-layers</v-icon>
+      </v-btn>
+    </template>
+      <!-- 지적편집도 -->
+      <v-btn
+        v-model="mapDistrict"
+        fab
+        @click="setOverlayMapTypeId('district')"
+      >
+        <v-icon>
+          {{ mapDistrict ? 'mdi-view-dashboard' : 'mdi-view-dashboard-outline' }}
+        </v-icon>
+      </v-btn>
+
+      <!-- 지형정보 -->
+      <v-btn
+        v-model="terrain"
+        fab
+        @click="setOverlayMapTypeId('terrain')"
+      >
+        <v-icon>
+          {{ terrain ? 'mdi-map' : 'mdi-map-outline' }}
+        </v-icon>
+      </v-btn>
+
+      <!-- 교통정보 -->
+      <v-btn
+        v-model="traffic"
+        fab
+        @click="setOverlayMapTypeId('traffic')"
+      >
+        <v-icon>
+          {{ traffic ? 'mdi-car' : 'mdi-car-off' }}
+        </v-icon>
+      </v-btn>
+
+      <!-- 자전거도로 -->
+      <v-btn
+        v-model="bicycle"
+        fab
+        @click="setOverlayMapTypeId('bicycle')"
+      >
+        <v-icon>
+          {{ bicycle ? 'mdi-bike' : 'mdi-bicycle' }}
+        </v-icon>
+      </v-btn>
+  </v-speed-dial>
 </div>
 
 </template>
@@ -181,12 +281,18 @@ export default {
       cluster: null,
       currentTypeId: '',
       markerImage: {
-        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
-        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_off.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
+        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_on.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],
       overlayList: [],
+      mapmenu: false,
+      plusmenu: false,
+      mapDistrict: false,
+      terrain: false,
+      traffic: false,
+      bicycle: false,
     };
   },
   methods: {
@@ -280,7 +386,17 @@ export default {
         this.cluster.addMarkers(markers);
       })();
     }, // 지도 타입 변경하기
-    setOverlayMapTypeId() {
+    setOverlayMapTypeId(type) {
+      if(type == 'district'){
+        this.mapDistrict = !this.mapDistrict;
+      }else if(type == 'terrain'){
+        this.terrain = !this.terrain;
+      }else if(type == 'traffic'){
+        this.traffic = !this.traffic;
+      }else if(type == 'bicycle'){
+        this.bicycle = !this.bicycle;
+      }
+
       var mapTypes = {
           terrain : kakao.maps.MapTypeId.TERRAIN,    
           traffic :  kakao.maps.MapTypeId.TRAFFIC,
@@ -299,22 +415,22 @@ export default {
       }
 
       // 지적편집도정보 체크박스가 체크되어있으면 지도에 지적편집도정보 지도타입을 추가합니다
-      if (chkUseDistrict.checked) {
+      if (this.mapDistrict) {
           this.map.addOverlayMapTypeId(mapTypes.useDistrict);    
       }
       
       // 지형정보 체크박스가 체크되어있으면 지도에 지형정보 지도타입을 추가합니다
-      if (chkTerrain.checked) {
+      if (this.terrain) {
           this.map.addOverlayMapTypeId(mapTypes.terrain);    
       }
       
       // 교통정보 체크박스가 체크되어있으면 지도에 교통정보 지도타입을 추가합니다
-      if (chkTraffic.checked) {
+      if (this.traffic) {
           this.map.addOverlayMapTypeId(mapTypes.traffic);    
       }
       
       // 자전거도로정보 체크박스가 체크되어있으면 지도에 자전거도로정보 지도타입을 추가합니다
-      if (chkBicycle.checked) {
+      if (this.bicycle) {
           this.map.addOverlayMapTypeId(mapTypes.bicycle);    
       }
       
@@ -336,7 +452,7 @@ export default {
 
 /* 편의시설 */
 .map_wrap, .map_wrap * {margin:0; padding:0;font-size:12px;}
-.map_wrap {position:relative;width:100%;height:350px;}
+.map_wrap {position:relative;width:100%;height:100vh;}
 #category {position:absolute;top:5px;right:580px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
 #category {padding-left:5px;}
 #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:10px 0px;text-align: center; cursor: pointer;}
@@ -407,10 +523,16 @@ export default {
   box-shadow: 1px 1px 2px #888;
 }
 
-.home {
-  position:absolute;
-  margin-left: 1200px;
-  padding-left: 10px;
+.juk-normapmainmenu {
+  position: absolute;
+  bottom: 40px;
+  right: 500px;
+}
+
+.juk-normapplusmenu {
+  position: absolute;
+  bottom: 140px;
+  right: 500px;
 }
 </style>
 

@@ -1,17 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { VuexPersistence } from "vuex-persist";
 
 Vue.use(Vuex)
+
+const vuexSession = new VuexPersistence({
+  storage: sessionStorage,
+})
 
 export default new Vuex.Store({
   state: {
     user: {},
-    serverLocation: '//localhost:3000/api',
+    serverLocation: '//192.168.0.121:3000/api',
     agentid: '',
     chatVisible: false,
+    listVisible: false,
     chatMsgList: [],
+    chatRoomList: [],
     unreadMsgList: [],
+  },
+  getters: {
+    unreadMsgCnt(state) {
+      return state.chatRoomList.reduce((p, c) => p + (c.CNT || 0), 0);
+    }
   },
   mutations: {
     setUser(state, user) {
@@ -26,6 +38,14 @@ export default new Vuex.Store({
     setChatVisible(state, visible) {
       state.chatVisible = visible;
     },
+    setListVisible(state, visible) {
+      state.listVisible = visible;
+    },
+    refreshList(state, chatRoom) {
+      state.chatRoomList = chatRoom.chatList;
+      // state.chatRoomList.me = chatRoom.me;
+      // alert(JSON.stringify(chatRoom));
+    },
     addMsg(state, msg) {
       state.chatMsgList = [...state.chatMsgList, msg];
     },
@@ -36,7 +56,7 @@ export default new Vuex.Store({
   actions: {
     async refreshUser({ commit }) {
       let result = await axios({
-        url: `//localhost:3000/api/check`,
+        url: `//192.168.0.121:3000/api/check`,
         method: 'GET',
       });
       
@@ -52,6 +72,16 @@ export default new Vuex.Store({
       if (typeof msgList === 'string') {
         commit('setMsgList', []);
       } else {
+        let seq = msgList.reduce((p, c) => p > c.seq ? p : c.seq, -1);
+        await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+
+        // refresh;
+        let list = await axios.get(`${this.state.serverLocation}/chat/list`);
+        if (list.data.chatList) {
+          commit('refreshList', list.data);
+        } else {
+          commit('refreshList', []);
+        }
         commit('setMsgList', msgList);
       }
       
@@ -72,5 +102,25 @@ export default new Vuex.Store({
         console.log('read?', seq, '...', result);
       }
     },
+    async refreshChatList({ commit }) {
+      let list = await axios.get(`${this.state.serverLocation}/chat/list`);
+      if (list.data.chatList) {
+        commit('refreshList', list.data);
+      } else {
+        commit('refreshList', []);
+     }
+    },
+    openChatList({ commit }) {
+      commit('setListVisible', true);
+    },
+    closeChatList({ commit }) {
+      commit('setListVisible', false);
+    },
+    clear({ commit }) {
+      commit('refreshList', []);
+      commit('setMsgList', []);
+      commit('setListVisible', false);
+    }
   },
+  plugins: [vuexSession.plugin],
 })
