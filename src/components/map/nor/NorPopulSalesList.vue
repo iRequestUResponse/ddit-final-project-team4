@@ -40,7 +40,7 @@
                 <v-row>
                   <v-col cols="6">
                     <div>
-                      <v-img :src="`//192.168.0.121:9000/api/file/${aptRank.PHOTO_PATH}`" width="230px" height="150px" />
+                      <v-img :src="`${fileServer}/file/${aptRank.PHOTO_PATH}`" width="230px" height="150px" />
 
                     </div>
                   </v-col>

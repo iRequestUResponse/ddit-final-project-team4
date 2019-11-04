@@ -17,7 +17,7 @@
                     @click="viewEstimate(offerHouse.OFFERHOUSE_SEQ)"
                 >
                     <v-img
-                        :src="`//192.168.0.121:9000/api/file/${offerHouse.OFFERPHOTO_PATH}`"
+                        :src="`${fileServer}/file/${offerHouse.OFFERPHOTO_PATH}`"
                         class="text-right pa-2"
                         height="300px"
                     >
@@ -82,7 +82,12 @@
                             class="ma-0 pa-4 jukcard-outline"
                             :class="[ index === 0 && estimateList.length>1 ? 'ma-0 pa-4 jukbestcard-outline' : 'ma-0 pa-4 jukcard-outline']"
                         >
-                            <div :class="[ index === 0 && estimateList.length>1 ? 'title amber--text' : 'title']">{{ estimate.AGENT_NAME }}</div>
+                            <div :class="[ index === 0 && estimateList.length>1 ? 'title amber--text' : 'title']">
+                              {{ estimate.AGENT_NAME }}
+                              <div class="chatIcon" @click="joinChat(estimate.AGENTID)">
+                                <v-icon>fa-comments</v-icon> 1:1 채팅
+                              </div>
+                            </div>
                             <v-flex class="d-flex align-center justify-center">
                                 <div :class="[ index === 0 && estimateList.length>1 ? 'display-2 amber--text' : 'display-2']">
                                   ￦ {{ estimate.ESTIMATE_PRICE | comma }}</div>
@@ -165,7 +170,10 @@ export default {
             }
           })
            
-        }
+        },
+        joinChat(agentid) {
+          this.$store.dispatch('chatJoin', agentid);
+        },
     }
 }
 </script>
@@ -200,4 +208,24 @@ export default {
       color: gray;
     }
     
+    /* --------------- */
+    .chatIcon {
+      font-size: 0.8em;
+      position: absolute;
+      right: 2em;
+      top: 2em;
+      background: #7c8999;
+      color: #FFF;
+      padding: 0.25em 0.5em;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chatIcon:hover {
+      background: #98a8bb;
+    }
+
+    .chatIcon i {
+      color: inherit !important;
+    }
 </style>

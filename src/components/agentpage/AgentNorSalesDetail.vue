@@ -87,7 +87,7 @@
                         >
                             <v-card flat tile class="d-flex">
                             <v-img
-                                :src="`//192.168.0.121:9000/api/file/${photo.PHOTO_PATH}`"
+                                :src="`${fileServer}/file/${photo.PHOTO_PATH}`"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
                             >

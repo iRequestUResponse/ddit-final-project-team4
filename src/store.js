@@ -12,7 +12,7 @@ const vuexSession = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     user: {},
-    serverLocation: '//192.168.0.121:3000/api',
+    serverLocation,
     agentid: '',
     chatVisible: false,
     listVisible: false,
@@ -56,7 +56,7 @@ export default new Vuex.Store({
   actions: {
     async refreshUser({ commit }) {
       let result = await axios({
-        url: `//192.168.0.121:3000/api/check`,
+        url: `${serverLocation}/check`,
         method: 'GET',
       });
       
@@ -65,7 +65,7 @@ export default new Vuex.Store({
     async chatJoin({ commit }, agentid) {
       commit('setAgentid', agentid);
       let result = await axios({
-        url: `${this.state.serverLocation}/chat/room/${agentid}`,
+        url: `${serverLocation}/chat/room/${agentid}`,
         method: 'GET',
       });
       let msgList = result.data;
@@ -73,10 +73,10 @@ export default new Vuex.Store({
         commit('setMsgList', []);
       } else {
         let seq = msgList.reduce((p, c) => p > c.seq ? p : c.seq, -1);
-        await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+        await axios.patch(`${serverLocation}/chat/msg/${seq}`);
 
         // refresh;
-        let list = await axios.get(`${this.state.serverLocation}/chat/list`);
+        let list = await axios.get(`${serverLocation}/chat/list`);
         if (list.data.chatList) {
           commit('refreshList', list.data);
         } else {
@@ -86,7 +86,7 @@ export default new Vuex.Store({
       }
       
       // let seq = this.state.chatMsgList.sort((a, b) => a.sent - b.sent).slice(-1)[0].seq;
-      // let patch = await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+      // let patch = await axios.patch(`${serverLocation}/chat/msg/${seq}`);
       
       commit('setChatVisible', true);
     },
@@ -98,12 +98,12 @@ export default new Vuex.Store({
       
       if (this.state.chatVisible) {
         let seq = this.state.chatMsgList.sort((a, b) => a.sent - b.sent).slice(-1)[0].seq;
-        let result = await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+        let result = await axios.patch(`${serverLocation}/chat/msg/${seq}`);
         console.log('read?', seq, '...', result);
       }
     },
     async refreshChatList({ commit }) {
-      let list = await axios.get(`${this.state.serverLocation}/chat/list`);
+      let list = await axios.get(`${serverLocation}/chat/list`);
       if (list.data.chatList) {
         commit('refreshList', list.data);
       } else {

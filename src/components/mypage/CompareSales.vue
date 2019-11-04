@@ -17,7 +17,7 @@
               
                 <div v-if="firstSwitch">
                     <img
-                        :src="`//192.168.0.121:9000/api/file/${firstSales.PHOTO_PATH}`"
+                        :src="`${fileServer}/file/${firstSales.PHOTO_PATH}`"
                         width="100%"
                     />
                     <div class="headline text-center pa-4">{{ firstSales.SALES_TITLE }}</div>
@@ -43,7 +43,7 @@
                 ></v-select>
                 <div v-if="secondSwitch">
                     <img
-                        :src="`//192.168.0.121:9000/api/file/${secondSales.PHOTO_PATH}`"
+                        :src="`${fileServer}/file/${secondSales.PHOTO_PATH}`"
                         width="100%"
                     />
                     <div class="headline text-center pa-4">{{ secondSales.SALES_TITLE }}</div>

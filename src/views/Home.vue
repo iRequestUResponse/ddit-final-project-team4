@@ -38,7 +38,7 @@
                     <v-carousel class="carousel" cycle hide-delimiter-background :show-arrows="false" width="500"
                       height="500">
                       <v-carousel-item v-for="(slide,i) in bannerList" :key="i"
-                        :src="`//192.168.0.121:9000/api/file/${slide.BANNER_PATH}`" :href="slide.BANNER_LINK">
+                        :src="`${fileServer}/file/${slide.BANNER_PATH}`" :href="slide.BANNER_LINK">
                         <v-sheet color="#00000011" height="100%" tile>
                         </v-sheet>
                       </v-carousel-item>
@@ -417,9 +417,9 @@ export default {
       endVal: 0,
       delay1: 0,
       endVal1: 1205,
-      delat2: 2000,
+      delay2: 2000,
       endVal2: 1024,
-      delat3: 2000,
+      delay3: 2000,
       endVal3: 511231,
 
       // endVal: 120500,

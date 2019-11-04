@@ -300,8 +300,8 @@ export default {
       cluster: null,
       currentTypeId: '',
       markerImage: {
-        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
-        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        normal: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        booking: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],
@@ -351,6 +351,7 @@ export default {
         let markers = [];
 
         function between(value, arr) {
+          if (!value || !arr) return true;
           return +value >= arr[0] && +value <= arr[1];
         }
 
