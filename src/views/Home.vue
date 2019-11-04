@@ -49,7 +49,9 @@
                   <v-card flat class="transparent">
                     <div class="d1">
                       <v-card-text class="text-center">
-                        <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                        <v-btn icon to="/board">
+                          <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                        </v-btn>
                       </v-card-text>
                       <v-card-title primary-title class="layout justify-center">
                         <div class="headline">News</div>
@@ -65,15 +67,26 @@
                   <v-card flat class="transparent">
                     <div class="d1">
                       <v-card-text class="text-center">
-                        <v-icon x-large class="blue--text text--lighten-2">mdi-flash</v-icon>
+                        <v-btn icon to="/board/NoticeList">
+                          <v-icon x-large class="blue--text text--lighten-2">mdi-flash</v-icon>
+                        </v-btn>
                       </v-card-text>
                       <v-card-title primary-title class="layout justify-center">
                         <div class="headline">Notice</div>
                       </v-card-title>
                     </div>
                     <div class="content">
-                      <div v-for="notice in noticeList" :key="notice.NOTICE_SEQ"
-                        class="board subtitle-1 blue-grey--text nonAtag">{{ notice.NOTICE_TITLE }}</div>
+                      <div 
+                        v-for="notice in noticeList"
+                        :key="notice.NOTICE_SEQ"
+                        class="board subtitle-1 blue-grey--text nonAtag"
+                      >
+                        <a :href="'board/notice/'+notice.NOTICE_SEQ"
+                          class="listfont subtitle-1 blue-grey--text nonAtag"
+                        >
+                          {{ notice.NOTICE_TITLE }}
+                        </a>
+                      </div>
                     </div>
                   </v-card>
                 </v-flex>

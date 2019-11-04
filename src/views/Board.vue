@@ -26,8 +26,8 @@
                 slider-size="4"
                 grow
               >
-                <v-tab href="#NewsList" class="headline bottom-border" @click="board = 'NewsList'">뉴스</v-tab>
-                <v-tab href="#NoticeList"  class="headline bottom-border" @click="board = 'NoticeList'">공지사항</v-tab>
+                <v-tab href="#NewsList" class="headline bottom-border" @click="ConvertBoard('NewsList')">뉴스</v-tab>
+                <v-tab href="#NoticeList"  class="headline bottom-border" @click="ConvertBoard('NoticeList')">공지사항</v-tab>
               </v-tabs>
             </v-col>
           </v-row>
@@ -65,6 +65,14 @@ export default {
     HomeMenu,
     NewsList: () => import('@/components/board/NewsList.vue'),
     NoticeList: () => import('@/components/board/NoticeList.vue'),
+  },
+  methods: {
+    ConvertBoard(page) {
+      if (this.board !== page) {
+        this.$router.push(`/board/${page}`);
+      }
+      this.board = page;
+    },
   }
 }
 </script>

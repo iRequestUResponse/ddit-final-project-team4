@@ -96,6 +96,23 @@ export default {
         })).data.SCORE || 0;
       })();
 
+      // 조회수 증가
+      (async () => {
+        await axios({
+            url: `${this.serverLocation}/increaseViewCnt`,
+            method: 'POST',
+            data: {
+              num: num,
+            },
+          })
+          .then(res => {
+            console.log('조회수 추가');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      })();
+
       // 신고내역 체크
       (async () => {
         this.reportCheck = (await axios({
