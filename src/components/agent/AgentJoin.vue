@@ -1,13 +1,15 @@
 <template>
     <section>
         <v-app>
-            <p>공인중개사 회원가입 페이지</p>
             <v-form>
                 <v-container>
-                    <v-row justify="center">
+                    <v-row justify="center" class="mt-12">
                         <div id="firdiv">
+                          <h1 class="display-2">공인중개사 회원가입<br></h1>
+                          <h2><br>
                             간편하게 가입하고 <br>
                             다양한 서비스를 이용하세요.<br><br>
+                          </h2>
                         </div>
                     </v-row>              
                     <v-row justify="center">
@@ -18,6 +20,7 @@
                                 v-model="id"
                                 :rules="[
                                     () => !!id || '아이디를 입력해주세요!!!',
+                                    () => /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/.test(id) || '이메일 형식에 맞지 않습니다',
                                 ]"
                                 label="아이디(이메일)"
                                 outlined
@@ -43,6 +46,7 @@
                                 v-model="pass"
                                 :rules="[
                                     () => !!pass || '비밀번호를 입력해주세요!!!',
+                                    () => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(pass) || '형식에 맞지 않습니다.',
                                 ]"
                                 label="비밀번호 (최소 8자리 - 숫자 문자 특수문자 1개 이상 포함)"
                                 outlined
@@ -58,7 +62,8 @@
                                 v-model="conpass"
                                 :rules="[() => 
                                             !!conpass || '비밀번호 확인을 입력해주세요!!!',
-                                            !!(pass === conpass) || '비밀번호가 일치하지 않습니다.'
+                                            !!(pass === conpass) || '비밀번호가 일치하지 않습니다.',
+                                        () => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(pass) || '형식에 맞지 않습니다.'
                                         ]"
                                 label="비밀번호 확인"
                                 outlined
@@ -74,6 +79,7 @@
                                 label="휴대폰번호(예시:010-1234-5678)"
                                 :rules="[
                                             () => !!phone || '핸드폰번호를 입력해주세요!!!',
+                                            () => /^(?:(010-?\d{4})|(01[1|6|7|8|9]-?\d{3,4}))-?\d{4}$/.test(phone) || '형식에 맞지 않습니다.',
                                         ]"
                                 outlined
                                 required
@@ -161,49 +167,57 @@
                         </v-col>
                     </v-row>
                     
-                    <v-row id="captchaRow" justify="center">
-                      <div class="form">
-                        <div class="row">
-                          <div><strong></strong></div>
-                          <my-captcha :callSuccess="captchaBtn"></my-captcha>
+                    <v-row justify="center">
+                      <v-col cols="4">
+                        <div id="app" class="d-flex-row fileinput">
+                          <p>서류제출 : {{ this.originname }}</p>
+                          <file-pond style="margin-top:20px;"
+                              name="test"
+                              ref="pond"
+                              label-idle="파일 업로드 해주세요!!!"
+                              allow-multiple="false"
+                              accepted-file-types="image/jpeg, image/png"
+                              :server="server"
+                              :files="myFiles"
+                              @init="handleFilePondInit"
+                              @processfile="onload"
+                          />
                         </div>
-                      </div>
+                        <br>
+                      </v-col>
                     </v-row>
 
-                    <v-row justify="center">
-                        <v-col cols="12" lg="2">
-                            <v-btn  
-                                color="primary"
-                                class="hs_btn"
-                                @click="join" 
-                                :disabled="btndis">가입하기
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" lg="2">
-                            <v-btn 
-                                color="primary"
-                                dark
-                                @click="cancel" 
-                                class="hs_btn">취소하기
-                            </v-btn>
-                        </v-col>
+                    <v-row justify="center" style="margin-left: 600px; width:600px;">
+                      <v-col cols="5">
+                      <div class="row1">
+                        <div class="row">
+                          <my-captcha 
+                            :callSuccess="captchaBtn">
+                          </my-captcha>
+                        </div>
+                      </div>
+                      </v-col>
+                      <v-col cols="7">
+                          <v-btn  
+                              color="primary"
+                              width="300"
+                              class="hs_btn"
+                              @click="join" 
+                              :disabled="btndis">가입하기
+                          </v-btn><br>
+                      
+                          <v-btn 
+                              color="red"
+                              width="300"
+                              dark
+                              @click="cancel" 
+                              class="hs_btn">취소하기
+                          </v-btn>
+                      </v-col>
                     </v-row>
                 </v-container>
             </v-form>
-            <div id="app">
-                {{ filename }}
-                <file-pond
-                    name="test"
-                    ref="pond"
-                    label-idle="파일 업로드 해주세요!!!"
-                    allow-multiple="false"
-                    accepted-file-types="image/jpeg, image/png"
-                    :server="server"
-                    :files="myFiles"
-                    @init="handleFilePondInit"
-                    @processfile="onload"
-                />
-            </div>
+            
         </v-app>
     </section>
 </template>
@@ -243,7 +257,7 @@ export default {
         'func',
     ],
     beforeMount() {
-        this.server.url = `${this.serverLocation}/file/agent`;
+        this.server.url = `//192.168.0.121:9000/api/file/agent`;
         window.addEventListener('FilePond:removefile', event => {
             this.filename = '';
         });
@@ -267,6 +281,8 @@ export default {
                 url: `${this.fileServer}/file/agent`
             },
             filename: '',
+            path: '',
+            originname: '',
         }
     },
     methods: {
@@ -356,9 +372,12 @@ export default {
             // console.log(this.$refs.pond);
         },
         onload(error, result) {
-            let info = result.serverId;
+          let info = JSON.parse(result.serverId);
+          this.path = 'agent/' + info.files[0].filename
+          this.originname = info.files[0].originalname
 
-            this.filename = info.filename
+          console.log(this.originname)
+            
         },
     },
     components: {
@@ -378,6 +397,9 @@ export default {
     img{
         cursor: pointer;
     }
+    .hs_btn {
+      margin-top: 5px;
+    }
     .hs_btn[disabled] {
         cursor: not-allowed;
         opacity: 0.9;
@@ -385,6 +407,29 @@ export default {
     #captchaRow {
         margin-right: 380px; 
         margin-bottom: 20px;
+    }
+    .filepond--panel-root {
+      background-color: transparent;
+      border: 2px solid #4a6bff;
+    }
+    @media (min-width: 50em) {
+      .filepond--item {
+          width: calc(100% - .5em);
+          text-align: center;
+      }
+    }
+    #subimg{
+        width: 100%;
+        height: auto;
+    }
+
+    .fileinput{
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    #row1{
+      margin-top: 10px;
     }
    
 </style>

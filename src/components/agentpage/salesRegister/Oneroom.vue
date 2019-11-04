@@ -74,15 +74,15 @@ export default {
         {
           name: 'Address',
           condition: () => {
-            return true;
-            // return this.info.address;
+            // return true;
+            return this.info.address;
           }
         },
         {
           name: 'Photos',
           condition: () => {
-            return true;
-            // return this.photoList.length > 0;
+            // return true;
+            return this.photoList.length > 0;
           }
         },
         {
@@ -142,15 +142,18 @@ export default {
     },
     async submit() {
       console.log(1);
+      console.log(this.views);
+      console.log(this.views[this.views.length - 1]);
 
       if (this.views[this.views.length - 1].condition()) {
         console.log(2);
         let result = await axios.post(`${this.serverLocation}/normal/register`, { ...this.info, photoList: this.photoList, selectedOptions: this.selectedOptions });
         console.log(3);
         let [done, all] = result.data.split('/');
+        console.log(done, all);
         console.log(4);
         if (done === all) {
-          this.$swal('등록이 완료되었습니다!');
+          await this.$swal('등록이 완료되었습니다!');
           this.$router.push('/agentpage');
           location.reload();
         } else {

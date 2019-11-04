@@ -16,8 +16,7 @@
                                     ref="name"
                                     v-model="name"
                                     :rules="[
-                                        () => !!name || '이름을 입력해주세요!!!',
-                                        () => /^[가-힣]{2,6}$/.test(name) || '이름은 한글(2~6글자) 입력!!!'
+                                        () => !!name || '이름을 입력해주세요!!!'
                                     ]"
                                     label="이름"
                                     outlined
@@ -297,7 +296,6 @@ export default {
                         this.$router.push('/agentpage');
                     } else {
                         this.$swal('수정실패', '회원정보 수정이 실패하였습니다.', 'error');
-                        alert("수정 실패")
                     }
                 })
             } else {

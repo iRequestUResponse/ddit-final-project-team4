@@ -12,7 +12,7 @@ const vuexSession = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     user: {},
-    serverLocation: '//192.168.0.121:3000/api',
+    serverLocation: '//localhost:3000/api',
     agentid: '',
     chatVisible: false,
     listVisible: false,

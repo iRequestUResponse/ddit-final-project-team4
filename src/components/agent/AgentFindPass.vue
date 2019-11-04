@@ -16,7 +16,7 @@
               <v-card-text>
                 <v-form id="idform">
                   
-                    <h3>가입 시 등록한 아이디와<br> 이름을 입력해주세요.</h3>
+                    <h3>가입 시 등록한 아이디와<br> 공인중개사 사무소 이름을 입력해주세요.</h3>
                   
                   <v-row align="center" justify="center">
                     <v-icon size="49" icon color="#00ACC1" id="email" class="icon1">email</v-icon>
@@ -24,7 +24,7 @@
                   </v-row>
                   <v-row align="center" justify="center">
                     <v-icon size="49" icon color="#00ACC1" id="face" class="icon1">face</v-icon>
-                    <v-text-field label="이름" id="user"  v-model="name" class="tf"/>
+                    <v-text-field label="사무소 이름" id="user"  v-model="name" class="tf"/>
                   </v-row>
                 </v-form>
               </v-card-text>

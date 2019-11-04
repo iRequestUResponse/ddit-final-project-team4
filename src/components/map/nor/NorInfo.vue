@@ -188,7 +188,7 @@
 
 <script>
 export default {
-  props: ['data', 'options', 'norData', 'interestCheck', 'reportCheck', 'onUser', 'rating'],
+  props: ['data', 'options', 'norData', 'interestCheck', 'reportCheck', 'onUser', 'rating', 'maptype'],
   data() {
     return {
       trans: {},

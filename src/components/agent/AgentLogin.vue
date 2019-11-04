@@ -94,6 +94,10 @@ export default {
           this.$swal( this.id , '아이디는 승인 처리중입니다.', 'info');
           return;
         }
+        if (res.data.BLACK_STATUS === 'Y'){
+          this.$swal( this.id , '아이디는 블랙리스트 회원입니다.', 'info');
+          return;
+        }
         if (res.data.AGENTID) {
           this.$store.dispatch('refreshChatList');
           // if(this.checked === true){

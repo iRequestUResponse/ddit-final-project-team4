@@ -158,12 +158,15 @@ export default {
                     },
             })
             .then(res => {
-                console.log(res)
                 if (res.data === 1) {
-                    alert("견적입력 성공")
-                    this.$router.push('/agentpage');
+                    
+                    this.$swal('견적입력 성공', '견적이 회원님에게 전달됩니다.', 'success');
+                    
+                    this.$router.push('/agentpage/AgentOfferedList');
+                    location.reload();
+
                 } else {
-                    alert("견적 실패")
+                    this.$swal('견적입력 실패', '견적이 회원님에게 전달되다가 말았습니다.', 'error');
                 }
 
             })

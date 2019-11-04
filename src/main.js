@@ -36,7 +36,7 @@ Vue.mixin({
   },
   data() {
     return {
-      serverLocation: 'http://192.168.0.121:3000/api',
+      serverLocation: '//localhost:3000/api',
       fileServer: 'http://192.168.0.121:9000/api',
       optionMapping: {
         1: '주차장',

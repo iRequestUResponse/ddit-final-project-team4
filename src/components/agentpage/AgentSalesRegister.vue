@@ -52,7 +52,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .bottom-border {
     border-bottom: 1px solid #aeaeae;
   }

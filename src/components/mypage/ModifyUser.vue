@@ -87,7 +87,7 @@
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="2" id="btncol">
-                                    <button type="button" id="addressbtn" class="btn-green" @click.stop="dialog = true">주소검색
+                                    <button type="button" id="addressbtn" class="btn-green" @click.stop="dialog = true"><h3>검색</h3>
                                     </button>
                                     <v-dialog
                                         v-model="dialog"
@@ -333,9 +333,12 @@ export default {
 
     .btn-green {
       width: 75px;
+      height: 50px;
+      background: rgba(63, 255, 121, 0.822);
     }
 
     #btncol {
       margin-top: -11px;
     }
+
 </style>

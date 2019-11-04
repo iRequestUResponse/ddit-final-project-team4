@@ -13,11 +13,11 @@
               <v-card-text>
                 <v-form id="idform">
                   
-                    <h3>가입 시 등록한 이름과<br> 휴대폰 번호를 입력해주세요.</h3>
+                    <h3>가입 시 등록한 공인중개사 사무소 이름과<br> 휴대폰 번호를 입력해주세요.</h3>
                   
                     <v-row align="center" justify="center">
                          <v-icon size="49" icon color="#00ACC1" id="face" class="icon1">face</v-icon>
-                        <v-text-field label="이름" id="user"  v-model="name" class="tf"/>
+                        <v-text-field label="사무소 이름" id="user"  v-model="name" class="tf"/>
                     </v-row>
                   <v-row align="center" justify="center">
                      <v-icon size="45" icon color="#00ACC1" id="phone_iphone" class="icon1">phone_iphone</v-icon>

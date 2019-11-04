@@ -40,14 +40,14 @@
                 </div>
             </v-col>
             <v-spacer></v-spacer>
-            <v-col cols="12" md="2" class="d-flex align-center title">
+            <v-col cols="12" md="4" class="d-flex align-center title">
                 <v-icon>
                     person
                 </v-icon>
-                <div class="pl-2">
+                <div class="mr-12">
                     {{ norsale.AGENT_NAME }}
                 </div>
-                <div class="pl-2 jukBtnColor-font">
+                <div class="jukBtnColor-font">
                     {{ norsale.AGENT_PHONE }}
                 </div>
             </v-col>

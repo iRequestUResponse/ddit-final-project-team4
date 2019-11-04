@@ -464,22 +464,22 @@ export default {
       }
     },
     onReady(instance, CountUp){
-      const that = this;
+      let that = this;
       this.countupList = [...this.countupList, instance];
       instance.update(that.endVal);
     },
     onReady1(instance, CountUp){
-      const that = this;
+      let that = this;
       this.countupList = [...this.countupList, instance];
       instance.update(that.endVal1);
     },
     onReady2(instance, CountUp){
-      const that = this;
+      let that = this;
       this.countupList = [...this.countupList, instance];
       instance.update(that.endVal2);
     },
     onReady3(instance, CountUp){
-      const that = this;
+      let that = this;
       this.countupList = [...this.countupList, instance];
       instance.update(that.endVal3);
     },

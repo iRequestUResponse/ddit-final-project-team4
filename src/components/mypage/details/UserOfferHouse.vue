@@ -7,7 +7,7 @@
         </v-row>
         
         <v-row v-else>
-            <v-col cols="3">
+            <v-col cols="3" class="ml-4">
                 <v-card 
                     v-for="offerHouse in offerHouseList"
                     :key="offerHouse.OFFERHOUSE_SEQ"
@@ -51,8 +51,8 @@
                 </div>
                 <v-row class="juk-empty_estimate" align="center">
                     <v-col>
-                        <div class="title text-center">등록한 견적 내역이 없습니다.</div>
-                        <div class="title text-center">조금만 기다려주세요.</div>
+                        <div class="title text-center"><h4>등록한 견적 내역이 없습니다.</h4></div>
+                        <div class="title text-center"><h4>조금만 기다려주세요.</h4></div>
                     </v-col>
                 </v-row>
             </v-col>

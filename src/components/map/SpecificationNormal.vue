@@ -41,6 +41,7 @@ export default {
     });
 
     this.$root.$on('selectNor', event => {
+      console.log("asdasd", event.NORSALES_NUM)
       this.showNorInfo(event.NORSALES_NUM);
     });
   },
@@ -71,7 +72,7 @@ export default {
     switchScreen(convertPage) {
       console.log("NorSpecification : ", convertPage);
       if(convertPage.page == 'info'){
-        this.showNorInfo(convertPage.norSalesNum);
+        showNorInfo(convertPage.norSalesNum);
       }else{
         this.beforeSalesNum = this.norSalesNum;
         this.norSalesNum = convertPage.norSalesNum;
