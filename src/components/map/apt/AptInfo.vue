@@ -94,7 +94,6 @@
         <bar-chart :chart-data="datacollection1"></bar-chart>
       </div>
       </v-row>
-      {{ info }}
     </v-row>
   </v-container>
 </template>

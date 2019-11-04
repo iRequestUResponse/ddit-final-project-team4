@@ -58,6 +58,7 @@ export default {
       rankList: [],
       ranklength: 0,
       cnt:0,
+      selectdong: '',
     }
   },
   
@@ -147,39 +148,9 @@ export default {
       })();
 
       this.mapPage = 'NorInfo';
+
     }
   },
-  data() {
-    return {
-      beforeSalesNum: 0,
-      mapPage: 'NorPopulSalesList',
-      norSalesNum: 0,
-      norSalesData: {},
-      interestCheck: 0,
-      reportCheck: 0,
-      rating: 0,
-      onUser: undefined,
-      rankList: [],
-      ranklength: 0,
-      cnt:0,
-      selectdong: '',
-    }
-  },
-  
-  components: {
-    ReviewMain: () => import('@/components/map/review/ReviewMain'),
-    NorInfo: () => import('@/components/map/nor/NorInfo'),
-    NorPopulSalesList: () => import('@/components/map/nor/NorPopulSalesList'),
-  },
-  
-  methods: {
-    switchScreen(convertPage) {
-      console.log("NorSpecification : ", convertPage);
-      this.beforeSalesNum = this.norSalesNum;
-      this.norSalesNum = convertPage.norSalesNum;
-      this.mapPage = convertPage.page;
-    },
-  }
 }
 </script>
 
