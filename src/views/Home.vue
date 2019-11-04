@@ -494,7 +494,10 @@ export default {
         this.searchList.list = result.list;
         this.searchList.keywordList = [...result.areaList.map(e => e.AREA), ...result.nameList.map(e => e.ADDR + ' : ' + e.NAME)];
       }, async failure => {
-        let center = this.$parent.$children.find(e => e.$el.classList.contains('map_wrap')).map.getCenter();
+        // let gotCenter = { getCenter() { return {Ha: 36.3248296, Ga: 127.4179048 }; } };
+        // let center = (this.$parent.$children.find(e => (e.$el.classList.contains('map_wrap')) || { map: gotCenter }).map || getCenter).getCenter();
+
+        let center = {Ha: 36.3248296, Ga: 127.4179048 };
   
         let result = (await axios({
           url: `${this.serverLocation}/searchAptList?lat=${center.Ha}&lng=${center.Ga}&query=${this.searchKeyword}`

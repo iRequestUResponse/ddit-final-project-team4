@@ -161,6 +161,7 @@ export default {
 
       for (let marker of this.markerList) {
         let e = marker.data;
+        console.log(e.BUILD_TYPE, e.APT_DEPOSIT, e.APT_PRICE);
         if (e.BUILD_TYPE == filter.method && (e.BUILD_TYPE !== '월세' || between(e.APT_DEPOSIT, filter.deposit)) && between(e.APT_AREA, filter.area) && between(e.APT_PRICE, filter.price)) {
           marker.setImage(this.markerImage.booking);
         } else {
