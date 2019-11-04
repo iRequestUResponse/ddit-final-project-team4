@@ -4,6 +4,7 @@ const fs = require('fs');
 module.exports = function({ app, db, io, http }) { 
   io.on('connection', socket => {
     console.log('a user connected:', socket.id);
+    socket.emit('hello', 'hello');
     // console.log('==============================');
     // // console.log('khs user: ', getUserSocket(io, 'khs'));
     // console.log('my id :', socket.id);
@@ -53,6 +54,7 @@ module.exports = function({ app, db, io, http }) {
     res.send(result.map(e => ({
       seq: e.CHAT_SEQ,
       msg: e.CHAT_CONT,
+      me,
       writer: e.WRITERID,
       writer_type: e.USER_TYPE,
       sent: +new Date(e.CHATTING_DATE),
@@ -101,16 +103,23 @@ module.exports = function({ app, db, io, http }) {
 
     let sql = db.readSQL(process.cwd() + '/sql/chat/newMsg.sql');
     let result = await db.getData(sql, [chattingRoomNumber, req.body.msg, me, type]);
+    let seq = result[0].SEQ;
+
+    let readMsgSql = db.readSQL(process.cwd() + '/sql/chat/readMsg.sql');
+    let readResult = await db.exec(readMsgSql, [me, seq]);
 
     let socketList = getUserSocketList(io, me, partner);
     emitToList(socketList, 'msg', {
-      seq: result[0].SEQ,
+      seq,
       writer: me,
       writer_type: type,
       msg: req.body.msg,
       sent: Date.now(),
     });
-    res.send(result + '');
+    res.send({
+      state: 'success',
+      seq,
+    });
   });
 
   // leave chat room
@@ -156,8 +165,9 @@ module.exports = function({ app, db, io, http }) {
     let me = req.session.user.USERID || req.session.user.AGENTID;
 
     let sql = db.readSQL(process.cwd() + '/sql/chat/chatList.sql');
-    let result = db.getData(sql, [me]);
-    res.send(result);
+    let chatList = await db.getData(sql, [me]);
+    
+    res.send({ chatList, me: req.session.user.type });
   });
 };
 
@@ -189,6 +199,10 @@ function getUserSocketList(io, ...ids) {
  */
 function emitToList(socketList, event, data) {
   for (let socket of socketList) {
-    socket.emit(event, data);
+    let _data = {
+      ...data,
+      me: socket.request.session.user.USERID || socket.request.session.user.AGENTID,
+    }
+    socket.emit(event, _data);
   }
 }

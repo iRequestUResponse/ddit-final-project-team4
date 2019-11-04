@@ -156,5 +156,11 @@ module.exports = function({ app, db }) {
       res.send(result + '');
     }
   });
+
+  app.post('/api/increaseViewCnt', async (req, res, next) => {
+    let sql = db.readSQL(process.cwd() + '/sql/one/increaseViewCnt.sql');
+    let result = await db.exec(sql, [req.body.num]);
+    res.send(result + '');
+  });
 };
 
