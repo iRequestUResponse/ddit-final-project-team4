@@ -113,7 +113,7 @@ export default {
       this.message = '';
 
       let result = await axios({
-        url: `${this.serverLocation}/chat/room/${this.agentid}`,
+        url: `${this.$store.state.serverLocation}/chat/room/${this.agentid}`,
         method: 'POST',
         data: {
           msg,
@@ -122,7 +122,7 @@ export default {
 
       if (typeof result.data === 'object') {
         let seq = result.data.seq;
-        await axios.patch(`${this.state.serverLocation}/chat/msg/${seq}`);
+        await axios.patch(`${this.$store.state.serverLocation}/chat/msg/${seq}`);
         await this.$store.dispatch('refreshChatList');
       }
     },
@@ -132,7 +132,7 @@ export default {
     },
     async getPreviousMsg(agentid) {
       let result = await axios({
-        url: `${this.serverLocation}/chat/room/${agentid}`,
+        url: `${this.$store.state.serverLocation}/chat/room/${agentid}`,
         method: 'GET',
       });
     },

@@ -12,7 +12,7 @@ const vuexSession = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     user: {},
-    serverLocation: '//localhost:3000/api',
+    serverLocation: '//192.168.0.121:3000/api',
     agentid: '',
     chatVisible: false,
     listVisible: false,
@@ -56,7 +56,7 @@ export default new Vuex.Store({
   actions: {
     async refreshUser({ commit }) {
       let result = await axios({
-        url: `//localhost:3000/api/check`,
+        url: `//192.168.0.121:3000/api/check`,
         method: 'GET',
       });
       
