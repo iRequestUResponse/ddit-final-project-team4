@@ -14,9 +14,7 @@
     </v-row>
     <v-row class="mt-8 px-8">
       <v-card min-height="500" flat tile>
-        <div class="sub-title px-2">
-          {{ notice.NOTICE_CONT }}
-        </div>
+        <div class="sub-title px-2" v-html="noticeCont(notice.NOTICE_CONT)"></div>
       </v-card>
     </v-row>
   </v-container>
@@ -37,6 +35,11 @@
     filters: {
       datefmt(value) {
         return value.substring(0, 10);
+      },
+    },
+    methods: {
+      noticeCont(v) {
+        return v.replace(/src="/g, 'src="http://192.168.0.136:8081');
       }
     }
   }

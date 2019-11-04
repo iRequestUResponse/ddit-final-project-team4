@@ -35,7 +35,7 @@
     <v-row>
       <v-carousel class="carousel" cycle hide-delimiter-background height="300">
         <v-carousel-item v-for="(photos,i) in aptsale.photolist" :key="i" width="100%"
-          :src="`//192.168.0.121:9000/api/file/${photos.PHOTO_PATH}`" />
+          :src="`${fileServer}/file/${photos.PHOTO_PATH}`" />
       </v-carousel>
     </v-row>
 

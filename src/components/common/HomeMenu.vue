@@ -34,6 +34,10 @@
           >
             중개사페이지
           </v-btn> -->
+          <!-- </v-btn> -->
+          <Badge
+            color="grey"
+          />
           <v-btn 
             v-if="loginUser" 
             @click="logout"
@@ -103,6 +107,7 @@ export default {
   },
   components: {
     modal,
+    Badge: () => import('@/components/common/chat/Badge'),
   },
  
 }

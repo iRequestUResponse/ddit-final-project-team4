@@ -1,9 +1,14 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
-
-    <div class="mt-7 ml-4"><h2>주변 인기 아파트 순위  <span style="color:rgb(21,101,250); font-size:1.5em;"> [{{ this.dong }}]</span> </h2></div>
-
-    <v-row class="pa-0 mx-0">
+    <div class="mt-7 ml-4"><h2>주변 인기 아파트 순위  <span style="color:rgb(21,101,250); font-size:1.5em;"> [{{ this.rankList[0].APT_ADDR.split(' ')[2] ||  selectdong }}]</span> </h2></div>
+         <v-row v-if="rankList.length === 0">
+          <v-col class="mt-12 pt-12">
+            <v-card outlined>
+            <div class="title text-center">매물이 없습니다.</div>
+            </v-card>
+          </v-col>
+        </v-row>
+    <v-row v-else class="pa-0 mx-0">
       <v-row class="mx-0">
         <v-col cols="12" v-for="aptRank in rankList" :key="aptRank.APT_SEQ">
             <v-card outlined @click="viewAptInfo(aptRank)">
@@ -36,12 +41,15 @@ export default {
   props: ['aptNum'], 
   // 여기서 아파트 검색에 대한 값 가져오기 해서 List에 담아서 오기 sql
   beforeMount() {
+    this.$root.$on('selectdong', selectdong => {
+      this.selectdong = selectdong;
+    });
+
     this.$root.$on('rankList', rankList => {
-      if(rankList != null){
+      
         this.rankList = rankList;
-        this.ranklength = this.rankList.length;
-        this.dong = this.rankList[0].APT_ADDR.split(' ')[2];
-      }
+        this.rankList[0].APT_ADDR.split(' ')[2];
+     
     });
 
     this.$root.$on('selectApt', event => {
@@ -60,6 +68,7 @@ export default {
        ranklength: 0,
        aptSalesNum: 0,
        dong: '',
+       selectdong: '',
     }
   },
   methods: {

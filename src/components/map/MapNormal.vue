@@ -228,12 +228,13 @@ export default {
           this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
 
             if (status !== kakao.maps.services.Status.OK) return;
-
+            
             let rankList = (await axios({
               url: `${this.serverLocation}/getPopulOneRank?si=${result[0].address.region_1depth_name}&gu=${result[0].address.region_2depth_name}&dong=${result[0].address.region_3depth_name}`,
               method: 'GET',
             })).data;
 
+            this.$root.$emit('selectdong', result[0].address.region_3depth_name)
             this.$root.$emit('oneRankList', rankList);
 
           });
@@ -345,7 +346,7 @@ export default {
           const marker = new kakao.maps.Marker({ position });
           const overlay = new kakao.maps.CustomOverlay({
             position,
-            content: `<div class="juk-priceBox">${e.DEPOSIT} <br> /${e.PRICE}</div>`,
+            content: `<div class="juk-priceBox1">${e.DEPOSIT} <br> /${e.PRICE}</div>`,
           });
           overlay.setMap(this.map);
           this.overlayList = [...this.overlayList, overlay];
@@ -483,7 +484,6 @@ export default {
 #inputtag{
   width: 420px;
   height: 30px;
-  background: rgba(255, 255, 255, 0.8);
   position: relative;
   margin-left: 400px;
   margin-top: 23px;
@@ -497,7 +497,7 @@ export default {
 }
 
 /* 가격박스 */
-.juk-priceBox {
+.juk-priceBox1 {
   width: 40px;
   height: 41px;
   background-color: rgba(247, 183, 6, 0.8);
@@ -511,7 +511,7 @@ export default {
   box-shadow: 1px 1px 2px #888;
 }
 
-.juk-priceBox::after {
+.juk-priceBox1::after {
   content: ' ';
   transform: rotate(45deg);
   width:9px;

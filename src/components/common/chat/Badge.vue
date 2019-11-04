@@ -3,7 +3,8 @@
     <v-icon
       :class="{chat: true, unread: unreadCnt > 0}"
       :data-count="unreadCnt"
-    >fa-comments</v-icon>
+      :style="{ color: color && unreadCnt === 0 ? color : '#FFF'}"
+    >fa-comment</v-icon>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import { mapGetters } from "vuex";
 
 export default {
+  props: ['color'],
   computed: {
     ...mapGetters({ unreadCnt: 'unreadMsgCnt' }),
   },
@@ -31,7 +33,7 @@ export default {
 
 .chat.unread {
   font-size: 1.5em;
-  color: #ce5e75;
+  color: #ce5e75 !important;
 }
 
 .chat.unread:after {

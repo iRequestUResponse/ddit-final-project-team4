@@ -15,6 +15,8 @@
       :rankList="rankList"
       :ranklength="ranklength"
       :cnt="cnt"
+      :selectdong="selectdong"
+      
       @receivedPage="switchScreen"
     />
   </v-container>
@@ -28,14 +30,15 @@ export default {
 
     // 지도위치에 따른 원룸,투룸 인기리스트(카운트를 통한)
     this.$root.$on('oneRankList', rankList => {
-      if(rankList != null){
-        
-        this.rankList = rankList;
-        this.ranklength = this.rankList.length;
-
-      }
+     
+      this.rankList = rankList;
+      this.ranklength = this.rankList.length;
+      
     });
 
+    this.$root.$on('selectdong', selectdong => {
+      this.selectdong = selectdong;
+    });
 
     this.$root.$on('selectNor', event => {
       this.showNorInfo(event.NORSALES_NUM);
@@ -144,10 +147,42 @@ export default {
       })();
 
       this.mapPage = 'NorInfo';
+    }
+  },
+  data() {
+    return {
+      beforeSalesNum: 0,
+      mapPage: 'NorPopulSalesList',
+      norSalesNum: 0,
+      norSalesData: {},
+      interestCheck: 0,
+      reportCheck: 0,
+      rating: 0,
+      onUser: undefined,
+      rankList: [],
+      ranklength: 0,
+      cnt:0,
+      selectdong: '',
+    }
+  },
+  
+  components: {
+    ReviewMain: () => import('@/components/map/review/ReviewMain'),
+    NorInfo: () => import('@/components/map/nor/NorInfo'),
+    NorPopulSalesList: () => import('@/components/map/nor/NorPopulSalesList'),
+  },
+  
+  methods: {
+    switchScreen(convertPage) {
+      console.log("NorSpecification : ", convertPage);
+      this.beforeSalesNum = this.norSalesNum;
+      this.norSalesNum = convertPage.norSalesNum;
+      this.mapPage = convertPage.page;
     },
   }
 }
 </script>
+
 
 <style scoped>
 #specification {

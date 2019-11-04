@@ -1,11 +1,20 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
 
-    <div class="mt-7 ml-4"><h2>주변 인기 원룸 순위  <span style="color:rgb(21,101,250); font-size:1.5em;">  [{{ rankList[0].ADDRESS.split(' ')[2] }}]</span> </h2></div>
-
-    <v-row class="pa-0 mx-0">
+    <div class="mt-7 ml-4"><h2>주변 인기 원룸 순위  <span style="color:rgb(21,101,250); font-size:1.5em;">  [{{ ((rankList[0] || {}).ADDRESS || ' ').split(' ')[2] ||  selectdong  }}]</span> </h2></div>
+ 
+        <v-row v-if="ranklength === 0">
+          <v-col class="mt-12 pt-12">
+            <v-card outlined>
+            <div class="title text-center">매물이 없습니다.</div>
+            </v-card>
+          </v-col>
+        </v-row>
+       
+    <v-row v-else class="pa-0 mx-0">
       <v-row class="mx-0 mt-2">
-        <!-- v-if문으로 리스트 SALES_STATUS 여부 써줘야함 -->
+        
+          
         <v-col cols="12" v-for="aptRank in rankList" :key="aptRank.NORSALES_NUM">
             <v-card outlined>
             <div class="mt-3 ml-3"><h3> <v-icon size="35" icon color="#FFD600" id="offertitle">emoji_events</v-icon> {{ aptRank.RANK }}
@@ -32,7 +41,7 @@
                 <v-row>
                   <v-col cols="6">
                     <div>
-                      <v-img :src="`//192.168.0.121:9000/api/file/${aptRank.PHOTO_PATH}`" width="230px" height="150px" />
+                      <v-img :src="`${fileServer}/file/${aptRank.PHOTO_PATH}`" width="230px" height="150px" />
 
                     </div>
                   </v-col>
@@ -56,11 +65,11 @@
 
 <script>
 export default {
-  props: ['rankList', 'ranklength', 'cnt'],
+  props: ['rankList', 'ranklength', 'cnt', 'selectdong'],
   beforeMount() {
     // this.selectdong = this.rankList[0].ADDRESS.split(' ')[2];
     // console.log("주소", this.rankList[0].ADDRESS.split(' ')[2])
-    console.log(this.rankList[0])
+    console.log("ddd"+this.rankList)
   },
   
   data() {
