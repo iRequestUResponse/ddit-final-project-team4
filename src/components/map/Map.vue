@@ -231,6 +231,7 @@ export default {
           
           // 좌표로 법정동 상세 주소 정보를 요청합니다
           this.geocoderAddr = geocoder.coord2Address(centerXY.getLng(), centerXY.getLat(), async (result, status) => {
+            
             if (status !== kakao.maps.services.Status.OK) return;
 
             let rankList = (await axios({
@@ -238,6 +239,7 @@ export default {
               method: 'GET',
             })).data;
 
+            this.$root.$emit('selectdong', result[0].address.region_3depth_name)
             this.$root.$emit('rankList', rankList);
           });
         });
