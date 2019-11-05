@@ -1,7 +1,6 @@
 <template>
     <section>
         <v-app>
-            <p>회원가입 페이지</p>
             <v-form>
                 <v-container>
                     <v-row justify="center">

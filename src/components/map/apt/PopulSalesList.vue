@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pa-0 ma-0 overflow-y-auto" style="height: 100vh">
-    <div class="mt-7 ml-4"><h2>주변 인기 아파트 순위  <span style="color:rgb(21,101,250); font-size:1.5em;"> [{{ this.rankList[0].APT_ADDR.split(' ')[2] ||  selectdong }}]</span> </h2></div>
+    <div class="mt-7 ml-4"><h2>주변 인기 아파트 순위  <span style="color:rgb(21,101,250); font-size:1.5em;"> [{{ this.rankList[0] ? this.rankList[0].APT_ADDR.split(' ')[2] ||  selectdong : selectdong }}]</span> </h2></div>
          <v-row v-if="rankList.length === 0">
           <v-col class="mt-12 pt-12">
             <v-card outlined>

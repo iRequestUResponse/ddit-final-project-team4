@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { async } from 'q';
 export default {
 
   beforeMount() {
