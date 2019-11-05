@@ -40,12 +40,12 @@
 
                     <div @click="viewSales(sales.APTSALES_NUM)">
                         <v-card-title>
-                            <div>{{ sales.SALES_TITLE.substring(0,10) }}...</div>
+                            <div>{{ sales.SALES_TITLE.substring(0,25) }}</div>
                         </v-card-title>
                         <v-card-text>
                             <div>{{ sales.PYEONG }}평 {{ sales.RELEVANT_FLOOR }}층/{{ sales.WHOLE_FLOOR }}층</div>
                             <div>{{ sales.APT_NAME }} {{ sales.DONG }}</div>
-                            <div>{{ sales.SALES_CONT.substring(0,18) }}...</div>
+                            <div>{{ sales.SALES_CONT.substring(0,30) }}...</div>
                         </v-card-text>
                     </div>
                 </v-card>
@@ -92,7 +92,7 @@
 
                     <div @click="viewNorSales(norSales.NORSALES_NUM)">
                         <v-card-title>
-                            <div>{{ norSales.SALES_TITLE.substring(0,10) }}...</div>
+                            <div>{{ norSales.SALES_TITLE.substring(0,20)}}</div>
                         </v-card-title>
                         <v-card-text>
                             <div>{{ norSales.AREA }}평 {{ norSales.RELEVANT_FLOOR }}층/{{ norSales.WHOLE_FLOOR }}층</div>
@@ -148,24 +148,40 @@ export default {
             }
         },
         cancelInterest(interestSeq) {
-            axios({
-                url: `${this.serverLocation}/cancelInterest`,
-                method: 'POST',
-                data: {
-                    seq: interestSeq,
-                },
-            })
-            .then(res => {
-                if (res.data === 1) {
-                    (async () => {
-                        this.salesList = (await axios({
-                            url: `${this.serverLocation}/mpSalesInterList`
-                        })).data;
-                    })();
-                }else{
-                    console.log('데이터를 삭제하지 못함');
-                }
-            })
+          this.$swal({
+
+            title: '삭제하시겠습니까?',
+            text: '',
+            type: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소',
+
+          }).then((result) => {
+            if (result.value) {
+              axios({
+                  url: `${this.serverLocation}/cancelInterest`,
+                  method: 'POST',
+                  data: {
+                      seq: interestSeq,
+                  },
+              })
+              .then(res => {
+                  if (res.data === 1) {
+                      (async () => {
+                          this.salesList = (await axios({
+                              url: `${this.serverLocation}/mpSalesInterList`
+                          })).data;
+                      })();
+                      this.$swal('관심목록 삭제완료', ' ', 'info');
+                  }else{
+                      console.log('데이터를 삭제하지 못함');
+                  }
+              })
+            }
+          })
         },
         viewNorSales(SalesNum) {
             this.trans.aptSalesNum = SalesNum;
