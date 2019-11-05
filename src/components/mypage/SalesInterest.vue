@@ -29,7 +29,7 @@
             >
                 <v-card outlined>
                     <v-img
-                        :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`"
+                        :src="`${fileServer}/file/${sales.PHOTO_PATH}`"
                         class="text-right pa-2"
                         height="200px"
                     >
@@ -81,7 +81,7 @@
             >
                 <v-card outlined>
                     <v-img
-                        :src="`//192.168.0.121:9000/api/file/${norSales.PHOTO_PATH}`"
+                        :src="`${fileServer}/file/${norSales.PHOTO_PATH}`"
                         class="text-right pa-2"
                         height="200px"
                     >

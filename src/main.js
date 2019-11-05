@@ -6,8 +6,6 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import VModal from 'vue-js-modal'
 
-
-
 //import material-icon scss
 import "font-awesome/css/font-awesome.min.css";
 
@@ -38,6 +36,7 @@ Vue.mixin({
     return {
       serverLocation: '//localhost:3000/api',
       fileServer: 'http://192.168.0.121:9000/api',
+      
       optionMapping: {
         1: '주차장',
         2: '엘리베이터',

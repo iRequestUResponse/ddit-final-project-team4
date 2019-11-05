@@ -38,7 +38,7 @@
              <v-icon id="deleteicon" size="50">cancel_presentation</v-icon>
            </v-btn>
           <v-img
-            :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`"
+            :src="`${fileServer}/file/${sales.PHOTO_PATH}`"
             height="200px"
           />
 
@@ -85,7 +85,7 @@
              <v-icon id="deleteicon" size="50">cancel_presentation</v-icon>
            </v-btn>
           <v-img
-            :src="`//192.168.0.121:9000/api/file/${norSales.PHOTO_PATH}`"
+            :src="`${fileServer}/file/${norSales.PHOTO_PATH}`"
             height="200px"
           />
 

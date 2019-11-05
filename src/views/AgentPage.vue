@@ -24,6 +24,16 @@ import AgentMenu from '@/components/agentpage/AgentMenu';
 
 export default {
     beforeMount() {
+        (async () => {
+            let user = await axios.get(`${serverLocation}/check`);
+            user = user.data.user;
+        
+            if (!user) {
+                this.$router.push('/');
+                location.reload();
+            }
+        })();
+
         window.addEventListener('popstate', () => {
             this.agentpage = this.$route.params.name;
         });

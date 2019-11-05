@@ -35,7 +35,7 @@ export default {
       // filename: '',
       files: [],
       server: {
-        url: `//192.168.0.121:9000/api/file/agent`,
+        url: `${fileServer}/file/agent`,
         revert: {
           onload: (e) => {
             let info = JSON.parse(e);

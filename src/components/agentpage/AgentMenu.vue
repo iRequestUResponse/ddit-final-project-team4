@@ -12,6 +12,9 @@
           <a class="offset-md-1 juk-menu" @click="sendPage('AgentModify')">개인정보수정</a>
           <v-spacer />
           <!-- <router-link v-if="!loginUser" to="/login" class="button">로그인 / 회원가입</router-link> -->
+          <Badge
+            color="grey"
+          />
           <v-btn 
             v-if="loginUser" 
             @click="logout"
@@ -57,6 +60,9 @@ export default {
     sendPage(e) {
       this.$emit('agtPage', e);
     }
+  },
+  components: {
+    Badge: () => import('@/components/common/chat/Badge'),
   }
 }
 </script>

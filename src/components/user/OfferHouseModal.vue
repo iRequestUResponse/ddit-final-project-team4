@@ -171,7 +171,7 @@ export default {
       addr2: '',
       myFiles: [],  //미리 가져오는값
       server: {
-          url: `http://192.168.0.121:9000/api/file/user`,
+          url: `${fileServer}/file/user`,
           revert: {
             onload: (e) => {
               console.log('revert', JSON.parse(e));

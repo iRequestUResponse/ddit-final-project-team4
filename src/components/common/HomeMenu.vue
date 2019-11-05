@@ -25,7 +25,7 @@
           >
             마이페이지
           </v-btn> -->
-          <v-btn 
+          <!-- <v-btn 
             v-if="(loginUser || {}).type === 'agent'" 
             to="/agentpage"
             color="grey darken-3"
@@ -33,7 +33,11 @@
             tile
           >
             중개사페이지
-          </v-btn>
+          </v-btn> -->
+          <!-- </v-btn> -->
+          <Badge
+            color="grey"
+          />
           <v-btn 
             v-if="loginUser" 
             @click="logout"
@@ -103,6 +107,7 @@ export default {
   },
   components: {
     modal,
+    Badge: () => import('@/components/common/chat/Badge'),
   },
  
 }

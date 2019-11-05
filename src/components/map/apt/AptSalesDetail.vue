@@ -35,7 +35,7 @@
     <v-row>
       <v-carousel class="carousel" cycle hide-delimiter-background height="300">
         <v-carousel-item v-for="(photos,i) in aptsale.photolist" :key="i" width="100%"
-          :src="`//192.168.0.121:9000/api/file/${photos.PHOTO_PATH}`" />
+          :src="`${fileServer}/file/${photos.PHOTO_PATH}`" />
       </v-carousel>
     </v-row>
 
@@ -103,7 +103,7 @@
 
     <hr id="hrstyle">
 
-    <v-btn class="mt-5" id="btn" color="juk-blue" @click="joinTest">문의하기</v-btn>
+    <v-btn v-show="this.onUser != undefined" class="mt-5" id="btn" color="juk-blue" @click="joinTest">문의하기</v-btn>
     <v-btn v-show="this.onUser != undefined" class="mt-0 mb-5" id="btn" color="juk-red" @click="showReport">신고하기</v-btn>
 
     <!-- 신고하기 다이얼로그 및 버튼 -->

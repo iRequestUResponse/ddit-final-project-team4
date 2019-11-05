@@ -212,14 +212,14 @@ export default {
         'func',
     ],
     beforeMount() {
-        this.server.url = `${this.serverLocation}/file/agent`;
+        this.server.url = `${serverLocation}/file/agent`;
         window.addEventListener('FilePond:removefile', async event => {
-            this.filename = (await axios.get(`${this.serverLocation}/agent/documentName?id=${this.id}`)).data;
+            this.filename = (await axios.get(`${serverLocation}/agent/documentName?id=${this.id}`)).data;
         });
         this.server.url = `${this.fileServer}/file/agent`;
         (async () => {
             let result = await axios({
-                url: `${this.serverLocation}/check`
+                url: `${serverLocation}/check`
             });
 
             this.id = result.data.user.AGENTID;
@@ -247,7 +247,7 @@ export default {
             result: {},
             myFiles: [],
             server: {
-                url: `http://192.168.0.121:9000/api/file/agent`,
+                url: `${fileServer}/file/agent`,
             },
             isLoading: false,
             originname: '',
@@ -257,10 +257,10 @@ export default {
         uploadImg() {
             console.log(this.path)
             if (this.path) {
-                return `//192.168.0.121:9000/api/file/${this.path}`;
+                return `${fileServer}/file/${this.path}`;
             } 
             else {
-                return `//192.168.0.121:9000/api/file/noimage.png`;
+                return `${fileServer}/file/noimage.png`;
             }
         }
     },
@@ -272,7 +272,7 @@ export default {
             if (this.pass === this.conpass) {
                 this.isLoading = true;
                 axios({
-                    url: `${this.serverLocation}/modifyAgent`,
+                    url: `${serverLocation}/modifyAgent`,
                     method: 'POST',
                     data: {
                         id: this.id,
@@ -330,7 +330,7 @@ export default {
           }).then((result) => {
             if (result.value) {
               axios({
-                  url: `${this.serverLocation}/leaveAgent`,
+                  url: `${serverLocation}/leaveAgent`,
                   method: 'POST',
                   data: {
                       id: this.id,
@@ -342,7 +342,7 @@ export default {
                       this.$swal('탈퇴가 완료되었습니다.', '', 'success')
 
                       axios({
-                          url: `${this.serverLocation}/logout`
+                          url: `${serverLocation}/logout`
                       });
 
                       this.isLogin = false;

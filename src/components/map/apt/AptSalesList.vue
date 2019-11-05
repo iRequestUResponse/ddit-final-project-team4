@@ -13,7 +13,7 @@
     <v-row v-else class="mx-0">
       <v-col cols="12" v-for="sales in salesList" :key="sales.APTSALES_NUM">
         <v-card outlined @click="viewSales(sales.APTSALES_NUM)">
-          <v-img :src="`//192.168.0.121:9000/api/file/${sales.PHOTO_PATH}`" height="200px" />
+          <v-img :src="`${fileServer}/file/${sales.PHOTO_PATH}`" height="200px" />
 
           <div>
             <v-card-title>

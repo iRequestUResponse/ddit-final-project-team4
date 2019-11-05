@@ -161,6 +161,7 @@ export default {
 
       for (let marker of this.markerList) {
         let e = marker.data;
+        console.log(e.BUILD_TYPE, e.APT_DEPOSIT, e.APT_PRICE);
         if (e.BUILD_TYPE == filter.method && (e.BUILD_TYPE !== '월세' || between(e.APT_DEPOSIT, filter.deposit)) && between(e.APT_AREA, filter.area) && between(e.APT_PRICE, filter.price)) {
           marker.setImage(this.markerImage.booking);
         } else {
@@ -299,8 +300,8 @@ export default {
       cluster: null,
       currentTypeId: '',
       markerImage: {
-        normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
-        booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        normal: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        booking: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],
@@ -350,6 +351,7 @@ export default {
         let markers = [];
 
         function between(value, arr) {
+          if (!value || !arr) return true;
           return +value >= arr[0] && +value <= arr[1];
         }
 

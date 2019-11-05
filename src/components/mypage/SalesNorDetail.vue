@@ -21,13 +21,26 @@
                     </div>
                 </div>
             </v-col>
+            <v-col cols="12" md="2">
+                <div class="juk-leftdevide">
+                    <div class="grey--text">
+                        방형태
+                    </div>
+                    <div class="display-1 jukBtnColor-font">
+                        {{ norsale.BUILD_TYPE }}
+                    </div>
+                </div>
+            </v-col>
             <v-spacer></v-spacer>
-            <v-col cols="12" md="2" class="d-flex align-center title">
+            <v-col cols="12" md="3" class="d-flex align-center justify-right title">
                 <v-icon>
                     person
                 </v-icon>
                 <div class="pl-2">
-                    {{ norsale.AGENTID }}
+                    {{ norsale.AGENT_NAME }}
+                </div>
+                <div class="pl-2 jukBtnColor-font">
+                    {{ norsale.AGENT_PHONE }}
                 </div>
             </v-col>
         </v-row>
@@ -35,10 +48,22 @@
             <v-col>{{ norsale.SALES_TITLE }}</v-col>
         </v-row>
         <v-row class="juk-bottomdivide py-1">
+            <v-col>주소 : {{ norsale.ADDRESS }}</v-col>
+        </v-row>
+        <v-row class="juk-bottomdivide py-1">
             <v-col cols="3">해당층/전체층 : {{ norsale.RELEVANT_FLOOR }}층/{{ norsale.WHOLE_FLOOR }}층</v-col>
-            <v-col cols="3">방향 : {{ norsale.DIRECTION }}</v-col>
+            <v-col cols="3">구조 : {{ norsale.STRUCTURE }}</v-col>
             <v-col cols="3">준공년도 : {{ norsale.COMPLETION_DATE.substring(0,4) }}년</v-col>
             <v-col cols="3">입주가능일 : {{ norsale.AVAILABILITY_DATE }}</v-col>
+        </v-row>
+        <v-row class="juk-bottomdivide py-4">
+            <v-col cols="12">
+                <div class="headline text-center">옵션</div>
+            </v-col>
+            <v-col v-for="option in norsale.optionlist" :key="option.OPTION_SEQ" cols="2" class="text-center">
+                <v-icon>{{ optionIconMapping[option.OPTION_CODE]}}</v-icon>
+                {{ optionMapping[option.OPTION_CODE] }}
+            </v-col>
         </v-row>
         <v-row justify="center" class="px-12">
             <v-col cols="12" sm="12" md="8">
@@ -54,7 +79,7 @@
                         >
                             <v-card flat tile class="d-flex">
                             <v-img
-                                :src="`//192.168.0.121:9000/api/file/${photo.PHOTO_PATH}`"
+                                :src="`${fileServer}/file/${photo.PHOTO_PATH}`"
                                 aspect-ratio="1"
                                 class="grey lighten-2"
                             >
@@ -153,5 +178,13 @@ export default {
 
     .juk-bottomdivide {
         border-bottom: 1px solid #AEAEAE;
+    }
+
+    .jukBtnColor {
+        background-color: #1669F7 !important;
+    }
+
+    .jukBtnColor-font {
+        color: #1669F7 !important;
     }
 </style>
