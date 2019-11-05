@@ -85,7 +85,6 @@ export default {
                 url: `${this.serverLocation}/getAddrSido`
             })).data;
 
-            console.log(this.offerList);
         })();
     },
     data() {

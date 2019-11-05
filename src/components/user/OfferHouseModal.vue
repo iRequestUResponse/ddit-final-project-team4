@@ -244,7 +244,7 @@ export default {
             })
             .then((result) => {
               this.$emit('close');
-              this.$router.replace('/mypage/DetailsInquiry');
+              this.$router.replace('/');
             })
           }else if(res.data === 0){
             alert("서버에 등록 실패!!!")

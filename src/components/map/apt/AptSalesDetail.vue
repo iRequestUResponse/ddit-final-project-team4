@@ -292,14 +292,14 @@
             })
             .then(res => {
               if (res.data === 1) {
-                alert("등록이 완료되었습니다.");
+                this.$swal('등록이 완료되었습니다.', ' ', 'success');
                 this.interestChecking();
               } else {
                 console.log('데이터를 삭제하지 못함');
               }
             })
         } else {
-          alert("이미 등록하셨습니다.");
+          this.$swal('이미 등록하셨습니다.', ' ', 'info');
         }
       },
       backview() {
@@ -322,6 +322,7 @@
             if (res.data === 1) {
               this.reportChecking();
               this.rpdialog = false;
+              this.$swal('신고하기 성공', '신고가 정상적으로 접수되었습니다. 내역조회에서 확인하세요', 'success');
             } else {
               console.log('데이터를 삽입하지 못함');
             }
@@ -332,7 +333,7 @@
 
           this.rpdialog = true;
         } else {
-          alert('이미 작성하셨습니다.');
+          this.$swal('이미 작성하셨습니다.', ' ', 'info');
         }
       },
       async reportChecking() {

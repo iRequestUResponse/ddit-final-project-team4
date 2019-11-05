@@ -11,7 +11,7 @@
     </v-row>
     <v-row class="pa-0 mx-0 pb-6 amber">
       <v-col cols=12 class="text-center pa-0 mb-2">
-        <div class="headline">{{ norData.SALES_TITLE }}</div>
+        <div class="headline"><h3>{{ norData.SALES_TITLE }}</h3></div>
       </v-col>
       <v-col cols=12 class="text-center pa-0">
         <div class="subtitle">{{ norData.ADDRESS }}</div>
@@ -77,24 +77,20 @@
           </v-col>
         </v-row>
         <v-row class="mt-4 mb-0">
-          <v-col cols="3" class="juk-divide_right py-1">
-            <div class="caption">면적(평)</div>
-            <div class="headline text-center">{{ norData.AREA }}</div>
+          <v-col cols="4" class="juk-divide_right py-1">
+            <div class="caption ml-10">면적(평)</div>
+            <div class="headline text-center">{{ norData.AREA }} 평</div>
           </v-col>
           <v-col cols="4" class="juk-divide_right py-1">
-            <div class="caption">층(해당층/전체층)</div>
-            <div class="headline text-center">{{ norData.RELEVANT_FLOOR }}/{{ norData.WHOLE_FLOOR }}</div>
-          </v-col>
-          <v-col cols="5" class="py-1">
-            <div class="caption">구조</div>
-            <div class="headline text-center">{{ norData.STRUCTURE }}</div>
+            <div class="caption ml-3">층(해당층/전체층)</div>
+            <div class="headline text-center">{{ norData.RELEVANT_FLOOR }}/{{ norData.WHOLE_FLOOR }} 층</div>
           </v-col>
         </v-row>
 
         <v-row class="pa-2">
           <v-col cols="12">
             <div class="subtitle">
-              {{ norData.SALES_CONT }}
+              <h3>{{ norData.SALES_CONT }}</h3>
             </div>
           </v-col>
         </v-row>

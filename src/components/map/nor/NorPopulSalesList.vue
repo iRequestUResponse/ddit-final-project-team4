@@ -26,7 +26,7 @@
               <v-spacer></v-spacer>
               <v-btn outlined tile @click="viewDetail(aptRank.NORSALES_NUM)">상세보기</v-btn>
             </v-row>
-            <div id="title" @click="viewOneInfo(aptRank)">
+            <div id="title" @click="viewOneInfo(aptRank)" style="cursor:pointer;">
               <v-card-title>
                 <v-row justify="center">
                   <v-col cols="1">
@@ -95,6 +95,7 @@ export default {
     viewDetail(salesNum) {
       this.trans.norSalesNum = salesNum;
       this.trans.page = 'info';
+      
       this.$emit('receivedPage', this.trans);
     }
   }
