@@ -289,7 +289,7 @@ export default {
         this.markerList.forEach(e => {
           e.setImage(this.markerImage.normal);
         });
-        target.setImage(this.markerImage.booking);
+        target.setImage(this.markerImage.point);
       }
     });
   },
@@ -302,6 +302,7 @@ export default {
       markerImage: {
         normal: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_off.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
         booking: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_on.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
+        point: new kakao.maps.MarkerImage(`${fileServer}/file/icon/aptsales_point.png`, new kakao.maps.Size(48, 48), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],

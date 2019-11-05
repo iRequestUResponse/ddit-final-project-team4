@@ -54,16 +54,6 @@ import HomeMenu from '@/components/common/HomeMenu';
 
 export default {
   beforeMount() {
-    (async () => {
-      let user = await axios.get(`${serverLocation}/check`);
-      user = user.data.user;
-  
-      if (!user) {
-        this.$router.push('/');
-        location.reload();
-      }
-    })();
-
     window.addEventListener('popstate', e => {
       this.mypage = this.$route.params.mypagemenu;
     });

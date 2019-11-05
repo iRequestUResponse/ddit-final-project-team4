@@ -147,6 +147,17 @@ export default {
   mounted() {
     let container = this.$refs.map;
 
+    this.$root.$on('centerOne', aptSeq => {
+      let target = this.markerList.find(e => e.data.NORSALES_NUM === aptSeq);
+
+      if (target) {
+        this.markerList.forEach(e => {
+          e.setImage(this.markerImage.normal);
+        });
+        target.setImage(this.markerImage.point);
+      }
+    });
+
     this.$parent.$on('refreshNor', (e) => {
       this.refresh(e);
     });
@@ -283,6 +294,7 @@ export default {
       markerImage: {
         normal: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_off.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
         booking: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_on.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
+        point: new kakao.maps.MarkerImage(`//192.168.0.121:9000/api/file/icon/oneroom_point.png`, new kakao.maps.Size(55, 42), new kakao.maps.Point(0, 0)),
       },
       filter: {},
       markerList: [],
