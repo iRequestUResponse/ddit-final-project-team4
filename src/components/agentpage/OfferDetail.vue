@@ -141,35 +141,39 @@ export default {
         }
     },
     filters: {
-        comma(value) {
-            var num = new Number(value);
-            if(value >= 100000000) return value/100000000 + '억원'
-            else return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\,\d+)?$)/g, "$1,");
-        }
+      comma(value) {
+        var num = new Number(value);
+        if(value >= 100000000) return value/100000000 + '억원'
+        else return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\,\d+)?$)/g, "$1,");
+      }
     },
     methods: {
         estimateSubmit(){
-            axios({
-                    url: `${this.serverLocation}/insertEstimate`,
-                    method: 'POST',
-                    data: {
-                        offerNum: this.offerNum,
-                        price: this.price,
-                    },
-            })
-            .then(res => {
-                if (res.data === 1) {
-                    
-                    this.$swal('견적입력 성공', '견적이 회원님에게 전달됩니다.', 'success');
-                    
+          axios({
+            url: `${this.serverLocation}/insertEstimate`,
+            method: 'POST',
+            data: {
+                offerNum: this.offerNum,
+                price: this.price,
+            },
+          })
+          .then(res => {
+              if (res.data === 1) {
+                  this.$swal({
+                    title: '견적입력 성공',
+                    text: '견적이 회원님에게 전달됩니다.',
+                    type: 'success',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: '확인',
+                    timer: 1500
+                  }).then((result) => {
                     this.$router.push('/agentpage/AgentOfferedList');
                     location.reload();
-
-                } else {
-                    this.$swal('견적입력 실패', '견적이 회원님에게 전달되다가 말았습니다.', 'error');
-                }
-
-            })
+                  })
+              } else {
+                  this.$swal('견적입력 실패', '견적이 회원님에게 전달되다가 말았습니다.', 'error');
+              }
+          })
         } 
     }
 }

@@ -54,7 +54,7 @@
 
                         <div @click="viewOffer(offer.OFFERHOUSE_SEQ)">
                             <v-card-title>
-                                <div> {{ offer.OFFERHOUSE_ADDR }} {{ offer.OFFERHOUSE_ADDR2 }} </div>
+                                <div> {{ offer.OFFERHOUSE_ADDR }} {{ offer.OFFERHOUSE_ADDR2.substring(0,19) }}... </div>
                             </v-card-title>
                             <v-card-text>
                                 <div> 평수 : {{ offer.OFFERHOUSE_PYEONG }}평 </div>

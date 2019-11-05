@@ -81,12 +81,12 @@
         class="text-right pa-2"
       >
         <v-card outlined>
-        <v-btn id="deletebtn1" icon color="pink accent-1" @click="deleteY1(norSales.NORSALES_NUM)">
-             <v-icon id="deleteicon" size="50">cancel_presentation</v-icon>
-           </v-btn>
+          <v-btn id="deletebtn1" icon color="pink accent-1" @click="deleteY1(norSales.NORSALES_NUM)">
+            <v-icon id="deleteicon" size="50">cancel_presentation</v-icon>
+          </v-btn>
           <v-img
             :src="`${fileServer}/file/${norSales.PHOTO_PATH}`"
-            height="200px"
+            height="250px"
           />
 
           <div @click="viewNorSales(norSales.NORSALES_NUM)">
@@ -244,7 +244,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .juk-empty_content {
     height: 384px;
   }
@@ -260,5 +260,6 @@ export default {
   #deletebtn, #deletebtn1{
     border-radius: 30px;
     width: 50px;
+    height: 40px;
   }
 </style>
