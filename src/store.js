@@ -14,6 +14,7 @@ export default new Vuex.Store({
     user: {},
     serverLocation: '//localhost:3000/api',
     agentid: '',
+    agentname: '',
     chatVisible: false,
     listVisible: false,
     chatMsgList: [],
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     setAgentid(state, agentid) {
       state.agentid = agentid;
+    },
+    setAgentname(state, agentname) {
+      state.agentname = agentname;
     },
     setChatVisible(state, visible) {
       state.chatVisible = visible;
@@ -64,6 +68,11 @@ export default new Vuex.Store({
     },
     async chatJoin({ commit }, agentid) {
       commit('setAgentid', agentid);
+      (async () => {
+        let agentname = await axios.get(`${serverLocation}/getAgentname/${agentid}`);
+        agentname = agentname.data;
+        commit('setAgentname', agentname);
+      })();
       let result = await axios({
         url: `${serverLocation}/chat/room/${agentid}`,
         method: 'GET',

@@ -27,7 +27,12 @@
               color="indigo"
               dark
             >
-              <v-toolbar-title>채팅방</v-toolbar-title>
+              <v-toolbar-title>
+                {{ agentname || agentid }}
+                <div class="report">
+                  <v-icon color="#ce5e75" style="font-size: 1em">fa-exclamation</v-icon> 신고하기
+                </div>
+              </v-toolbar-title>
             </v-toolbar>
             <v-content class="messagecont" id="chatMsgContainer">
               <v-row v-for="msg in msgList" :key="msg.seq">
@@ -78,7 +83,7 @@
 
 <script>
 export default {
-  props: ['agentid'],
+  props: ['agentid', 'agentname'],
   data: () => ({
     message: '',
     loaded: false,
@@ -164,7 +169,7 @@ export default {
 }
 
 header {
-  cursor: move;
+  /* cursor: move; */
   width: 100%;
   height: 32px;
 }
@@ -210,5 +215,15 @@ header {
 
 .bor {
   border: 2px solid red;
+}
+
+/* ------------ */
+.report {
+  position: absolute;
+  color: #ce5e75;
+  font-size: 0.8em;
+  right: 1em;
+  top: 2em;
+  cursor: pointer;
 }
 </style>

@@ -5,6 +5,7 @@
     <ChatPopup
       v-show="visible"
       :agentid="agentid"
+      :agentname="agentname"
     />
     <ChatList
       v-show="listVisible"
@@ -32,6 +33,9 @@ export default {
     },
     agentid() {
       return this.$store.state.agentid;
+    },
+    agentname() {
+      return this.$store.state.agentname;
     },
     unread() {
       return this.$store.state.unread;
