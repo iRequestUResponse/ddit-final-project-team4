@@ -69,14 +69,21 @@ app.get('/api/file/:path?/:filename?', (req, res, next) => {
 });
 
 app.post('/api/file/:path?', upload.any(), (req, res, next) => {
+  res.setHeader('path-test', 'test');
+  console.log('hello?', req.files);
   res.send({ files: req.files, path: req.params.path });
 });
 
 app.delete('/api/file/:path?', bodyParser.text(), (req, res, send) => {
   let targetList = JSON.parse(req.body).files;
   targetList.forEach(e => {
-    let target = e.filename;
-    fs.unlinkSync(`${root}/${req.params.path}/${target}`);
+    try {
+      let target = e.filename;
+      fs.unlinkSync(`${root}/${req.params.path}/${target}`);
+    } catch (e) {}
   });
-  res.send('file deleted');
+  res.send({
+    targetList,
+    path: req.params.path,
+  });
 });
