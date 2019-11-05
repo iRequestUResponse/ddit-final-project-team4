@@ -169,6 +169,13 @@ module.exports = function({ app, db, io, http }) {
     
     res.send({ chatList, me: req.session.user.type });
   });
+
+  app.get('/api/getAgentname/:agentid', async (req, res, next) => {
+    let sql = `select agent_name name from agent where agentid = :agentid`;
+    let agentname = await db.getData(sql, [req.params.agentid]);
+    
+    res.send(agentname[0].NAME);
+  });
 };
 
 /**

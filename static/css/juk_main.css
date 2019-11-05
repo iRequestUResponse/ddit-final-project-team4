@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'ON-IGothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*:not(i) {
+    font-family: 'ON-IGothic', sans-serif !important;
+    /* border: 1px solid blue; */
+}
